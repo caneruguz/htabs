@@ -1,0 +1,28 @@
+{
+  "name": "htabs2",
+  "version": "0.0.2",
+  "homepage": "https://github.com/caneruguz/htabs",
+  "authors": [
+    "Caner Uguz <caneruguz@gmail.com>"
+  ],
+  "description": "Horizontal Modular Websites",
+  "main": "index.html",
+  "keywords": [
+    "horizontal",
+    "ui"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.11.0"
+  }
+}
