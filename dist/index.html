@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Mithril Grid </title>
+        <title>Horizontal Modular Tabs</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,73 +21,87 @@
         <![endif]-->
 
 
-<div id="ht-navbar">
- navbar 
-</div>
-
-<div id="ht-main">
-    <div id="ht-head">
-     
-    </div>
-    <div id="ht-wrapper">
-        <div id="ht-content">
-        
-        <div class="ht-tab tall" data-id="1">
-            <div class="ht-tab-header bg-purple" data-bg="purple">
-                <h2> First Module</h2>
-                <p> Some description</p>
-            </div>
-            <div class="ht-tab-content">
-
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
-
-            Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
-            </div>
-            <div class="ht-tab-footer">
-                This is the footer; 
-            </div>
+        <div id="ht-navbar">
+         navbar 
         </div>
 
-
-        <div class="ht-tab grande" data-id="2">
-            <div class="ht-tab-header bg-green" data-bg="green">
-                <h2> Second Module</h2>
-                <p> totally different description</p>
+        <div id="ht-main">
+            <div id="ht-head">
+             
             </div>
-            <div class="ht-tab-content">
+            <div id="ht-wrapper">
+                <div id="ht-content">
+                <div class="ht-tab grande" data-id="1">
+                    <div class="row h-row">
+                        <div class="col-md-4 h-col-4">One </div>
+                        <div class="col-md-4 h-col-4">Two </div>
+                        <div class="col-md-4 h-col-4">Three</div>
+                    </div> 
+                    <div class="row h-row">
+                        <div class="col-md-4 h-col-4">One </div>
+                        <div class="col-md-4 h-col-4">Two </div>
+                        <div class="col-md-4 h-col-4">Three</div>
+                    </div> 
+                    <div class="row h-row">
+                        <div class="col-md-4 h-col-4">One </div>
+                        <div class="col-md-4 h-col-4">Two </div>
+                        <div class="col-md-4 h-col-4">Three</div>
+                    </div> 
+                </div>  
 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+                <div class="ht-tab tall" data-id="1">
+                    <div class="ht-tab-header bg-purple" data-bg="purple">
+                        <h2> First Module</h2>
+                        <p> Some description</p>
+                    </div>
+                    <div class="ht-tab-content">
 
-            Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+                    <div class="ht-tab-footer">
+                        This is the footer; 
+                    </div>
+                </div>
+
+
+                <div class="ht-tab grande" data-id="2">
+                    <div class="ht-tab-header bg-green" data-bg="green">
+                        <h2> Second Module</h2>
+                        <p> totally different description</p>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+                    <div class="ht-tab-footer">
+                        This is the footer; 
+                    </div>
+                </div>
+
+                <div class="ht-tab venti" data-id="3">
+                    <div class="ht-tab-header bg-blue" data-bg="blue">
+                        <h2> Another Module</h2>
+                        <p> Another description</p>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+                    <div class="ht-tab-footer">
+                        This is the footer; 
+                    </div>
+                </div>
             </div>
-            <div class="ht-tab-footer">
-                This is the footer; 
             </div>
         </div>
-
-        <div class="ht-tab venti" data-id="3">
-            <div class="ht-tab-header bg-blue" data-bg="blue">
-                <h2> Another Module</h2>
-                <p> Another description</p>
-            </div>
-            <div class="ht-tab-content">
-
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
-
-            Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
-            </div>
-            <div class="ht-tab-footer">
-                This is the footer; 
-            </div>
-        </div>
-    </div>
-    </div>
-</div>
 
  
         <script src="bundle.js"></script>
-    <script type="text/javascript">
-
-    </script>
     </body>
 </html>

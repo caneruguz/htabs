@@ -1749,9 +1749,9 @@ body{font-family:Helvetica}
 .ht-tab-header{color:#fff;padding:10px}
 .ht-tab-content{background-color:#efefef;color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
-#ht-navbar{background:#f08080;color:#fff;width:80px;padding:20px;height:1000px;position:fixed;top:0;left:0}
-#ht-main{position:fixed;top:0;left:120px;height:1000px;background-color:#789}
+#ht-navbar{background:rgba(34,34,34,.8);color:#fff;width:80px;padding:20px;height:1000px;position:fixed;top:0;left:0}
+#ht-main{position:fixed;top:0;left:80px;height:1000px;background-color:#789}
 #ht-head{height:26px;background-color:lightslategrey;color:#fff}
 #ht-content{padding:20px;width:2000px;overflow-y:scroll}
-.ht-hdiv{display:inline-block;border:1px solid #ccc;padding:3px;text-align:center}
+.ht-hdiv{display:inline-block;padding:3px;text-align:center}
 #ht-wrapper{overflow:scroll}
