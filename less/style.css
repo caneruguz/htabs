@@ -3,13 +3,13 @@ body {
   font-family: Helvetica;
 }
 .bg-blue {
-  background-color: blue;
+  background-color: #45b29d;
 }
-.bg-green {
-  background-color: green;
+.bg-orange {
+  background-color: #e27a3f;
 }
-.bg-purple {
-  background-color: purple;
+.bg-yellow {
+  background-color: #efc94c;
 }
 .tall {
   width: 300px;
@@ -21,15 +21,39 @@ body {
   width: 800px;
 }
 .ht-tab {
-  border: 1px solid #999;
+  border: 1px solid #aaa;
   margin: 10px 20px;
   padding: 0;
   display: inline-block;
   vertical-align: top;
+  width: 800px;
+  background: white;
+  box-shadow: 0 0 5px #ccc;
 }
 .ht-tab-header {
   color: white;
   padding: 10px;
+  padding: 1px 10px;
+}
+.ht-tab-header h3 {
+  font-weight: 100;
+  font-family: Helvetica Neue;
+  letter-spacing: 1px;
+  margin: 10px 0px;
+  font-size: 25px;
+}
+.ht-tab-header .fa {
+  font-size: 20px;
+  font-weight: 200;
+}
+.ht-tab-header .ht-windowBtn {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 39px;
+  background: rgba(34, 34, 34, 0.59);
+  padding: 5px 11px 0px 11px;
+  margin-top: -1px;
 }
 .ht-tab-content {
   background-color: #efefef;
@@ -41,21 +65,10 @@ body {
   padding: 10px;
   color: #999;
 }
-#ht-navbar {
-  background: rgba(34, 34, 34, 0.8);
-  color: white;
-  width: 80px;
-  padding: 20px;
-  height: 1000px;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
 #ht-main {
   position: fixed;
   top: 0;
-  left: 80px;
-  height: 1000px;
+  left: 0px;
   background-color: #778899;
 }
 #ht-head {
@@ -65,7 +78,7 @@ body {
 }
 #ht-content {
   padding: 20px;
-  width: 2000px;
+  width: 5000px;
   overflow-y: scroll;
 }
 .ht-hdiv {
@@ -74,5 +87,37 @@ body {
   text-align: center;
 }
 #ht-wrapper {
-  overflow: scroll;
+  overflow: auto;
+  background: url("images/wavegrid.png");
+}
+.ht-hdiv-content {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.grid {
+  border: 1px dashed #ccc;
+  position: relative;
+  width: 100%;
+}
+.grid > div {
+  background: #CCC;
+  height: 400px;
+  position: absolute;
+  width: 80px;
+}
+.grid > div[data-ss-colspan='1'] {
+  width: 120px;
+}
+.grid > div[data-ss-colspan='2'] {
+  width: 240px;
+}
+.grid > div[data-ss-colspan='3'] {
+  width: 360px;
+}
+.grid > div[data-ss-colspan='4'] {
+  width: 480px;
+}
+.grid .ss-placeholder-child {
+  background: transparent;
+  border: 1px dashed red;
 }
