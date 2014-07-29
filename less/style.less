@@ -92,7 +92,13 @@ body {
     left:0px;
     background-color: lightslategrey
 }
-
+#ht-slider-bar{
+  width:10px;
+  content: "";
+  min-height: 100%;
+  background-color:#D1C094;
+  height: 100%;
+}
 #ht-head{
     height: 26px;
     background-color: lightslategrey;
@@ -109,14 +115,12 @@ body {
     display: inline-block;
     padding: 3px;
     text-align: center;
+    display:inline-block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; 
 }
+
 #ht-wrapper {
     overflow: auto;
   background: url("images/wavegrid.png");
-}
-.ht-hdiv-content {
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .grid {
