@@ -1,19 +1,47 @@
 (function(){
-var totalWidth = 0; 
+
+
+var gridster = "";
+$(".gridster ul").gridster({
+    widget_margins: [10, 10],
+    widget_base_dimensions: [120, 120],
+    max_rows : 3,
+    resize : {
+        enabled : true,
+        max_size : [240, 240],
+        stop : function(event, ui){
+
+        }
+    },
+    draggable : {
+        start : function($widget, e, ui ){
+        }
+    }
+});
+
+var totalWidth = 0;
 var modules = []; // created on load and checked at every resize
 var dragState =  false;
 
 
 var reformat = function(){
+/*
+
+    Main resizing function
+*/
+
     // Size wrapper elements
     var headfinal = $(window).width(); // final width of the header taking into account the navbar
     var wH = $(window).height();
     var wrapperH = wH-26;
     var tab = wrapperH-60;
+
+
     $('#ht-head').css({ width : headfinal + 'px' } );
     $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
     $('.ht-tab').css({ height: tab + 'px'});
-    // Resize header modules 
+
+    // Resize header modules
     for(var i = 0; i < modules.length; i++){
         var o = modules[i]; 
         var contentWidth = $('#ht-content').width();  // width of the module
@@ -22,6 +50,7 @@ var reformat = function(){
         $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});    
     }
     $(".grid").css({ height : '400px' } );
+
 
     // title text correction when title div sizes are becoming too small
     $('.ht-hdiv').each(function(){
@@ -33,11 +62,9 @@ var reformat = function(){
                 innerText = modules[i].title;
                 if( inner.outerWidth()+6 > outer){
                     var diff = (inner.outerWidth()-outer)/inner.outerWidth();
-                    console.log(diff);
                     var cutoff = innerText.length*diff;
                     inner.text(innerText.slice(0,Math.round(cutoff)-6) + "...");
                 } else {
-                    console.log("else");
                     inner.text(innerText);
                 }
             }
@@ -70,28 +97,30 @@ $('.ht-tab').each(function(){
 
 // jquery-ui Resizable options
 $('.ht-tab').resizable({
-    grid: 100,
+    grid: 160,
     minWidth : 600,
     maxWidth: 1200,
     stop: function( event, ui ) {
         if(ui.size.width > ui.originalSize.width){
-            console.log(ui.size.width, ui.originalSize.width)
             var change = ui.size.width - ui.originalSize.width;
             var contentSize = $('#ht-content').width()+change;
             $('#ht-content').css({width : contentSize+'px'});
             reformat();
         } else {
             var change = ui.size.width - ui.originalSize.width;
-            console.log(change);
             var contentSize = $('#ht-content').width()+change;
             $('#ht-content').css({width : contentSize+'px'});
             reformat();
         }
     }
 })
+
+    // Shapeshift resiable example
     $('.grid > div').resizable({
-        grid : 50,
-        stop : function(){
+        grid : 160,
+        stop : function(event, ui){
+            var cols = ui.size.width/120;
+            ui.element.attr('data-ss-colspan', cols);
             $(".grid").trigger("ss-rearrange");
         }
     });
@@ -99,7 +128,9 @@ $('.ht-tab').resizable({
     $(".grid").shapeshift({
         minColumns: 3,
         align: "left",
-        colWidth : 120
+        colWidth : 160,
+        autoheight : true,
+        maxHeight: 500
     });
     $containers = $(".grid");
     $containers.on('ss-added', function(e, selected){
@@ -116,8 +147,7 @@ $('.ht-tab').resizable({
     })
 
 
-$(window).resize(reformat); 
-
+$(window).resize(reformat);
 
 
 })(); 

@@ -21,12 +21,12 @@ body {
   width: 800px;
 }
 .ht-tab {
+  min-width: 600px;
   border: 1px solid #aaa;
   margin: 10px 20px;
   padding: 0;
   display: inline-block;
   vertical-align: top;
-  width: 800px;
   background: white;
   box-shadow: 0 0 5px #ccc;
 }
@@ -51,7 +51,7 @@ body {
   top: 0;
   right: 0px;
   width: 39px;
-  background: rgba(34, 34, 34, 0.59);
+  background: rgba(255, 255, 255, 0.28);
   padding: 5px 11px 0px 11px;
   margin-top: -1px;
 }
@@ -106,18 +106,35 @@ body {
   width: 80px;
 }
 .grid > div[data-ss-colspan='1'] {
-  width: 120px;
+  width: 160px;
 }
 .grid > div[data-ss-colspan='2'] {
-  width: 240px;
+  width: 320px;
 }
 .grid > div[data-ss-colspan='3'] {
-  width: 360px;
+  width: 480px;
 }
 .grid > div[data-ss-colspan='4'] {
-  width: 480px;
+  width: 640px;
 }
 .grid .ss-placeholder-child {
   background: transparent;
   border: 1px dashed red;
+}
+.gridster ul li {
+  background: white;
+  overflow: auto;
+  list-style: none;
+  border: 1px solid #ccc;
+  overflow-y: hidden;
+}
+.gridster ul li .handle {
+  width: 100%;
+  height: 30px;
+  background: #333333;
+}
+.ht-tab:after {
+  content: "";
+  display: table;
+  clear: both;
 }

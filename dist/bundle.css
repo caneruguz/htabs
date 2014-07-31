@@ -1745,11 +1745,11 @@ body{font-family:Helvetica}
 .tall{width:300px}
 .grande{width:600px}
 .venti{width:800px}
-.ht-tab{border:1px solid #aaa;margin:10px 20px;padding:0;display:inline-block;vertical-align:top;width:800px;background:#fff;box-shadow:0 0 5px #ccc}
+.ht-tab{min-width:600px;border:1px solid #aaa;margin:10px 20px;padding:0;display:inline-block;vertical-align:top;background:#fff;box-shadow:0 0 5px #ccc}
 .ht-tab-header{color:#fff;padding:1px 10px}
 .ht-tab-header h3{font-weight:100;font-family:Helvetica Neue;letter-spacing:1px;margin:10px 0;font-size:25px}
 .ht-tab-header .fa{font-size:20px;font-weight:200}
-.ht-tab-header .ht-windowBtn{position:absolute;top:0;right:0;width:39px;background:rgba(34,34,34,.59);padding:5px 11px 0;margin-top:-1px}
+.ht-tab-header .ht-windowBtn{position:absolute;top:0;right:0;width:39px;background:rgba(255,255,255,.28);padding:5px 11px 0;margin-top:-1px}
 .ht-tab-content{background-color:#efefef;color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
@@ -1760,11 +1760,14 @@ body{font-family:Helvetica}
 .ht-hdiv-content{white-space:nowrap;overflow:hidden}
 .grid{border:1px dashed #ccc;position:relative;width:100%}
 .grid>div{background:#CCC;height:400px;position:absolute;width:80px}
-.grid>div[data-ss-colspan='1']{width:120px}
-.grid>div[data-ss-colspan='2']{width:240px}
-.grid>div[data-ss-colspan='3']{width:360px}
-.grid>div[data-ss-colspan='4']{width:480px}
+.grid>div[data-ss-colspan='1']{width:160px}
+.grid>div[data-ss-colspan='2']{width:320px}
+.grid>div[data-ss-colspan='3']{width:480px}
+.grid>div[data-ss-colspan='4']{width:640px}
 .grid .ss-placeholder-child{background:0 0;border:1px dashed red}
+.gridster ul li{background:#fff;overflow:auto;list-style:none;border:1px solid #ccc;overflow-y:hidden}
+.gridster ul li .handle{width:100%;height:30px;background:#333}
+.ht-tab:after{content:"";display:table;clear:both}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -2242,3 +2245,22 @@ body{font-family:Helvetica}
 .fa-share-alt:before{content:"\f1e0"}
 .fa-share-alt-square:before{content:"\f1e1"}
 .fa-bomb:before{content:"\f1e2"}
+/*! gridster.js - v0.5.5 - 2014-07-25
+* http://gridster.net/
+* Copyright (c) 2014 ducksboard; Licensed MIT */
+.gridster{position:relative}
+.gridster>*{margin:0 auto;-webkit-transition:height .4s,width .4s;-moz-transition:height .4s,width .4s;-o-transition:height .4s,width .4s;-ms-transition:height .4s,width .4s;transition:height .4s,width .4s}
+.gridster .gs-w{z-index:2;position:absolute}
+.ready .gs-w:not(.preview-holder),.ready .resize-preview-holder{-webkit-transition:opacity .3s,left .3s,top .3s,width .3s,height .3s;-moz-transition:opacity .3s,left .3s,top .3s,width .3s,height .3s;-o-transition:opacity .3s,left .3s,top .3s,width .3s,height .3s;transition:opacity .3s,left .3s,top .3s,width .3s,height .3s}
+.gridster .preview-holder{z-index:1;position:absolute;background-color:#fff;border-color:#fff;opacity:.3}
+.gridster .player-revert{z-index:10!important;-webkit-transition:left .3s,top .3s!important;-moz-transition:left .3s,top .3s!important;-o-transition:left .3s,top .3s!important;transition:left .3s,top .3s!important}
+.gridster .dragging,.gridster .resizing{z-index:10!important;-webkit-transition:all 0s!important;-moz-transition:all 0s!important;-o-transition:all 0s!important;transition:all 0s!important}
+.gs-resize-handle{position:absolute;z-index:1}
+.gs-resize-handle-both{width:20px;height:20px;bottom:0;right:0;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=);background-position:top left;background-repeat:no-repeat;cursor:se-resize;z-index:20}
+.gs-resize-handle-x{top:0;bottom:13px;right:-5px;width:10px;cursor:e-resize}
+.gs-resize-handle-y{left:0;right:13px;bottom:-5px;height:10px;cursor:s-resize}
+.gs-w:hover .gs-resize-handle,.resizing .gs-resize-handle{opacity:1}
+.gs-resize-handle,.gs-w.dragging .gs-resize-handle{opacity:0}
+.gs-resize-disabled .gs-resize-handle,[data-max-sizex="1"] .gs-resize-handle-x,[data-max-sizey="1"] .gs-resize-handle-y,[data-max-sizey="1"][data-max-sizex="1"] .gs-resize-handle{display:none!important}
+.gridster ul{height:500px;overflow:auto}
+.inner{padding:5px;margin-top:30px}
