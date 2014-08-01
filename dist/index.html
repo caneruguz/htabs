@@ -15,54 +15,57 @@
         <link rel="stylesheet" href="bundle.css">
 
     </head>
+
     <body>
+
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
 
-            <div id="ht-head"></div>
-            <div id="ht-slider" style="background-color:black; width:50px; height:15px; position:absolute;"></div>
-            <div id='ht-scroll-loc' style="overflow:auto;"></div>
-            <div id="ht-wrapper">
+            <div id="ht-head">
+                <span id="exposeOn" class="ht-hdiv pull-right" style="background-color:red;">expose on</span>
+                <span id="exposeOff" class="ht-hdiv pull-right" style="background-color:green; display:none;">expose off</span>
+                <span id="exposeTrue" class="ht-hdiv pull-right" style="background-color:lightblue; ">expose T</span>
+                <span id="exposeFalse" class="ht-hdiv pull-right" style="background-color:purple; display:none; ">expose F</span>
+                </div>
+            <div id="ht-slider"></div>
+            <div id="ht-wrapper" >
                 <div id="ht-content">
-                 <div class="ht-tab" data-id="1" style="width:1000px;">
-                    <div class="ht-tab-header bg-yellow" data-bg="yellow" >
-                        <h3> First Module</h3>
-                        <div class="ht-windowBtn">
-                            <i class="fa fa-times"></i>
-                            <i class="fa fa-minus"></i>
+                     <div class="ht-tab ui-state-default" data-id="1" id="1tab"  style="width:1000px;">
+                        <div class="ht-tab-header bg-yellow" data-bg="yellow" >
+                        <h3 id="1tabhead"> First Module</h3>
+                            <!-- <span style="height:47px; width:37px;"></span> -->
+                            <div class="ht-windowBtn">
+                                <i class="fa fa-times"></i>
+                                <div id="1min">
+                                    <i class="fa fa-minus"></i>
+                                    <i class="fa fa-plus" style="display:none;"></i>
+                                </div>
+                            </div>
+
                         </div>
+
+                        <div class="ht-tab-content" id="1content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                        Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                         </div>
 
                     </div>
-                    <div class="ht-tab-content">
-                        <div class="grid">
-                            <div data-ss-colspan='1'></div>
-                            <div data-ss-colspan='2'></div>
-                            <div data-ss-colspan='3'></div>
-                            <div data-ss-colspan='1'></div>
-                        </div>
-                     </div>
-
-                </div>
-
-
-                <div class="ht-tab " data-id="2">
+                <div class="ht-tab ui-state-default" data-id="2">
                     <div class="ht-tab-header bg-orange" data-bg="orange">
                         <h3> Second Module</h3>
                     </div>
                     <div class="ht-tab-content">
-                        <div class="grid">
-                            <div></div>
-                            <div></div>
-                            <div data-ss-colspan='2'></div>
-                            <div></div>
-                        </div>
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
                     </div>
 
                 </div>
-
-                <div class="ht-tab" data-id="3">
+                <div class="ht-tab ui-state-default" data-id="3">
                     <div class="ht-tab-header bg-blue" data-bg="blue">
                         <h3> Another Module</h3>
                     </div>
@@ -74,8 +77,93 @@
                     </div>
 
                 </div>
+                <div class="ht-tab ui-state-default" data-id="4">
+                    <div class="ht-tab-header bg-blue" data-bg="pink">
+                        <h3> Module 9000</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="5">
+                    <div class="ht-tab-header bg-blue" data-bg="blue">
+                        <h3> Another Hobo Spider</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="6">
+                    <div class="ht-tab-header bg-blue" data-bg="navy">
+                        <h3> A Mother Module</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="7">
+                    <div class="ht-tab-header bg-blue" data-bg="yellow">
+                        <h3> An other Mod Yule</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="8">
+                    <div class="ht-tab-header bg-blue" data-bg="orange">
+                        <h3> Other Moda Nule</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="9">
+                    <div class="ht-tab-header bg-blue" data-bg="blue">
+                        <h3> reoath lude mo</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+                <div class="ht-tab ui-state-default" data-id="10">
+                    <div class="ht-tab-header bg-blue" data-bg="pink">
+                        <h3> the roan ole mud</h3>
+                    </div>
+                    <div class="ht-tab-content">
+
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non tortor non metus lobortis ultricies. Duis dictum elit quam, vitae vulputate justo accumsan quis. Nulla tortor massa, molestie nec quam ullamcorper, viverra molestie neque. In scelerisque urna nisi, at faucibus leo molestie at. Pellentesque dictum nunc nunc, convallis hendrerit neque consectetur quis. Mauris sit amet odio risus. Vivamus tempor convallis nibh vel molestie. Vivamus vel mi sit amet justo vulputate iaculis. Aliquam suscipit magna sem, sit amet accumsan erat tempus quis. Sed vel dolor sit amet turpis dignissim porttitor. Vestibulum sit amet feugiat massa, sit amet rutrum nibh. Curabitur ut velit a enim convallis accumsan at et massa. Nam venenatis eros et leo aliquet tempus. Quisque fringilla tempor interdum. Cras suscipit nunc arcu, sed commodo nulla porta in.
+
+                    Phasellus tincidunt, libero eget fermentum dignissim, purus diam dictum velit, a elementum orci ligula vel arcu. Donec ut mattis nunc. Quisque sodales, tellus ac porta facilisis, nisl leo egestas neque, a semper enim orci et est. Nunc at venenatis augue, eget blandit nisi. Vestibulum aliquet facilisis nunc, vitae sodales erat luctus vitae. Pellentesque faucibus non elit vitae feugiat. In hac habitasse platea dictumst.
+                    </div>
+
+                </div>
+            
             </div>
-            </div>
+        </div>
 
  
         <script src="bundle.js"></script>

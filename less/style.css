@@ -11,6 +11,12 @@ body {
 .bg-yellow {
   background-color: #efc94c;
 }
+.bg-navy {
+  background-color: #334d5c;
+}
+.bg-pink {
+  background-color: #df4949;
+}
 .tall {
   width: 300px;
 }
@@ -22,7 +28,7 @@ body {
 }
 .ht-tab {
   border: 1px solid #aaa;
-  margin: 10px 20px;
+  margin: 20px 20px;
   padding: 0;
   display: inline-block;
   vertical-align: top;
@@ -71,28 +77,47 @@ body {
   left: 0px;
   background-color: #778899;
 }
+#ht-slider-bar {
+  width: 10px;
+  content: "";
+  min-height: 100%;
+  background-color: #D1C094;
+  height: 100%;
+}
+.ghost-element {
+  height: 300px;
+  width: 50px;
+  background: grey;
+  opacity: 0.4;
+}
 #ht-head {
-  height: 26px;
+  height: 40px;
   background-color: lightslategrey;
   color: white;
 }
 #ht-content {
   padding: 20px;
-  width: 5000px;
+  width: 10000px;
   overflow-y: scroll;
 }
 .ht-hdiv {
-  display: inline-block;
+  height: 40px;
   padding: 3px;
   text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#ht-slider {
+  background-color: #646464;
+  width: 50px;
+  height: 15px;
+  position: absolute;
 }
 #ht-wrapper {
   overflow: auto;
   background: url("images/wavegrid.png");
-}
-.ht-hdiv-content {
-  white-space: nowrap;
-  overflow: hidden;
 }
 .grid {
   border: 1px dashed #ccc;
@@ -120,4 +145,8 @@ body {
 .grid .ss-placeholder-child {
   background: transparent;
   border: 1px dashed red;
+}
+.fa {
+  cursor: pointer;
+  cursor: hand;
 }
