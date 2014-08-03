@@ -1770,12 +1770,16 @@ body{font-family:Helvetica}
 .grid>div[data-ss-colspan='3']{width:360px}
 .grid>div[data-ss-colspan='4']{width:480px}
 .grid .ss-placeholder-child{background:0 0;border:1px dashed red}
-.fa{cursor:pointer;cursor:hand;display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.fa{cursor:pointer;cursor:hand}
+.white-text-btn{font-weight:100;font-family:Helvetica Neue;color:#fff;letter-spacing:1px;font-size:35px;margin:50px;opacity:.5;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}
+.white-text-btn:hover{cursor:pointer;cursor:hand}
+#exposebtns{text-align:center;display:none;position:absolute;left:0;right:0;margin:0 auto;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 @font-face{font-family:FontAwesome;src:url(./fonts/fontawesome-webfont.eot?v=4.1.0);src:url(./fonts/fontawesome-webfont.eot?#iefix&v=4.1.0) format('embedded-opentype'),url(./fonts/fontawesome-webfont.woff?v=4.1.0) format('woff'),url(./fonts/fontawesome-webfont.ttf?v=4.1.0) format('truetype'),url(./fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular) format('svg');font-weight:400;font-style:normal}
+.fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}
 .fa-2x{font-size:2em}
 .fa-3x{font-size:3em}

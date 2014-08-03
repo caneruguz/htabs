@@ -9,11 +9,19 @@ $('#exposeTrue').click(function(){
     $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
     $('#exposeTrue').hide();
     $('#exposeFalse').show();
+
     $('#exLeftNav').show();
     $('#exRightNav').show();
+
+    $('#exposebtns').fadeIn();
+
+    $('#ht-head').slideUp(200);
+
+
     $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
     $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
     $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
+
 
     var headfinal = $(window).width();
     var wH = $(window).height();
@@ -21,10 +29,12 @@ $('#exposeTrue').click(function(){
     var tab = wrapperH-80;
     var adjheight = tab/2;
     var adjpadding = tab/4;
+    var adjbtn = tab*0.25;
     var modlens = 0; // full length of mods
     var modsmin = 300;
     var newmodlens = 900; // start with a bit of extra room just in case
     // get size of all mods
+    $('#exposebtns').css('bottom', adjbtn + 'px');
     $.each(modules, function(i, module) {
        modlens += module.width + 40;
     });
@@ -60,7 +70,8 @@ $('#exposeFalse').click(function(){
     $('#exposeTrue').show();
     $('#exposeFalse').hide();
     $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
-
+    $('#ht-head').slideDown(200);
+    $('#exposebtns').fadeOut();
     // $('#exLeftNav').hide();
     // $('#exRightNav').hide();
 
@@ -157,6 +168,6 @@ $('#exposeOff').click(function(){
   });
 
 $('#ht-wrapper').on('scroll', function(){
-    $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+    $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/($('#ht-content').width()-$(window).width()));
     $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
 });  
