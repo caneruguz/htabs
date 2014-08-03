@@ -17,6 +17,7 @@ $('.ht-tab').each(function(){
     }
     );
     modules.push({id : id, width : width, title : title});
+    resizecontent();
     reformat();  
 });
 

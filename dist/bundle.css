@@ -1742,10 +1742,13 @@ body{font-family:Helvetica}
 .bg-blue{background-color:#45b29d}
 .bg-orange{background-color:#e27a3f}
 .bg-yellow{background-color:#efc94c}
+.bg-navy{background-color:#334d5c}
+.bg-pink{background-color:#df4949}
+.dim-background{background:rgba(0,0,0,.7);height:100%}
 .tall{width:300px}
 .grande{width:600px}
 .venti{width:800px}
-.ht-tab{border:1px solid #aaa;margin:10px 20px;padding:0;display:inline-block;vertical-align:top;width:800px;background:#fff;box-shadow:0 0 5px #ccc}
+.ht-tab{border:1px solid #aaa;margin:20px;padding:0;display:inline-block;vertical-align:top;width:800px;background:#fff;box-shadow:0 0 5px #ccc}
 .ht-tab-header{color:#fff;padding:1px 10px}
 .ht-tab-header h3{font-weight:100;font-family:Helvetica Neue;letter-spacing:1px;margin:10px 0;font-size:25px}
 .ht-tab-header .fa{font-size:20px;font-weight:200}
@@ -1753,11 +1756,13 @@ body{font-family:Helvetica}
 .ht-tab-content{background-color:#efefef;color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
-#ht-head{height:26px;background-color:lightslategrey;color:#fff}
-#ht-content{padding:20px;width:5000px;overflow-y:scroll}
-.ht-hdiv{display:inline-block;padding:3px;text-align:center}
+#ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
+.ghost-element{height:341px;width:50px;background:grey;opacity:.4}
+#ht-head{height:40px;background-color:lightslategrey;color:#fff}
+#ht-content{padding:20px;overflow-y:scroll}
+.ht-hdiv{height:40px;padding:3px;text-align:center;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ht-slider{background-color:#646464;width:50px;height:15px;position:absolute}
 #ht-wrapper{overflow:auto;background:url(images/wavegrid.png)}
-.ht-hdiv-content{white-space:nowrap;overflow:hidden}
 .grid{border:1px dashed #ccc;position:relative;width:100%}
 .grid>div{background:#CCC;height:400px;position:absolute;width:80px}
 .grid>div[data-ss-colspan='1']{width:120px}
@@ -1765,12 +1770,12 @@ body{font-family:Helvetica}
 .grid>div[data-ss-colspan='3']{width:360px}
 .grid>div[data-ss-colspan='4']{width:480px}
 .grid .ss-placeholder-child{background:0 0;border:1px dashed red}
+.fa{cursor:pointer;cursor:hand;display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 @font-face{font-family:FontAwesome;src:url(./fonts/fontawesome-webfont.eot?v=4.1.0);src:url(./fonts/fontawesome-webfont.eot?#iefix&v=4.1.0) format('embedded-opentype'),url(./fonts/fontawesome-webfont.woff?v=4.1.0) format('woff'),url(./fonts/fontawesome-webfont.ttf?v=4.1.0) format('truetype'),url(./fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular) format('svg');font-weight:400;font-style:normal}
-.fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}
 .fa-2x{font-size:2em}
 .fa-3x{font-size:3em}

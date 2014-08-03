@@ -3,9 +3,21 @@ var totalWidth = 0;
 var modules = []; // created on load and checked at every resize
 var dragState =  false;
 var canReformat = true;
+var exposeOn = false;
+
+
+var resizecontent = function(){
+    lensm = 2000;
+    $.each(modules, function(i, module) {
+       lensm += module.width + 40;
+    });
+
+    $('#ht-content').css('width', lensm +'px');
+};
 
 var reformat = function(){
     if(canReformat){
+        
         // Size wrapper elements
         var headfinal = $(window).width(); // final width of the header taking into account the navbar
         var wH = $(window).height();
@@ -32,3 +44,6 @@ var reformat = function(){
         $(".grid").css({ height : '400px' } );
     }
 };
+
+
+    

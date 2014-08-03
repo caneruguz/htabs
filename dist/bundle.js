@@ -20,10 +20,9 @@ r.parent().is(".ui-effects-wrapper")?e.effects.save(r.parent(),l):e.effects.save
  * Copyright (c) 2007-2014 Ariel Flesler - aflesler<a>gmail<d>com | http://flesler.blogspot.com
  * Licensed under MIT
  * @author Ariel Flesler
- * @version 1.4.12
+ * @version 1.4.13
  */
-;(function(a){if(typeof define==='function'&&define.amd){define(['jquery'],a)}else{a(jQuery)}}(function($){var j=$.scrollTo=function(a,b,c){return $(window).scrollTo(a,b,c)};j.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};j.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(f,g,h){if(typeof g=='object'){h=g;g=0}if(typeof h=='function')h={onAfter:h};if(f=='max')f=9e9;h=$.extend({},j.defaults,h);g=g||h.duration;h.queue=h.queue&&h.axis.length>1;if(h.queue)g/=2;h.offset=both(h.offset);h.over=both(h.over);return this._scrollable().each(function(){if(f==null)return;var d=this,$elem=$(d),targ=f,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=win?$(targ):$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}var e=$.isFunction(h.offset)&&h.offset(d,targ)||h.offset;$.each(h.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=j.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(h.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=e[pos]||0;if(h.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*h.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(h.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&h.queue){if(old!=attr[key])animate(h.onAfterFirst);delete attr[key]}});animate(h.onAfter);function animate(a){$elem.animate(attr,g,h.easing,a&&function(){a.call(this,targ,h)})}}).end()};j.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return $.isFunction(a)||typeof a=='object'?a:{top:a,left:a}};return j}));
-
+;(function(k){'use strict';k(['jquery'],function($){var j=$.scrollTo=function(a,b,c){return $(window).scrollTo(a,b,c)};j.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:!0};j.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(f,g,h){if(typeof g=='object'){h=g;g=0}if(typeof h=='function')h={onAfter:h};if(f=='max')f=9e9;h=$.extend({},j.defaults,h);g=g||h.duration;h.queue=h.queue&&h.axis.length>1;if(h.queue)g/=2;h.offset=both(h.offset);h.over=both(h.over);return this._scrollable().each(function(){if(f==null)return;var d=this,$elem=$(d),targ=f,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=win?$(targ):$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}var e=$.isFunction(h.offset)&&h.offset(d,targ)||h.offset;$.each(h.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=j.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(h.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=e[pos]||0;if(h.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*h.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(h.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&h.queue){if(old!=attr[key])animate(h.onAfterFirst);delete attr[key]}});animate(h.onAfter);function animate(a){$elem.animate(attr,g,h.easing,a&&function(){a.call(this,targ,h)})}}).end()};j.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return $.isFunction(a)||typeof a=='object'?a:{top:a,left:a}}return j})}(typeof define==='function'&&define.amd?define:function(a,b){if(typeof module!=='undefined'&&module.exports){module.exports=b(require('jquery'))}else{b(jQuery)}}));
 /*!
  * Bootstrap v3.2.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -728,55 +727,56 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
     })(jQuery, window, document);
 
 }).call(this);
-(function(){
+;(function(){ // this is super sketch way to gulp the files together in an iife... js starts with this file and finishes with scriptend.js which closes the iife
+
 var totalWidth = 0; 
 var modules = []; // created on load and checked at every resize
 var dragState =  false;
+var canReformat = true;
+var exposeOn = false;
 
+
+var resizecontent = function(){
+    lensm = 2000;
+    $.each(modules, function(i, module) {
+       lensm += module.width + 40;
+    });
+
+    $('#ht-content').css('width', lensm +'px');
+};
 
 var reformat = function(){
-    // Size wrapper elements
-    var headfinal = $(window).width(); // final width of the header taking into account the navbar
-    var wH = $(window).height();
-    var wrapperH = wH-26;
-    var tab = wrapperH-60;
-    $('#ht-head').css({ width : headfinal + 'px' } );
-    $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
-    $('.ht-tab').css({ height: tab + 'px'});
-    // Resize header modules 
-    for(var i = 0; i < modules.length; i++){
-        var o = modules[i]; 
-        var contentWidth = $('#ht-content').width();  // width of the module
-        var headWidth = $('#ht-head').width();  
-        var width = o.width/contentWidth*100;
-        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});    
-    }
-    $(".grid").css({ height : '400px' } );
+    if(canReformat){
+        
+        // Size wrapper elements
+        var headfinal = $(window).width(); // final width of the header taking into account the navbar
+        var wH = $(window).height();
+        var wrapperH = wH-40;
+        var tab = wrapperH-80;
 
-    // title text correction when title div sizes are becoming too small
-    $('.ht-hdiv').each(function(){
-        var inner = $(this).children('.ht-hdiv-content');
-        var outer = $(this).width();
-        var innerText = "";
+        $('#ht-head').css({ width : headfinal + 'px' } );
+        $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
+        $('.ht-tab').css({ height: tab + 'px'});
+
+        // Adjust slider on changes
+        $('#ht-slider').width( Math.pow(headfinal, 2) / $('#ht-content').width() + 'px')
+            .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+        // Resize header modules 
         for(var i = 0; i < modules.length; i++){
-            if (modules[i].id == $(this).attr('data-hid')){
-                innerText = modules[i].title;
-                if( inner.outerWidth()+6 > outer){
-                    var diff = (inner.outerWidth()-outer)/inner.outerWidth();
-                    console.log(diff);
-                    var cutoff = innerText.length*diff;
-                    inner.text(innerText.slice(0,Math.round(cutoff)-6) + "...");
-                } else {
-                    console.log("else");
-                    inner.text(innerText);
-                }
-            }
+            var o = modules[i]; 
+            var contentWidth = $('#ht-content').width();  // width of the module
+            var headWidth = $('#ht-head').width();  
+
+            // +40 = fix for margin space
+            var width = ($('.ht-tab[data-id="'+o.id+'"]').width()+40)/contentWidth*100;
+            $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});    
         }
+        $(".grid").css({ height : '400px' } );
+    }
+};
 
-    })
 
-
-}
+    
 
 // Build the header modules from the modules loaded 
 $('.ht-tab').each(function(){
@@ -786,39 +786,41 @@ $('.ht-tab').each(function(){
     var width = $(this).width();  // Get the width 
     totalWidth = totalWidth+width;
     var bg = header.attr("data-bg");
+    
     // Build the head 
-    $('#ht-head').append('<div class="ht-hdiv bg-'+bg+'" data-hid="'+id+'" ><span class="ht-hdiv-content">'+title+'</span></div>')
-
+    $('#ht-head').append('<div class="ht-hdiv bg-'+bg+'" data-hid="'+id+'" >'+title+'</div>');
     // ScrollTo initialization. 
     $(document).on('click', '.ht-hdiv', function(){
         var id = $(this).attr('data-hid');
         $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 200,  {offset:-50});
-    })
+    }
+    );
     modules.push({id : id, width : width, title : title});
+    resizecontent();
     reformat();  
-})
+});
 
 // jquery-ui Resizable options
 $('.ht-tab').resizable({
     grid: 100,
     minWidth : 600,
     maxWidth: 1200,
+    // could be one, no need ielse
     stop: function( event, ui ) {
         if(ui.size.width > ui.originalSize.width){
-            console.log(ui.size.width, ui.originalSize.width)
+            console.log(ui.size.width, ui.originalSize.width);
             var change = ui.size.width - ui.originalSize.width;
             var contentSize = $('#ht-content').width()+change;
             $('#ht-content').css({width : contentSize+'px'});
             reformat();
         } else {
             var change = ui.size.width - ui.originalSize.width;
-            console.log(change);
             var contentSize = $('#ht-content').width()+change;
             $('#ht-content').css({width : contentSize+'px'});
             reformat();
         }
     }
-})
+});
     $('.grid > div').resizable({
         grid : 50,
         stop : function(){
@@ -837,17 +839,230 @@ $('.ht-tab').resizable({
         var cwidth = $(this).width();
         $(this).closest('.ht-tab').width(cwidth+iwidth);
         reformat();
-    })
+    });
     $containers.on('ss-removed', function(e, selected){
         var iwidth = $(selected).width();
         var cwidth = $(this).width();
         $(this).closest('.ht-tab').width(cwidth-iwidth);
         reformat();
-    })
-
+    });
 
 $(window).resize(reformat); 
 
 
+var htOnScroll = function() {     
+    $('#ht-slider').css('left', $('#ht-wrapper').scrollLeft()*$('#ht-head').width()/$('#ht-content').width() + 'px');
+};
+$('#ht-wrapper').on('scroll', htOnScroll );
+
+$('#ht-slider').draggable({ axis: "x", containment: 'window' });
+
+$('#ht-slider').mousedown(
+    function(){$('#ht-wrapper').off('scroll' );}
+    );
+
+$(document).mouseup(
+    function(){$('#ht-wrapper').on('scroll', htOnScroll);}
+    );
+
+$('#ht-slider').on('drag', function(){
+    $('#ht-wrapper').scrollTo($('#ht-slider').offset().left*$('#ht-content').width()/$('#ht-head').width(),0);
+});
+
+$('#exLeftNav').click(function(){
+    $('#ht-wrapper').scrollTo($('#ht-wrapper'), 200,  {offset:-500});
+});
+
+$('#exRightNav').click(function(){
+    $('#ht-wrapper').scrollTo($('#ht-wrapper'), 200,  {offset:500});
+});
+
+
+$('#1min').one("click", mminimize);
+
+function mminimize() {
+    $('#1min').attr('expand-size', $('#1tab').width());
+    $('#1content').hide();
+    $('#1tabhead').hide();
+    $("#1tab").css("width", '39px' );
+    reformat();
+    $('#1tab .fa-minus').hide();
+    $('#1tab .fa-plus').show();
+    $(this).one("click", mmaximize);
+    reformat();
+}
+
+function mmaximize() {
+    $("#1tab").css("width", $('#1min').attr('expand-size') + 'px' );
+    $(this).one("click", mminimize);
+    $('#1tab .fa-minus').show();
+    $('#1tab .fa-plus').hide();
+    $('#1content').show();
+    $('#1tabhead').show();
+    reformat();
+}
+
+
+$(document).keyup(function(e) {
+    if (e.keyCode == 27) {$('#exposeOff').click()}   // esc
+});
+
+$('#exposeTrue').click(function(){
+    canReformat = false;
+    exposeOn = true;
+    $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
+    $('#exposeTrue').hide();
+    $('#exposeFalse').show();
+    $('#exLeftNav').show();
+    $('#exRightNav').show();
+    $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+    $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+    $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
+
+    var headfinal = $(window).width();
+    var wH = $(window).height();
+    var wrapperH = wH-40;
+    var tab = wrapperH-80;
+    var adjheight = tab/2;
+    var adjpadding = tab/4;
+    var modlens = 0; // full length of mods
+    var modsmin = 300;
+    var newmodlens = 900; // start with a bit of extra room just in case
+    // get size of all mods
+    $.each(modules, function(i, module) {
+       modlens += module.width + 40;
+    });
+
+    // resize all content
+
+    for(var i = 0; i < modules.length; i++){
+        var o = modules[i]; 
+        var contentWidth = $('#ht-content').width();  // width of the module
+        var headWidth = $('#ht-head').width();  
+        var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
+        var width = (modwidth-40)/(modlens+80);
+        var adjwidth = width*headfinal;     
+
+        $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
+        $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
+        if(adjwidth < 300){
+            newmodlens += 300;
+            $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, 200);
+        }else{
+            newmodlens += adjwidth;
+            $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+        }
+        $( "#ht-content" ).sortable("enable");
+    }
+    $('#ht-content').css('width', newmodlens +'px');
+    $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+});
+
+$('#exposeFalse').click(function(){
+    canReformat = true;
+    exposeOn = false;
+    $('#exposeTrue').show();
+    $('#exposeFalse').hide();
+    $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
+
+    // $('#exLeftNav').hide();
+    // $('#exRightNav').hide();
+
+    var headfinal = $(window).width(); // final width of the header taking into account the navbar
+    var wH = $(window).height();
+    var wrapperH = wH-26;
+    var tab = wrapperH-60;
+
+    
+
+    for(var i = 0; i < modules.length; i++){
+        var o = modules[i]; 
+        var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
+        $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+        $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
+        $("#ht-content").sortable("disable");
+
+        setTimeout(function(){
+            reformat();
+            resizecontent();
+        }, 200);
+
+    }
+    $('#ht-content').animate({'padding': '20px'});
+});
+
+
+// shrink the state to show all mods
+$('#exposeOn').click(function(){
+    canReformat = false;
+    $('#exposeOn').hide();
+    $('#exposeOff').show();
+    var headfinal = $(window).width();
+    var wH = $(window).height();
+    var wrapperH = wH-40;
+    var tab = wrapperH-80;
+    var adjheight = tab/2;
+    var adjpadding = tab/4;
+    $(".ghost-element").css('height', adjheight);
+    var modlens = 0; // full length of mods
+
+    // get size of all mods
+    $.each(modules, function(i, module) {
+       modlens += module.width + 40;
+    });
+
+    for(var i = 0; i < modules.length; i++){
+        var o = modules[i]; 
+        var contentWidth = $('#ht-content').width();  // width of the module
+        var headWidth = $('#ht-head').width();  
+        var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
+        var width = (modwidth)/(modlens);
+        var adjwidth = width*(headfinal-(40*modules.length)-adjpadding/2);
+
+        $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
+        $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
+        $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+        $( "#ht-content" ).sortable("enable");
+    }
+    $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+});
+
+    // re expand the state 
+$('#exposeOff').click(function(){
+    canReformat = true;
+    $('#exposeOn').show();
+    $('#exposeOff').hide();
+
+    var headfinal = $(window).width(); // final width of the header taking into account the navbar
+    var wH = $(window).height();
+    var wrapperH = wH-26;
+    var tab = wrapperH-60;
+
+    for(var i = 0; i < modules.length; i++){
+        var o = modules[i]; 
+        var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
+        $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+        $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
+        $("#ht-content").sortable("disable");
+        setTimeout(function(){
+            reformat();
+        }, 200);
+    }
+    $('#ht-content').animate({'padding': '20px'});
+});    // let escape key exit expanded state
+
+    $(function() {
+        $("#ht-content").sortable({
+            placeholder: "ghost-element ht-tab ui-state-default"
+            });
+
+        $("#ht-content").sortable( "disable" );
+        $("#ht-content").disableSelection();
+  });
+
+$('#ht-wrapper').on('scroll', function(){
+    $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+    $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+});  
 
 })(); 

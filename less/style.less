@@ -27,6 +27,19 @@ body {
 .bg-yellow {
     background-color: @flat-yellow;
 }
+.bg-navy {
+     background-color: @flat-navy;
+}
+.bg-pink {
+     background-color: @flat-pink;
+}
+
+.dim-background{
+  background: rgba(0, 0, 0, 0.7);
+  height:100%;
+}
+
+
 .tall{
     width: 300px;
 }
@@ -38,7 +51,7 @@ body {
 }
 .ht-tab {
     border: 1px solid #aaa;
-    margin: 10px 20px;
+    margin: 20px 20px;
     padding: 0;
     display: inline-block;
     vertical-align: top;
@@ -99,23 +112,35 @@ body {
   background-color:#D1C094;
   height: 100%;
 }
+
+.ghost-element{
+  height: 341px;
+  width:50px;
+  background:grey;
+  opacity: 0.4;
+}
+
 #ht-head{
-    height: 26px;
+    height: 40px;
     background-color: lightslategrey;
     color: white;
 }
 
 #ht-content{
     padding: 20px;
-    width: 5000px;
     overflow-y: scroll;
 }
 
 .ht-hdiv {
     display: inline-block;
+    height:40px;
     padding: 3px;
     text-align: center;
     display:inline-block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; 
+}
+
+#ht-slider{
+  background-color:@silver; width:50px; height:15px; position:absolute;
 }
 
 #ht-wrapper {
@@ -141,8 +166,11 @@ body {
 .grid > div[data-ss-colspan='3'] { width: @col-size*3; }
 .grid > div[data-ss-colspan='4'] { width: @col-size*4; }
 
-
 .grid .ss-placeholder-child {
   background: transparent;
   border: 1px dashed red;
+}
+
+.fa{
+  cursor: pointer; cursor: hand;  
 }
