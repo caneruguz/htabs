@@ -29,6 +29,17 @@ body {
 .bg-yellow {
     background-color: @flat-yellow;
 }
+.bg-navy {
+     background-color: @flat-navy;
+}
+.bg-pink {
+     background-color: @flat-pink;
+}
+
+.dim-background{
+  background: rgba(0, 0, 0, 0.7);
+  height:100%;
+}
 .ht-w-xs {
   width : @widget-width;
 }
@@ -58,13 +69,38 @@ body {
 .ht-tab {
    min-width: 600px;
     border: 1px solid #aaa;
-    margin: 10px 20px;
+    margin: 20px 20px;
     padding: 0;
     display: inline-block;
     vertical-align: top;
   background: white;
   box-shadow: 0 0 5px #ccc;
 }
+.ht-tab-minimized {
+  width: 60px;
+  min-width: 60px;
+  .ht-tab-header {
+    .ht-windowBtn {
+      float : none;
+      margin: 0;
+    }
+  }
+}
+#ht-slider-bar{
+  width:10px;
+  content: "";
+  min-height: 100%;
+  background-color:#D1C094;
+  height: 100%;
+}
+
+.ghost-element{
+  height: 341px;
+  width:50px;
+  background:grey;
+  opacity: 0.4;
+}
+
 
 .ht-tab-header {
     color: white;
@@ -111,13 +147,13 @@ body {
 }
 
 #ht-head{
-    height: 26px;
+    height: 40px;
     background-color: lightslategrey;
     color: white;
 }
 
 #ht-content{
-    padding: 20px;
+    padding: 10px;
     width: 5000px;
     overflow-y: scroll;
 }
@@ -126,16 +162,20 @@ body {
     display: inline-block;
     padding: 3px;
     text-align: center;
+  height: 40px;
+  display:table-cell;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  vertical-align: middle;
+}
+#ht-slider{
+  background-color:@silver; width:50px; height:15px; position:absolute;
 }
 #ht-wrapper {
     overflow: auto;
   background: url("images/wavegrid.png");
 }
-.ht-hdiv-content {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 
 .ht-column {
   min-width: 250px;
@@ -154,6 +194,9 @@ body {
     }
     .ht-widget-body {
       padding: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 85%;
     }
   }
   .ht-widget-placeholder {
@@ -193,3 +236,66 @@ body {
   font-size: 16px;
 }
 
+.fa{
+  cursor: pointer; cursor: hand;
+}
+
+.white-text-btn{
+  font-weight: 100;
+  font-family: Helvetica Neue;
+  color:white;
+  letter-spacing: 1px;
+  font-size: 35px;
+  margin:50px;
+  opacity:.5;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.white-text-btn:hover{
+  cursor: pointer; cursor: hand;
+}
+
+#exposebtns{
+  text-align:center;
+  display:none;
+  position:absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.rotate {
+
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+
+  /* IE */
+  -ms-transform: rotate(-90deg);
+
+  /* Opera */
+  -o-transform: rotate(-90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+.rotatedText {
+  font-weight: 200;
+  display: inline-block;
+  width: 215px;
+  position: relative;
+  margin-left: -88px;
+  margin-top: 200px;
+}
