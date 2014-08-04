@@ -11,6 +11,21 @@ body {
 .bg-yellow {
   background-color: #efc94c;
 }
+.ht-w-xs {
+  width: 160px;
+}
+.ht-w-sm {
+  width: 320px;
+}
+.ht-w-md {
+  width: 480px;
+}
+.ht-w-lg {
+  width: 640px;
+}
+.ht-w-xl {
+  width: 800px;
+}
 .tall {
   width: 300px;
 }
@@ -47,16 +62,15 @@ body {
   font-weight: 200;
 }
 .ht-tab-header .ht-windowBtn {
-  position: absolute;
-  top: 0;
-  right: 0px;
+  float: right;
   width: 39px;
   background: rgba(255, 255, 255, 0.28);
-  padding: 5px 11px 0px 11px;
-  margin-top: -1px;
+  padding: 5px 11px 0;
+  margin-top: -49px;
+  margin-right: -11px;
 }
 .ht-tab-content {
-  background-color: #efefef;
+  background-color: white;
   color: #333;
   padding: 10px;
 }
@@ -94,47 +108,57 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-.grid {
-  border: 1px dashed #ccc;
-  position: relative;
-  width: 100%;
+.ht-column {
+  min-width: 250px;
+  display: inline-block;
+  margin-right: 10px;
+  float: left;
+  padding-right: 5px;
 }
-.grid > div {
-  background: #CCC;
-  height: 400px;
-  position: absolute;
-  width: 80px;
-}
-.grid > div[data-ss-colspan='1'] {
-  width: 160px;
-}
-.grid > div[data-ss-colspan='2'] {
-  width: 320px;
-}
-.grid > div[data-ss-colspan='3'] {
-  width: 480px;
-}
-.grid > div[data-ss-colspan='4'] {
-  width: 640px;
-}
-.grid .ss-placeholder-child {
-  background: transparent;
-  border: 1px dashed red;
-}
-.gridster ul li {
-  background: white;
-  overflow: auto;
-  list-style: none;
+.ht-column .ht-widget {
   border: 1px solid #ccc;
-  overflow-y: hidden;
+  margin-bottom: 10px;
 }
-.gridster ul li .handle {
-  width: 100%;
-  height: 30px;
-  background: #333333;
+.ht-column .ht-widget .ht-widget-header {
+  padding: 10px;
+  background: #ccc;
+  font-size: 16px;
+  font-weight: 200;
+}
+.ht-column .ht-widget .ht-widget-body {
+  padding: 10px;
+}
+.ht-column .ht-widget-placeholder {
+  border: 1px dotted black;
+  margin: 0 1em 1em 0;
+  height: 50px;
+}
+.ht-column:hover {
+  border-right: 5px solid #ccc;
+}
+.ht-add-column {
+  width: 50px;
+  background: #f5f5f5;
+  display: table;
+  margin-right: 10px;
+  float: left;
+}
+.add-column {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 25px;
+  color: #999999;
+  text-align: center;
 }
 .ht-tab:after {
   content: "";
   display: table;
   clear: both;
+}
+.ht-widget-actions {
+  float: right;
+  top: 8px;
+  right: 5px;
+  color: white;
+  font-size: 16px;
 }
