@@ -1,6 +1,6 @@
 /*
- *   Jquery Exposé plugin
- *   Shrinks the contents of selected element to fit window width.
+ *   Jquery Exposé plugin by Alex Schiller
+ *   Shrinks the contents of selected element to fit window width in the Mac expose style.
  */
 (function($) {
     $.fn.expose = function(options) {
@@ -13,15 +13,16 @@
         }, options);
 
         var ctrl = settings.mithril;
-        var element = this;
+        var el = this;   // The element we run the plugin on.
+
         $(document).keyup(function(e) {
-            if (e.keyCode == 27) {$('#exposeOff').click()}   // esc
+            if (e.keyCode == 27) {$('#exposeOff').click(), $('#exposeFalse').click()}   // esc
         });
 
         $('#exposeTrue').click(function(){
             ctrl.canReformat = false;
             ctrl.exposeOn = true;
-            $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
+            el.scrollTo(el, 0,  {offset:-1*$('#ht-content').width()});
             $('#exposeTrue').hide();
             $('#exposeFalse').show();
 
@@ -33,8 +34,8 @@
             $('#ht-head').slideUp(200);
 
 
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+            $('#exRightNav').css('opacity', 1-el.scrollLeft()/$('#ht-content').width());
+            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
             $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
 
 
@@ -57,7 +58,7 @@
             // resize all content
 
             for(var i = 0; i < ctrl.modules().length; i++){
-                var o = settings.mMod.modules()[i];
+                var o = ctrl.modules()[i];
                 var contentWidth = $('#ht-content').width();  // width of the module
                 var headWidth = $('#ht-head').width();
                 var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
@@ -68,15 +69,16 @@
                 $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
                 if(adjwidth < 300){
                     newmodlens += 300;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, 200);
+                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 }else{
                     newmodlens += adjwidth;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 }
                 $( "#ht-content" ).sortable("enable");
             }
             $('#ht-content').css('width', newmodlens +'px');
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
         });
 
         $('#exposeFalse').click(function(){
@@ -95,20 +97,24 @@
 
 
 
-            for(var i = 0; i < settings.mMod.modules().length; i++){
-                var o = settings.mMod.modules()[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
                 $("#ht-content").sortable("disable");
 
                 setTimeout(function(){
                     ctrl.reformat();
-                    ctrl.resizecontent();
+                    ctrl.resizeContent();
                 }, 200);
 
             }
-            $('#ht-content').animate({'padding': '20px'});
+            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
+            ctrl.resizeWidgets();
+            ctrl.reformat();
+
         });
 
 
@@ -126,30 +132,37 @@
             $(".ghost-element").css('height', adjheight);
             var modlens = 0; // full length of mods
 
+            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
+
             // get size of all mods
-            $.each(settings.mMod.modules(), function(i, module) {
-                modlens += module.width + 40;
+            $('.ht-tab').each(function(i, item) {
+                console.log("module.width", $(item).width());
+                modlens += $(item).width() + 40;
             });
 
-            for(var i = 0; i < settings.mMod.modules().length; i++){
-                var o = settings.mMod.modules()[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var contentWidth = $('#ht-content').width();  // width of the module
                 var headWidth = $('#ht-head').width();
                 var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
                 var width = (modwidth)/(modlens);
-                var adjwidth = width*(headfinal-(40*modules.length)-adjpadding/2);
+                console.log("Width", width, "modwith", modwidth, "modlens", modlens);
+                var adjwidth = width*(headfinal-(40*ctrl.modules().length)-adjpadding/2);
+                console.log("adjwidth", adjwidth, "id", o.id);
 
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
                 $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { minWidth : 0, width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 $( "#ht-content" ).sortable("enable");
             }
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
+
         });
 
         // re expand the state
         $('#exposeOff').click(function(){
-            canReformat = true;
+            ctrl.canReformat = true;
             $('#exposeOn').show();
             $('#exposeOff').hide();
 
@@ -157,18 +170,23 @@
             var wH = $(window).height();
             var wrapperH = wH-26;
             var tab = wrapperH-60;
+            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
 
-            for(var i = 0; i < settings.mMod.modules().length; i++){
-                var o = settings.mMod.modules()[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
                 $("#ht-content").sortable("disable");
                 setTimeout(function(){
                     ctrl.reformat();
                 }, 200);
             }
-            $('#ht-content').animate({'padding': '20px'});
+            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
+            ctrl.resizeWidgets();
+            ctrl.reformat();
+
         });    // let escape key exit expanded state
 
         $(function() {
@@ -180,21 +198,17 @@
             $("#ht-content").disableSelection();
         });
 
-        $('#ht-wrapper').on('scroll', function(){
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/($('#ht-content').width()-$(window).width()));
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+        el.on('scroll', function(){
+            $('#exRightNav').css('opacity', 1-el.scrollLeft()/($('#ht-content').width()-$(window).width()));
+            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
         });
 
-
-
-
-        var completeCall = function(){
+        // Run the complete function if there is one
         if ( $.isFunction( settings.complete ) ) {
             settings.complete.call( this );
         }
-    }
 
-
+    // Return the element so jquery can chain it
     return this;
 
     }

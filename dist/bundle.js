@@ -39,29 +39,30 @@ License: MIT
 Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Object]"!=z.call(b[1])||"tag"in b[1]||"subtree"in b[1])),d=c?b[1]:{},e=("class"in d?"class":"className"),f={tag:"div",attrs:{}},g=[];a=A.exec(b[0]);)if(""==a[1])f.tag=a[2];else if("#"==a[1])f.attrs.id=a[2];else if("."==a[1])g.push(a[2]);else if("["==a[3][0]){var h=B.exec(a[3]);f.attrs[h[1]]=h[3]||(h[2]?"":!0)}g.length>0&&(f.attrs[e]=g.join(" ")),f.children=c?b[2]:b[1];for(var i in d)f.attrs[i]=i==e?(f.attrs[i]||"")+" "+d[i]:d[i];return f}function d(a,c,g,j,k,l,m,n,o,p,q){if((null===k||void 0===k)&&(k=""),"retain"===k.subtree)return l;var r=z.call(l),s=z.call(k);if(r!=s){if(null!==l&&void 0!==l)if(g&&g.nodes){var t=n-j,u=t+("[object Array]"==s?k:l.nodes).length;f(g.nodes.slice(t,u),g.slice(t,u))}else f(l.nodes,l);l=new k.constructor,l.nodes=[]}if("[object Array]"==s){k=i(k);for(var v=[],w=l.length===k.length,x=0,y=1,A=2,B=3,C={},D=[],E=!1,F=0;F<l.length;F++)l[F]&&l[F].attrs&&void 0!==l[F].attrs.key&&(E=!0,C[l[F].attrs.key]={action:y,index:F});if(E){for(var F=0;F<k.length;F++)if(k[F]&&k[F].attrs)if(void 0!==k[F].attrs.key){var G=k[F].attrs.key;C[G]=C[G]?{action:B,index:F,from:C[G].index,element:a.childNodes[C[G].index]}:{action:A,index:F}}else D.push({index:F,element:a.childNodes[F]});for(var H,I=Object.keys(C).map(function(a){return C[a]}),J=I.sort(function(a,b){return a.action-b.action||a.index-b.index}),K=l.slice(),F=0;H=J[F];F++){if(H.action==y&&(f(l[H.index].nodes,l[H.index]),K.splice(H.index,1)),H.action==A){var L=b.document.createElement("div");L.key=k[H.index].attrs.key,a.insertBefore(L,a.childNodes[H.index]),K.splice(H.index,0,{attrs:{key:k[H.index].attrs.key},nodes:[L]})}H.action==B&&(a.childNodes[H.index]!==H.element&&a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.from])}for(var F=0;F<D.length;F++){var H=D[F];a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.index]}l=K,l.nodes=[];for(var M,F=0;M=a.childNodes[F];F++)l.nodes.push(M)}for(var F=0,N=0;F<k.length;F++){var O=d(a,c,l,n,k[F],l[N],m,n+x||x,o,p,q);if(void 0!==O){O.nodes.intact||(w=!1);var P=O instanceof Array;x+=P?O.length:1,l[N++]=O}}if(!w){for(var F=0;F<k.length;F++)void 0!==l[F]&&(v=v.concat(l[F].nodes));for(var Q,F=0;Q=l.nodes[F];F++)null!==Q.parentNode&&v.indexOf(Q)<0&&Q.parentNode.removeChild(Q);for(var Q,F=l.nodes.length;Q=v[F];F++)null===Q.parentNode&&a.appendChild(Q);k.length<l.length&&(l.length=k.length),l.nodes=v}}else if("[object Object]"==s){if((k.tag!=l.tag||Object.keys(k.attrs).join()!=Object.keys(l.attrs).join()||k.attrs.id!=l.attrs.id)&&(f(l.nodes),l.configContext&&"function"==typeof l.configContext.onunload&&l.configContext.onunload()),"string"!=typeof k.tag)return;var Q,R=0===l.nodes.length;k.attrs.xmlns?p=k.attrs.xmlns:"svg"===k.tag&&(p="http://www.w3.org/2000/svg"),R?(Q=void 0===p?b.document.createElement(k.tag):b.document.createElementNS(p,k.tag),l={tag:k.tag,children:void 0!==k.children?d(Q,k.tag,void 0,void 0,k.children,l.children,!0,0,k.attrs.contenteditable?Q:o,p,q):void 0,attrs:e(Q,k.tag,k.attrs,{},p),nodes:[Q]},a.insertBefore(Q,a.childNodes[n]||null)):(Q=l.nodes[0],e(Q,k.tag,k.attrs,l.attrs,p),l.children=d(Q,k.tag,void 0,void 0,k.children,l.children,!1,0,k.attrs.contenteditable?Q:o,p,q),l.nodes.intact=!0,m===!0&&a.insertBefore(Q,a.childNodes[n]||null)),"[object Function]"==z.call(k.attrs.config)&&q.push(k.attrs.config.bind(b,Q,!R,l.configContext=l.configContext||{},l))}else{var v;0===l.nodes.length?(k.$trusted?v=h(a,n,k):(v=[b.document.createTextNode(k)],a.insertBefore(v[0],a.childNodes[n]||null)),l="string number boolean".indexOf(typeof k)>-1?new k.constructor(k):k,l.nodes=v):l.valueOf()!==k.valueOf()||m===!0?(v=l.nodes,o&&o===b.document.activeElement||(k.$trusted?(f(v,l),v=h(a,n,k)):"textarea"===c?a.value=k:o?o.innerHTML=k:((1==v[0].nodeType||v.length>1)&&(f(l.nodes,l),v=[b.document.createTextNode(k)]),a.insertBefore(v[0],a.childNodes[n]||null),v[0].nodeValue=k)),l=new k.constructor(k),l.nodes=v):l.nodes.intact=!0}return l}function e(a,c,d,e,f){for(var g in d){var h=d[g],i=e[g];if(!(g in e)||i!==h||a===b.document.activeElement){if(e[g]=h,"config"===g)continue;if("function"==typeof h&&0==g.indexOf("on"))a[g]=j(h,a);else if("style"===g&&"object"==typeof h){for(var k in h)(void 0===i||i[k]!==h[k])&&(a.style[k]=h[k]);for(var k in i)k in h||(a.style[k]="")}else void 0!==f?"href"===g?a.setAttributeNS("http://www.w3.org/1999/xlink","href",h):"className"===g?a.setAttribute("class",h):a.setAttribute(g,h):"value"===g&&"input"===c?a.value!==h&&(a.value=h):g in a&&"list"!=g&&"style"!=g?a[g]=h:a.setAttribute(g,h)}}return e}function f(a,b){for(var c=a.length-1;c>-1;c--)a[c]&&a[c].parentNode&&(a[c].parentNode.removeChild(a[c]),b=[].concat(b),b[c]&&g(b[c]));0!=a.length&&(a.length=0)}function g(a){if(a.configContext&&"function"==typeof a.configContext.onunload&&a.configContext.onunload(),a.children)if(a.children instanceof Array)for(var b=0;b<a.children.length;b++)g(a.children[b]);else a.children.tag&&g(a.children)}function h(a,c,d){var e=a.childNodes[c];if(e){var f=1!=e.nodeType,g=b.document.createElement("span");f?(a.insertBefore(g,e),g.insertAdjacentHTML("beforebegin",d),a.removeChild(g)):e.insertAdjacentHTML("beforebegin",d)}else a.insertAdjacentHTML("beforeend",d);for(var h=[];a.childNodes[c]!==e;)h.push(a.childNodes[c]),c++;return h}function i(a){for(var b=[],c=0;c<a.length;c++){var d=a[c];d instanceof Array?b.push.apply(b,i(d)):b.push(d)}return b}function j(a,b){return function(d){d=d||event,c.startComputation();try{return a.call(b,d)}finally{I||(I=-1),c.endComputation()}}}function k(a){var b=D.indexOf(a);return 0>b?D.push(a)-1:b}function l(){for(var a=0;a<F.length;a++)H[a]&&c.render(F[a],G[a].view(H[a]));J&&(J(),J=null),I=null}function m(a){return a.slice(M[c.route.mode].length)}function n(a,b,d){O={};var e=d.indexOf("?");-1!==e&&(O=s(d.substr(e+1,d.length)),d=d.substr(0,e));for(var f in b){if(f==d)return o(a),c.module(a,b[f]),!0;var g=new RegExp("^"+f.replace(/:[^\/]+?\.{3}/g,"(.*?)").replace(/:[^\/]+/g,"([^\\/]+)")+"/?$");if(g.test(d))return o(a),d.replace(g,function(){for(var d=f.match(/:[^\/]+/g)||[],e=[].slice.call(arguments,1,-2),g=0;g<d.length;g++)O[d[g].replace(/:|\./g,"")]=t(e[g]);c.module(a,b[f])}),!0}}function o(a){var b=k(a);f(a.childNodes,E[b]),E[b]=void 0}function p(a){a=a||event,a.ctrlKey||a.metaKey||2==a.which||(a.preventDefault(),c.route(a.currentTarget[c.route.mode].slice(M[c.route.mode].length)))}function q(){"hash"!=c.route.mode&&b.location.hash?b.location.hash=b.location.hash:b.scrollTo(0,0)}function r(a,b){var c=[];for(var d in a){var e=b?b+"["+d+"]":d,f=a[d];c.push("object"==typeof f?r(f,e):encodeURIComponent(e)+"="+encodeURIComponent(f))}return c.join("&")}function s(a){for(var b=a.split("&"),c={},d=0;d<b.length;d++){var e=b[d].split("=");c[t(e[0])]=e[1]?t(e[1]):1===e.length?!0:""}return c}function t(a){return decodeURIComponent(a.replace(/\+/g," "))}function u(a){return a}function v(a){var c=new b.XMLHttpRequest;if(c.open(a.method,a.url,!0,a.user,a.password),c.onreadystatechange=function(){4===c.readyState&&(c.status>=200&&c.status<300?a.onload({type:"load",target:c}):a.onerror({type:"error",target:c}))},a.serialize==JSON.stringify&&"GET"!=a.method&&c.setRequestHeader("Content-Type","application/json; charset=utf-8"),"function"==typeof a.config){var d=a.config(c,a);void 0!==d&&(c=d)}return c.send("GET"==a.method?"":a.data),c}function w(a,b,c){return b&&Object.keys(b).length>0&&("GET"==a.method?a.url=a.url+(a.url.indexOf("?")<0?"?":"&")+r(b):a.data=c(b)),a}function x(a,b){var c=a.match(/:[a-z]\w+/gi);if(c&&b)for(var d=0;d<c.length;d++){var e=c[d].slice(1);a=a.replace(c[d],b[e]),delete b[e]}return a}var y,z={}.toString,A=/(?:(^|#|\.)([^#\.\[\]]+))|(\[.+?\])/g,B=/\[(.+?)(?:=("|'|)(.*?)\2)?\]/,C={insertAdjacentHTML:function(a,c){b.document.write(c),b.document.close()},appendChild:function(a){void 0===y&&(y=b.document.createElement("html")),"HTML"==a.nodeName?y=a:y.appendChild(a),b.document.documentElement&&b.document.documentElement!==y?b.document.replaceChild(y,b.document.documentElement):b.document.appendChild(y)},insertBefore:function(a){this.appendChild(a)},childNodes:[]},D=[],E={};c.render=function(a,c){var e=[];if(!a)throw new Error("Please ensure the DOM element exists before rendering a template into it.");var g=k(a),h=a==b.document||a==b.document.documentElement?C:a;void 0===E[g]&&f(h.childNodes),E[g]=d(h,null,void 0,void 0,c,E[g],!1,0,null,void 0,e);for(var i=0;i<e.length;i++)e[i]()},c.trust=function(a){return a=new String(a),a.$trusted=!0,a};var F=[],G=[],H=[],I=0,J=null;c.module=function(a,b){var d=F.indexOf(a);0>d&&(d=F.length);var e=!1;if(H[d]&&"function"==typeof H[d].onunload){var f={preventDefault:function(){e=!0}};H[d].onunload(f)}e||(c.startComputation(),F[d]=a,G[d]=b,H[d]=new b.controller,c.endComputation())},c.redraw=function(){var a=b.cancelAnimationFrame||b.clearTimeout,c=b.requestAnimationFrame||b.setTimeout;I?(a(I),I=c(l,0)):(l(),I=c(function(){I=null},0))};var K=0;c.startComputation=function(){K++},c.endComputation=function(){K=Math.max(K-1,0),0==K&&c.redraw()},c.withAttr=function(a,b){return function(c){c=c||event,b(a in c.currentTarget?c.currentTarget[a]:c.currentTarget.getAttribute(a))}};var L,M={pathname:"",hash:"#",search:"?"},N=function(){},O={};c.route=function(){if(0===arguments.length)return L;if(3===arguments.length&&"string"==typeof arguments[1]){var a=arguments[0],d=arguments[1],e=arguments[2];N=function(b){var f=L=m(b);n(a,e,f)||c.route(d,!0)};var f="hash"==c.route.mode?"onhashchange":"onpopstate";b[f]=function(){L!=m(b.location[c.route.mode])&&N(b.location[c.route.mode])},J=q,b[f]()}else if(arguments[0].addEventListener){var g=arguments[0],h=arguments[1];g.href.indexOf(M[c.route.mode])<0&&(g.href=b.location.pathname+M[c.route.mode]+g.pathname),h||(g.removeEventListener("click",p),g.addEventListener("click",p))}else if("string"==typeof arguments[0]){L=arguments[0];var i="object"==typeof arguments[1]?r(arguments[1]):null;i&&(L+=(-1===L.indexOf("?")?"?":"&")+i);var j=(3==arguments.length?arguments[2]:arguments[1])===!0;b.history.pushState?(J=function(){b.history[j?"replaceState":"pushState"](null,b.document.title,M[c.route.mode]+L),q()},N(M[c.route.mode]+L)):b.location[c.route.mode]=L}},c.route.param=function(a){return O[a]},c.route.mode="search",c.prop=function(a){var b=function(){return arguments.length&&(a=arguments[0]),a};return b.toJSON=function(){return a},b};var P={};return c.deferred=function(){var a=[],b=[],d=P,e=P,f=c.prop(),g={resolve:function(c){d===P&&f(d=c);for(var e=0;e<a.length;e++)a[e](c);a.length=b.length=0},reject:function(c){e===P&&(e=c);for(var d=0;d<b.length;d++)b[d](c);a.length=b.length=0},promise:f};return g.promise.resolvers=a,g.promise.then=function(f,g){function h(a,b){return function(c){try{var d=b(c);d&&"function"==typeof d.then?d.then(i[a],g):i[a](void 0!==d?d:c)}catch(e){if(e instanceof Error&&e.constructor!==Error)throw e;i.reject(e)}}}var i=c.deferred();return f||(f=u),g||(g=u),d!==P?h("resolve",f)(d):e!==P?h("reject",g)(e):(a.push(h("resolve",f)),b.push(h("reject",g))),i.promise},g},c.sync=function(a){function b(a,b){return function(c){return g[a]=c,b||(d="reject"),0==--f&&(e.promise(g),e[d](g)),c}}for(var d="resolve",e=c.deferred(),f=a.length,g=new Array(f),h=0;h<a.length;h++)a[h].then(b(h,!0),b(h,!1));return e.promise},c.request=function(a){a.background!==!0&&c.startComputation();var b=c.deferred(),d=a.serialize=a.serialize||JSON.stringify,e=a.deserialize=a.deserialize||JSON.parse,f=a.extract||function(a){return 0===a.responseText.length&&e===JSON.parse?null:a.responseText};return a.url=x(a.url,a.data),a=w(a,a.data,d),a.onload=a.onerror=function(d){try{d=d||event;var g=("load"==d.type?a.unwrapSuccess:a.unwrapError)||u,h=g(e(f(d.target,a)));if("load"==d.type)if(h instanceof Array&&a.type)for(var i=0;i<h.length;i++)h[i]=new a.type(h[i]);else a.type&&(h=new a.type(h));b["load"==d.type?"resolve":"reject"](h)}catch(d){if(d instanceof SyntaxError)throw new SyntaxError("Could not parse HTTP response. See http://lhorie.github.io/mithril/mithril.request.html#using-variable-data-formats");if(d instanceof Error&&d.constructor!==Error)throw d;b.reject(d)}a.background!==!0&&c.endComputation()},v(a),b.promise},c.deps=function(a){return b=a},c.deps.factory=a,c}("undefined"!=typeof window?window:{}),"undefined"!=typeof module&&null!==module&&(module.exports=m),"function"==typeof define&&define.amd&&define(function(){return m});
 //# sourceMappingURL=mithril.min.map
 /*
- *   Jquery Exposé plugin
- *   Shrinks the contents of selected element to fit window width.
+ *   Jquery Exposé plugin by Alex Schiller
+ *   Shrinks the contents of selected element to fit window width in the Mac expose style.
  */
 (function($) {
     $.fn.expose = function(options) {
 
         // Default options
         var settings = $.extend({
-            childElements: 'p',
-            height : 300,
-            mMod : null,  // mithril module name to tie to controller variables
+            min : 300,
+            mithril : null,  // mithril module name to tie to controller variables
             complete : null
         }, options);
 
-        var element = this;
+        var ctrl = settings.mithril;
+        var el = this;   // The element we run the plugin on.
+
         $(document).keyup(function(e) {
-            if (e.keyCode == 27) {$('#exposeOff').click()}   // esc
+            if (e.keyCode == 27) {$('#exposeOff').click(), $('#exposeFalse').click()}   // esc
         });
 
         $('#exposeTrue').click(function(){
-            settings.mMod.controller.canReformat = false;
-            settings.mMod.exposeOn = true;
-            $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
+            ctrl.canReformat = false;
+            ctrl.exposeOn = true;
+            el.scrollTo(el, 0,  {offset:-1*$('#ht-content').width()});
             $('#exposeTrue').hide();
             $('#exposeFalse').show();
 
@@ -73,8 +74,8 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
             $('#ht-head').slideUp(200);
 
 
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+            $('#exRightNav').css('opacity', 1-el.scrollLeft()/$('#ht-content').width());
+            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
             $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
 
 
@@ -86,18 +87,18 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
             var adjpadding = tab/4;
             var adjbtn = tab*0.25;
             var modlens = 0; // full length of mods
-            var modsmin = 300;
+            var modsmin = settings.min;
             var newmodlens = 900; // start with a bit of extra room just in case
             // get size of all mods
             $('#exposebtns').css('bottom', adjbtn + 'px');
-            $.each(modules, function(i, module) {
+            $.each(ctrl.modules(), function(i, module) {
                 modlens += module.width + 40;
             });
 
             // resize all content
 
-            for(var i = 0; i < modules.length; i++){
-                var o = modules[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var contentWidth = $('#ht-content').width();  // width of the module
                 var headWidth = $('#ht-head').width();
                 var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
@@ -108,27 +109,26 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
                 $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
                 if(adjwidth < 300){
                     newmodlens += 300;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, 200);
+                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 }else{
                     newmodlens += adjwidth;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 }
                 $( "#ht-content" ).sortable("enable");
             }
             $('#ht-content').css('width', newmodlens +'px');
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
         });
 
         $('#exposeFalse').click(function(){
-            canReformat = true;
-            exposeOn = false;
+            ctrl.canReformat = true;
+            ctrl.exposeOn = false;
             $('#exposeTrue').show();
             $('#exposeFalse').hide();
             $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
             $('#ht-head').slideDown(200);
             $('#exposebtns').fadeOut();
-            // $('#exLeftNav').hide();
-            // $('#exRightNav').hide();
 
             var headfinal = $(window).width(); // final width of the header taking into account the navbar
             var wH = $(window).height();
@@ -137,26 +137,30 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
 
 
 
-            for(var i = 0; i < modules.length; i++){
-                var o = modules[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
                 $("#ht-content").sortable("disable");
 
                 setTimeout(function(){
-                    reformat();
-                    resizecontent();
+                    ctrl.reformat();
+                    ctrl.resizeContent();
                 }, 200);
 
             }
-            $('#ht-content').animate({'padding': '20px'});
+            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
+            ctrl.resizeWidgets();
+            ctrl.reformat();
+
         });
 
 
         // shrink the state to show all mods
         $('#exposeOn').click(function(){
-            canReformat = false;
+            ctrl.canReformat = false;
             $('#exposeOn').hide();
             $('#exposeOff').show();
             var headfinal = $(window).width();
@@ -168,30 +172,37 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
             $(".ghost-element").css('height', adjheight);
             var modlens = 0; // full length of mods
 
+            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
+
             // get size of all mods
-            $.each(modules, function(i, module) {
-                modlens += module.width + 40;
+            $('.ht-tab').each(function(i, item) {
+                console.log("module.width", $(item).width());
+                modlens += $(item).width() + 40;
             });
 
-            for(var i = 0; i < modules.length; i++){
-                var o = modules[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var contentWidth = $('#ht-content').width();  // width of the module
                 var headWidth = $('#ht-head').width();
                 var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
                 var width = (modwidth)/(modlens);
-                var adjwidth = width*(headfinal-(40*modules.length)-adjpadding/2);
+                console.log("Width", width, "modwith", modwidth, "modlens", modlens);
+                var adjwidth = width*(headfinal-(40*ctrl.modules().length)-adjpadding/2);
+                console.log("adjwidth", adjwidth, "id", o.id);
 
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
                 $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { minWidth : 0, width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
                 $( "#ht-content" ).sortable("enable");
             }
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
+            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
+
         });
 
         // re expand the state
         $('#exposeOff').click(function(){
-            canReformat = true;
+            ctrl.canReformat = true;
             $('#exposeOn').show();
             $('#exposeOff').hide();
 
@@ -199,18 +210,23 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
             var wH = $(window).height();
             var wrapperH = wH-26;
             var tab = wrapperH-60;
+            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
 
-            for(var i = 0; i < modules.length; i++){
-                var o = modules[i];
+            for(var i = 0; i < ctrl.modules().length; i++){
+                var o = ctrl.modules()[i];
                 var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
+                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
                 $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
                 $("#ht-content").sortable("disable");
                 setTimeout(function(){
-                    reformat();
+                    ctrl.reformat();
                 }, 200);
             }
-            $('#ht-content').animate({'padding': '20px'});
+            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
+            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
+            ctrl.resizeWidgets();
+            ctrl.reformat();
+
         });    // let escape key exit expanded state
 
         $(function() {
@@ -222,21 +238,17 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
             $("#ht-content").disableSelection();
         });
 
-        $('#ht-wrapper').on('scroll', function(){
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/($('#ht-content').width()-$(window).width()));
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
+        el.on('scroll', function(){
+            $('#exRightNav').css('opacity', 1-el.scrollLeft()/($('#ht-content').width()-$(window).width()));
+            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
         });
 
-
-
-
-        var completeCall = function(){
+        // Run the complete function if there is one
         if ( $.isFunction( settings.complete ) ) {
             settings.complete.call( this );
         }
-    }
 
-
+    // Return the element so jquery can chain it
     return this;
 
     }
@@ -407,21 +419,32 @@ var modules = []; // created on load and checked at every resize
         this.resizeWidgets = function() {
             // for each column
             $('.ht-column').each(function(){
+
                 // get column height
                 var setContentHeight = $(this).outerHeight();
                 var contentHeight = $(this)[0].scrollHeight;
-                // for each children calculate their relative heights;
+
+                // Total widgets height
+                var totalHeight = 0;
+                $(this).children('.ht-widget').each(function(){
+                    totalHeight = totalHeight+$(this).outerHeight();
+                })
+
+                    // for each children calculate their relative heights;
                 $(this).children('.ht-widget').each(function(){
                     var childHeight = $(this).height();
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                         $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-50});
-
                     } else {
-                        $(this).find('.ht-widget-body').css({ height : childHeight-50});
+                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-50});
+
+//                        $(this).find('.ht-widget-body').css({ height : childHeight-50});
                     }
                 })
+
             })
         }
         this.buildScroll = function(){
@@ -436,11 +459,6 @@ var modules = []; // created on load and checked at every resize
                 // Build the head
                 $('#ht-head').append('<div class="ht-hdiv bg-'+bg+'" data-hid="'+id+'" ><span class="ht-hdiv-content">'+title+'</span></div>')
 
-                // ScrollTo initialization.
-                $(document).on('click', '.ht-hdiv', function(){
-                    var id = $(this).attr('data-hid');
-                    $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 200,  {offset:-50});
-                })
                 modules.push({id : id, width : width, title : title});
                 self.resizeContent();
                 self.reformat();
@@ -487,142 +505,7 @@ var modules = []; // created on load and checked at every resize
             })
             m.redraw();
         }
-        this.exposeTrue = function(){
-            self.canReformat = false;
-            self.exposeOn = true;
-            $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
-            $('#exposeTrue').hide();
-            $('#exposeFalse').show();
-            $('#exLeftNav').show();
-            $('#exRightNav').show();
-            $('#exposebtns').fadeIn();
-            $('#ht-head').slideUp(200);
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
 
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            var adjbtn = tab*0.25;
-            var modlens = 0; // full length of mods
-            var modsmin = 300;
-            var newmodlens = 900; // start with a bit of extra room just in case
-            // get size of all mods
-            $('#exposebtns').css('bottom', adjbtn + 'px');
-            $.each(self.modules(), function(i, module) {
-                modlens += module.width + 40;
-            });
-
-            // resize all content
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth-40)/(modlens+80);
-                var adjwidth = width*headfinal;
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                if(adjwidth < 300){
-                    newmodlens += 300;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, 200);
-                }else{
-                    newmodlens += adjwidth;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
-                }
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').css('width', newmodlens +'px');
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
-        }
-        this.exposeFalse = function(){
-            self.canReformat = true;
-            self.exposeOn = false;
-            $('#exposeTrue').show();
-            $('#exposeFalse').hide();
-            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
-            $('#ht-head').slideDown(200);
-            $('#exposebtns').fadeOut();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-
-                setTimeout(function(){
-                    self.reformat();
-                    self.resizeContent();
-                }, 200);
-
-            }
-            $('#ht-content').animate({'padding': '20px'});
-        }
-        this.exposeOnFunction = function(){
-            self.canReformat = false;
-            $('#exposeOn').hide();
-            $('#exposeOff').show();
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            $(".ghost-element").css('height', adjheight);
-            var modlens = 0; // full length of mods
-
-            // get size of all mods
-            $.each(self.modules, function(i, module) {
-                modlens += module.width + 40;
-            });
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth)/(modlens);
-                var adjwidth = width*(headfinal-(40*modules.length)-adjpadding/2);
-
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
-        }
-        this.exposeOffFunction = function(){
-            self.canReformat = true;
-            $('#exposeOn').show();
-            $('#exposeOff').hide();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-                setTimeout(function(){
-                    self.reformat();
-                }, 200);
-            }
-            $('#ht-content').animate({'padding': '20px'});
-        }
         this.init = function(){
             // Bind jquery events that we couldn't move to mithril
             self.buildScroll();
@@ -632,6 +515,7 @@ var modules = []; // created on load and checked at every resize
             $('.ht-widget').resizable({
                 handles : "s",
                 minHeight: 100,
+                containment : "parent",
                 stop : function (){
                     self.resizeWidgets();
                 }
@@ -642,10 +526,14 @@ var modules = []; // created on load and checked at every resize
                 stop : function (){
                     self.resizeWidgets();
                     self.reformat();
-
                 }
             } );
             $(window).resize(self.reformat);
+
+            $(document).on('click', '.ht-hdiv', function(){
+                var id = $(this).attr('data-hid');
+                $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 200,  {offset:-50});
+            })
 
             // Scroller
             var htOnScroll = function() {
@@ -675,28 +563,9 @@ var modules = []; // created on load and checked at every resize
                 $('#ht-wrapper').scrollTo($('#ht-wrapper'), 200,  {offset:500});
             });
 
-            // Expose
-            $(document).keyup(function(e) {
-                if (e.keyCode == 27) {$('#exposeOff').click()}   // esc
-            });
-
-            $(function() {
-                $("#ht-content").sortable({
-                    placeholder: "ghost-element ht-tab ui-state-default"
-                });
-
-                $("#ht-content").sortable( "disable" );
-                $("#ht-content").disableSelection();
-            });
-
-            $('#ht-wrapper').on('scroll', function(){
-                $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/($('#ht-content').width()-$(window).width()));
-                $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            });
-
+            $('#ht-wrapper').expose({ mithril : self, complete : function(){ console.log("Completed")}})
 
         }
-
 
 
 
@@ -704,7 +573,7 @@ var modules = []; // created on load and checked at every resize
 
     build.view = function(ctrl){
         return [
-            m("", {style: {"position": "absolute", "right": "0", "top": "0"}}, [
+            m("", { style: {"position": "absolute", "right": "0", "top": "0"}}, [
                 m("div.ht-hdiv.pull-right[id='exposeOn']", {onclick : ctrl.exposeOnFunction}, [m("button.btn.btn-primary", "On")] ),
                 m("div.ht-hdiv.pull-right[id='exposeOff']", { onclick : ctrl.exposeOffFunction, style: { "display": "none"}}, [m("button.btn.btn-primary", "Off")] ),
                 m("div.ht-hdiv.pull-right[id='exposeTrue']", { onclick : ctrl.exposeTrue}, [m("button.btn.btn-info", "Expose True")] ),
@@ -718,12 +587,11 @@ var modules = []; // created on load and checked at every resize
                     ]),
                     m("[id='ht-head']"),
                     m("[id='ht-slider']"),
-                    m("[id='ht-wrapper']", [
+                    m("[id='ht-wrapper']", { config : ctrl.init }, [
                         m("[id='ht-content']", [
-                            m("", { config : ctrl.init }, [
                                 ctrl.modules().map(function(module, module_index, module_array){
                                     if(module.minimize){
-                                        return [" ", m(".ht-tab.ht-tab-minimized", {'data-index' : module_index, 'data-id' : module.id}, [
+                                        return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
                                             m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                                 m(".ht-windowBtn", [
                                                     m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
@@ -733,7 +601,7 @@ var modules = []; // created on load and checked at every resize
                                             m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
                                         ])]
                                     }else {
-                                        return [" ", m(".ht-tab", {'data-index' : module_index,  'data-id' : module.id}, [
+                                        return [" ", m(".ht-tab.ht-light-shadow", {'data-index' : module_index,  'data-id' : module.id}, [
                                             m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                                 m("h3", module.title),
                                                 m(".ht-windowBtn", [
@@ -783,7 +651,6 @@ var modules = []; // created on load and checked at every resize
                                     }
 
                                 })
-                            ])
                         ])
                     ])
         ];

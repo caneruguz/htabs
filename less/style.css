@@ -47,13 +47,11 @@ body {
 }
 .ht-tab {
   min-width: 600px;
-  border: 1px solid #aaa;
   margin: 20px 20px;
   padding: 0;
   display: inline-block;
   vertical-align: top;
   background: white;
-  box-shadow: 0 0 5px #ccc;
 }
 .ht-tab-minimized {
   width: 60px;
@@ -153,6 +151,7 @@ body {
   margin-right: 10px;
   float: left;
   padding-right: 5px;
+  border-right: 2px dotted white;
 }
 .ht-column .ht-widget {
   border: 1px solid #ccc;
@@ -176,7 +175,15 @@ body {
   height: 50px;
 }
 .ht-column:hover {
-  border-right: 5px solid #ccc;
+  border-right: 2px dotted #ccc;
+}
+.ht-light-shadow {
+  border: 1px solid #ccc;
+  box-shadow: 0 0 8px 0px #aaa;
+}
+.ht-dark-shadow {
+  border: 1px solid #222;
+  box-shadow: 0 0 32px -5px #000000;
 }
 .ht-add-column {
   width: 50px;
@@ -258,4 +265,7 @@ body {
   position: relative;
   margin-left: -88px;
   margin-top: 200px;
+}
+.ui-resizable-e {
+  cursor: col-resize !important;
 }

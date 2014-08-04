@@ -162,21 +162,32 @@ var modules = []; // created on load and checked at every resize
         this.resizeWidgets = function() {
             // for each column
             $('.ht-column').each(function(){
+
                 // get column height
                 var setContentHeight = $(this).outerHeight();
                 var contentHeight = $(this)[0].scrollHeight;
-                // for each children calculate their relative heights;
+
+                // Total widgets height
+                var totalHeight = 0;
+                $(this).children('.ht-widget').each(function(){
+                    totalHeight = totalHeight+$(this).outerHeight();
+                })
+
+                    // for each children calculate their relative heights;
                 $(this).children('.ht-widget').each(function(){
                     var childHeight = $(this).height();
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                         $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-50});
-
                     } else {
-                        $(this).find('.ht-widget-body').css({ height : childHeight-50});
+                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-50});
+
+//                        $(this).find('.ht-widget-body').css({ height : childHeight-50});
                     }
                 })
+
             })
         }
         this.buildScroll = function(){
@@ -191,11 +202,6 @@ var modules = []; // created on load and checked at every resize
                 // Build the head
                 $('#ht-head').append('<div class="ht-hdiv bg-'+bg+'" data-hid="'+id+'" ><span class="ht-hdiv-content">'+title+'</span></div>')
 
-                // ScrollTo initialization.
-                $(document).on('click', '.ht-hdiv', function(){
-                    var id = $(this).attr('data-hid');
-                    $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 200,  {offset:-50});
-                })
                 modules.push({id : id, width : width, title : title});
                 self.resizeContent();
                 self.reformat();
@@ -242,142 +248,7 @@ var modules = []; // created on load and checked at every resize
             })
             m.redraw();
         }
-        this.exposeTrue = function(){
-            self.canReformat = false;
-            self.exposeOn = true;
-            $('#ht-wrapper').scrollTo($('#ht-wrapper'), 0,  {offset:-1*$('#ht-content').width()});
-            $('#exposeTrue').hide();
-            $('#exposeFalse').show();
-            $('#exLeftNav').show();
-            $('#exRightNav').show();
-            $('#exposebtns').fadeIn();
-            $('#ht-head').slideUp(200);
-            $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
 
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            var adjbtn = tab*0.25;
-            var modlens = 0; // full length of mods
-            var modsmin = 300;
-            var newmodlens = 900; // start with a bit of extra room just in case
-            // get size of all mods
-            $('#exposebtns').css('bottom', adjbtn + 'px');
-            $.each(self.modules(), function(i, module) {
-                modlens += module.width + 40;
-            });
-
-            // resize all content
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth-40)/(modlens+80);
-                var adjwidth = width*headfinal;
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                if(adjwidth < 300){
-                    newmodlens += 300;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, 200);
-                }else{
-                    newmodlens += adjwidth;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
-                }
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').css('width', newmodlens +'px');
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
-        }
-        this.exposeFalse = function(){
-            self.canReformat = true;
-            self.exposeOn = false;
-            $('#exposeTrue').show();
-            $('#exposeFalse').hide();
-            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
-            $('#ht-head').slideDown(200);
-            $('#exposebtns').fadeOut();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-
-                setTimeout(function(){
-                    self.reformat();
-                    self.resizeContent();
-                }, 200);
-
-            }
-            $('#ht-content').animate({'padding': '20px'});
-        }
-        this.exposeOnFunction = function(){
-            self.canReformat = false;
-            $('#exposeOn').hide();
-            $('#exposeOff').show();
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            $(".ghost-element").css('height', adjheight);
-            var modlens = 0; // full length of mods
-
-            // get size of all mods
-            $.each(self.modules, function(i, module) {
-                modlens += module.width + 40;
-            });
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth)/(modlens);
-                var adjwidth = width*(headfinal-(40*modules.length)-adjpadding/2);
-
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, 200);
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'});
-        }
-        this.exposeOffFunction = function(){
-            self.canReformat = true;
-            $('#exposeOn').show();
-            $('#exposeOff').hide();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},200);
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-                setTimeout(function(){
-                    self.reformat();
-                }, 200);
-            }
-            $('#ht-content').animate({'padding': '20px'});
-        }
         this.init = function(){
             // Bind jquery events that we couldn't move to mithril
             self.buildScroll();
@@ -387,6 +258,7 @@ var modules = []; // created on load and checked at every resize
             $('.ht-widget').resizable({
                 handles : "s",
                 minHeight: 100,
+                containment : "parent",
                 stop : function (){
                     self.resizeWidgets();
                 }
@@ -397,10 +269,14 @@ var modules = []; // created on load and checked at every resize
                 stop : function (){
                     self.resizeWidgets();
                     self.reformat();
-
                 }
             } );
             $(window).resize(self.reformat);
+
+            $(document).on('click', '.ht-hdiv', function(){
+                var id = $(this).attr('data-hid');
+                $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 200,  {offset:-50});
+            })
 
             // Scroller
             var htOnScroll = function() {
@@ -430,28 +306,9 @@ var modules = []; // created on load and checked at every resize
                 $('#ht-wrapper').scrollTo($('#ht-wrapper'), 200,  {offset:500});
             });
 
-            // Expose
-            $(document).keyup(function(e) {
-                if (e.keyCode == 27) {$('#exposeOff').click()}   // esc
-            });
-
-            $(function() {
-                $("#ht-content").sortable({
-                    placeholder: "ghost-element ht-tab ui-state-default"
-                });
-
-                $("#ht-content").sortable( "disable" );
-                $("#ht-content").disableSelection();
-            });
-
-            $('#ht-wrapper').on('scroll', function(){
-                $('#exRightNav').css('opacity', 1-$('#ht-wrapper').scrollLeft()/($('#ht-content').width()-$(window).width()));
-                $('#exLeftNav').css('opacity', $('#ht-wrapper').scrollLeft()/$('#ht-content').width());
-            });
-
+            $('#ht-wrapper').expose({ mithril : self, complete : function(){ console.log("Completed")}})
 
         }
-
 
 
 
@@ -459,7 +316,7 @@ var modules = []; // created on load and checked at every resize
 
     build.view = function(ctrl){
         return [
-            m("", {style: {"position": "absolute", "right": "0", "top": "0"}}, [
+            m("", { style: {"position": "absolute", "right": "0", "top": "0"}}, [
                 m("div.ht-hdiv.pull-right[id='exposeOn']", {onclick : ctrl.exposeOnFunction}, [m("button.btn.btn-primary", "On")] ),
                 m("div.ht-hdiv.pull-right[id='exposeOff']", { onclick : ctrl.exposeOffFunction, style: { "display": "none"}}, [m("button.btn.btn-primary", "Off")] ),
                 m("div.ht-hdiv.pull-right[id='exposeTrue']", { onclick : ctrl.exposeTrue}, [m("button.btn.btn-info", "Expose True")] ),
@@ -473,12 +330,11 @@ var modules = []; // created on load and checked at every resize
                     ]),
                     m("[id='ht-head']"),
                     m("[id='ht-slider']"),
-                    m("[id='ht-wrapper']", [
+                    m("[id='ht-wrapper']", { config : ctrl.init }, [
                         m("[id='ht-content']", [
-                            m("", { config : ctrl.init }, [
                                 ctrl.modules().map(function(module, module_index, module_array){
                                     if(module.minimize){
-                                        return [" ", m(".ht-tab.ht-tab-minimized", {'data-index' : module_index, 'data-id' : module.id}, [
+                                        return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
                                             m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                                 m(".ht-windowBtn", [
                                                     m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
@@ -488,7 +344,7 @@ var modules = []; // created on load and checked at every resize
                                             m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
                                         ])]
                                     }else {
-                                        return [" ", m(".ht-tab", {'data-index' : module_index,  'data-id' : module.id}, [
+                                        return [" ", m(".ht-tab.ht-light-shadow", {'data-index' : module_index,  'data-id' : module.id}, [
                                             m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                                 m("h3", module.title),
                                                 m(".ht-windowBtn", [
@@ -538,7 +394,6 @@ var modules = []; // created on load and checked at every resize
                                     }
 
                                 })
-                            ])
                         ])
                     ])
         ];

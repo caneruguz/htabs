@@ -1483,7 +1483,7 @@ button.ui-button::-moz-focus-inner,input.ui-button::-moz-focus-inner{border:0;pa
 .ui-resizable-autohide .ui-resizable-handle,.ui-resizable-disabled .ui-resizable-handle{display:none}
 .ui-resizable-n{cursor:n-resize;height:7px;width:100%;top:-5px;left:0}
 .ui-resizable-s{cursor:s-resize;height:7px;width:100%;bottom:-5px;left:0}
-.ui-resizable-e{cursor:e-resize;width:7px;right:-5px;top:0;height:100%}
+.ui-resizable-e{width:7px;right:-5px;top:0;height:100%}
 .ui-resizable-w{cursor:w-resize;width:7px;left:-5px;top:0;height:100%}
 .ui-resizable-se{cursor:se-resize;width:12px;height:12px;right:1px;bottom:1px}
 .ui-resizable-sw{cursor:sw-resize;width:9px;height:9px;left:-5px;bottom:-5px}
@@ -1753,7 +1753,7 @@ body{font-family:Helvetica}
 .tall{width:300px}
 .grande{width:600px}
 .venti{width:800px}
-.ht-tab{min-width:600px;border:1px solid #aaa;margin:20px;padding:0;display:inline-block;vertical-align:top;background:#fff;box-shadow:0 0 5px #ccc}
+.ht-tab{min-width:600px;margin:20px;padding:0;display:inline-block;vertical-align:top;background:#fff}
 .ht-tab-minimized{width:60px;min-width:60px}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
@@ -1770,12 +1770,14 @@ body{font-family:Helvetica}
 .ht-hdiv{padding:3px;text-align:center;height:40px;display:table-cell;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 #ht-slider{background-color:#646464;width:50px;height:15px;position:absolute}
 #ht-wrapper{overflow:auto;background:url(images/wavegrid.png)}
-.ht-column{min-width:250px;display:inline-block;margin-right:10px;float:left;padding-right:5px}
+.ht-column{min-width:250px;display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px dotted #fff}
 .ht-column .ht-widget{border:1px solid #ccc;margin-bottom:10px}
 .ht-column .ht-widget .ht-widget-header{padding:10px;background:#ccc;font-size:16px;font-weight:200}
 .ht-column .ht-widget .ht-widget-body{padding:10px;overflow-y:auto;overflow-x:hidden;height:85%}
 .ht-column .ht-widget-placeholder{border:1px dotted #000;margin:0 1em 1em 0;height:50px}
-.ht-column:hover{border-right:5px solid #ccc}
+.ht-column:hover{border-right:2px dotted #ccc}
+.ht-light-shadow{border:1px solid #ccc;box-shadow:0 0 8px 0 #aaa}
+.ht-dark-shadow{border:1px solid #222;box-shadow:0 0 32px -5px #000}
 .ht-add-column{width:50px;background:#f5f5f5;display:table;margin-right:10px;float:left}
 .add-column{display:table-cell;vertical-align:middle;font-size:25px;color:#999;text-align:center}
 .ht-tab:after{content:"";display:table;clear:both}
@@ -1786,6 +1788,7 @@ body{font-family:Helvetica}
 #exposebtns{text-align:center;display:none;position:absolute;left:0;right:0;margin:0 auto;-moz-user-select:-moz-none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}
 .rotate{-webkit-transform:rotate(-90deg);-moz-transform:rotate(-90deg);-ms-transform:rotate(-90deg);-o-transform:rotate(-90deg);filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3)}
 .rotatedText{font-weight:200;display:inline-block;width:215px;position:relative;margin-left:-88px;margin-top:200px}
+.ui-resizable-e{cursor:col-resize!important}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
