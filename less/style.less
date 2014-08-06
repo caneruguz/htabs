@@ -68,7 +68,7 @@ body {
 }
 .ht-tab {
    min-width: 600px;
-    margin: 20px 20px;
+    margin: 20px 20px 2px 20px;
     padding: 0;
     display: inline-block;
     vertical-align: top;
@@ -152,23 +152,25 @@ body {
 
 #ht-content{
     padding: 10px;
-    width: 5000px;
+    width: auto;
     overflow-y: scroll;
 }
 
 .ht-hdiv {
     display: inline-block;
-    padding: 3px;
+    padding: 10px 3px;
     text-align: center;
   height: 40px;
-  display:table-cell;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
   vertical-align: middle;
 }
 #ht-slider{
-  background-color:@silver; width:50px; height:15px; position:absolute;
+  background-color:@silver;
+  width:50px;
+  height:15px;
+  position:absolute;
 }
 #ht-wrapper {
     overflow: auto;
@@ -192,10 +194,12 @@ body {
       font-weight: 200;
     }
     .ht-widget-body {
-      padding: 10px;
       overflow-y: auto;
       overflow-x: hidden;
       height: 85%;
+      iframe  {
+        width : 100%;
+      }
     }
   }
   .ht-widget-placeholder {
@@ -309,4 +313,52 @@ body {
 
 .ui-resizable-e {
    cursor : col-resize !important;
+}
+
+#exposeDiv {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  height:100%;
+}
+.exposeClose {
+  color : white;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+}
+.expose-content {
+  margin-top: 200px;
+  text-align: center;
+}
+.expose-actions {
+  margin-top: 100px;
+  color: white;
+  font-size: 31px;
+  font-weight: 100;
+  font-family: Helvetica Neue;
+}
+.expose-button {
+  display: inline;
+  margin: 10px 20px;
+  border: 1px solid #aaa;
+  padding: 17px 25px;
+  span {
+    margin-left: 20px;
+  }
+}
+.expose-button:hover {
+  background: #eee;
+  color: #333;
+  cursor: pointer;
+}
+.ht-slider-wrap {
+  position: relative;
+  height: 15px;
+}
+.ht-w-s {
+  background : #ccc;
 }

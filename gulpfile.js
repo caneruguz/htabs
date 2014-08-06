@@ -4,7 +4,7 @@ var minifyCSS = require('gulp-minify-css');
 var less = require('gulp-less');
 
 var paths = {
-    cssfiles : ["./bower_components/bootstrap/dist/css/*.min.css", "./bower_components/jquery-ui/themes/ui-lightness/*.min.css", "./less/*.css", "./css/*.css"],
+    cssfiles : ["./bower_components/bootstrap/dist/css/*.min.css", "./bower_components/jquery-ui/themes/ui-lightness/*.min.css", "./less/*.css", "./css/*.css", "./dist/component/sample.css"],
     jsfiles : [ "./bower_components/jquery/dist/*.min.js", "./bower_components/jquery-ui/*.min.js", "./bower_components/jquery.scrollTo/*.min.js", "./bower_components/bootstrap/dist/js/*.min.js", "./node_modules/mithril/*.min.js",  "./scripts/*.js"],
     less : "./less/*.less"
 }
