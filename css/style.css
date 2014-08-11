@@ -1,4 +1,22 @@
 /* Color Palette */
+.ht-textarea {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+}
+.large-textarea {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+  min-height: 200px;
+}
+.small-textarea {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+  height: 100px;
+  resize: none;
+}
 body {
   font-family: Helvetica;
 }
@@ -35,6 +53,20 @@ body {
 }
 .ht-w-xl {
   width: 800px;
+}
+.ht-inverted {
+  color: white;
+  background: transparent;
+  border: none;
+}
+.ht-module-inverted .ht-column {
+  border-right: 2px dotted rgba(153, 153, 153, 0.19);
+}
+.ht-module-inverted .ht-add-column {
+  background: rgba(153, 153, 153, 0.19);
+}
+.ht-module-inverted .ht-add-column .add-column {
+  color: white;
 }
 .tall {
   width: 300px;
@@ -115,7 +147,7 @@ body {
   background-color: #778899;
 }
 #ht-head {
-  height: 40px;
+  height: 30px;
   background-color: lightslategrey;
   color: white;
 }
@@ -126,9 +158,9 @@ body {
 }
 .ht-hdiv {
   display: inline-block;
-  padding: 10px 3px;
+  padding: 5px 3px;
   text-align: center;
-  height: 40px;
+  height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -153,7 +185,6 @@ body {
   border-right: 2px dotted white;
 }
 .ht-column .ht-widget {
-  border: 1px solid #ccc;
   margin-bottom: 10px;
 }
 .ht-column .ht-widget .ht-widget-header {
@@ -179,8 +210,7 @@ body {
   border-right: 2px dotted #ccc;
 }
 .ht-light-shadow {
-  border: 1px solid #ccc;
-  box-shadow: 0 0 8px 0px #aaa;
+  box-shadow: 0 0 5px 0 #aaa;
 }
 .ht-dark-shadow {
   border: 1px solid #222;
@@ -316,4 +346,24 @@ body {
 }
 .ht-w-s {
   background: #ccc;
+}
+.appBtnDiv {
+  background: rgba(255, 255, 255, 0.71);
+  padding: 5px 10px;
+}
+.appBtn {
+  margin: 0 5px;
+}
+.ht-wiki-edit {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+  min-height: 200px;
+}
+.ht-comment-box {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+  height: 100px;
+  resize: none;
 }

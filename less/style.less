@@ -15,7 +15,20 @@
 @flat-orange: #E27A3F;
 @flat-pink: #DF4949; 
 
-
+.ht-textarea {
+  width: 100%;
+  border: 1px dotted #ccc;
+  padding: 10px;
+}
+.large-textarea {
+  .ht-textarea;
+  min-height: 200px;
+}
+.small-textarea {
+  .ht-textarea;
+  height: 100px;
+  resize: none;
+}
 body {
     font-family: Helvetica;
 }
@@ -57,6 +70,22 @@ body {
   width : @widget-width*5;
 }
 
+.ht-inverted {
+  color: white;
+  background: transparent;
+  border: none;
+}
+.ht-module-inverted {
+  .ht-column {
+    border-right: 2px dotted rgba(153, 153, 153, 0.19)
+  }
+  .ht-add-column {
+    background:  rgba(153,153,153,.19);
+    .add-column {
+      color : white;
+  }
+  }
+}
 .tall{
     width: 300px;
 }
@@ -145,7 +174,7 @@ body {
 }
 
 #ht-head{
-    height: 40px;
+    height: 30px;
     background-color: lightslategrey;
     color: white;
 }
@@ -158,9 +187,9 @@ body {
 
 .ht-hdiv {
     display: inline-block;
-    padding: 10px 3px;
+    padding: 5px 3px;
     text-align: center;
-  height: 40px;
+  height: 30px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -185,7 +214,6 @@ body {
   padding-right: 5px;
   border-right: 2px dotted white;
   .ht-widget {
-    border: 1px solid #ccc;
     margin-bottom: 10px;
     .ht-widget-header {
         padding: 10px;
@@ -213,8 +241,7 @@ body {
   border-right: 2px dotted #ccc;
 }
 .ht-light-shadow {
-  border: 1px solid #ccc;
-  box-shadow: 0 0 8px 0px #aaa;
+  box-shadow: 0 0 5px 0 #aaa;
 }
 .ht-dark-shadow {
   border: 1px solid #222;
@@ -361,4 +388,18 @@ body {
 }
 .ht-w-s {
   background : #ccc;
+}
+.appBtnDiv {
+  background: rgba(255, 255, 255, 0.71);
+  padding: 5px 10px;
+}
+.appBtn {
+  margin: 0 5px;
+}
+
+.ht-wiki-edit {
+  .large-textarea;
+}
+.ht-comment-box {
+  .small-textarea;
 }

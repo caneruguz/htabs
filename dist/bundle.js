@@ -38,6 +38,267 @@ License: MIT
 */
 Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Object]"!=z.call(b[1])||"tag"in b[1]||"subtree"in b[1])),d=c?b[1]:{},e=("class"in d?"class":"className"),f={tag:"div",attrs:{}},g=[];a=A.exec(b[0]);)if(""==a[1])f.tag=a[2];else if("#"==a[1])f.attrs.id=a[2];else if("."==a[1])g.push(a[2]);else if("["==a[3][0]){var h=B.exec(a[3]);f.attrs[h[1]]=h[3]||(h[2]?"":!0)}g.length>0&&(f.attrs[e]=g.join(" ")),f.children=c?b[2]:b[1];for(var i in d)f.attrs[i]=i==e?(f.attrs[i]||"")+" "+d[i]:d[i];return f}function d(a,c,g,j,k,l,m,n,o,p,q){if((null===k||void 0===k)&&(k=""),"retain"===k.subtree)return l;var r=z.call(l),s=z.call(k);if(r!=s){if(null!==l&&void 0!==l)if(g&&g.nodes){var t=n-j,u=t+("[object Array]"==s?k:l.nodes).length;f(g.nodes.slice(t,u),g.slice(t,u))}else f(l.nodes,l);l=new k.constructor,l.nodes=[]}if("[object Array]"==s){k=i(k);for(var v=[],w=l.length===k.length,x=0,y=1,A=2,B=3,C={},D=[],E=!1,F=0;F<l.length;F++)l[F]&&l[F].attrs&&void 0!==l[F].attrs.key&&(E=!0,C[l[F].attrs.key]={action:y,index:F});if(E){for(var F=0;F<k.length;F++)if(k[F]&&k[F].attrs)if(void 0!==k[F].attrs.key){var G=k[F].attrs.key;C[G]=C[G]?{action:B,index:F,from:C[G].index,element:a.childNodes[C[G].index]}:{action:A,index:F}}else D.push({index:F,element:a.childNodes[F]});for(var H,I=Object.keys(C).map(function(a){return C[a]}),J=I.sort(function(a,b){return a.action-b.action||a.index-b.index}),K=l.slice(),F=0;H=J[F];F++){if(H.action==y&&(f(l[H.index].nodes,l[H.index]),K.splice(H.index,1)),H.action==A){var L=b.document.createElement("div");L.key=k[H.index].attrs.key,a.insertBefore(L,a.childNodes[H.index]),K.splice(H.index,0,{attrs:{key:k[H.index].attrs.key},nodes:[L]})}H.action==B&&(a.childNodes[H.index]!==H.element&&a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.from])}for(var F=0;F<D.length;F++){var H=D[F];a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.index]}l=K,l.nodes=[];for(var M,F=0;M=a.childNodes[F];F++)l.nodes.push(M)}for(var F=0,N=0;F<k.length;F++){var O=d(a,c,l,n,k[F],l[N],m,n+x||x,o,p,q);if(void 0!==O){O.nodes.intact||(w=!1);var P=O instanceof Array;x+=P?O.length:1,l[N++]=O}}if(!w){for(var F=0;F<k.length;F++)void 0!==l[F]&&(v=v.concat(l[F].nodes));for(var Q,F=0;Q=l.nodes[F];F++)null!==Q.parentNode&&v.indexOf(Q)<0&&Q.parentNode.removeChild(Q);for(var Q,F=l.nodes.length;Q=v[F];F++)null===Q.parentNode&&a.appendChild(Q);k.length<l.length&&(l.length=k.length),l.nodes=v}}else if("[object Object]"==s){if((k.tag!=l.tag||Object.keys(k.attrs).join()!=Object.keys(l.attrs).join()||k.attrs.id!=l.attrs.id)&&(f(l.nodes),l.configContext&&"function"==typeof l.configContext.onunload&&l.configContext.onunload()),"string"!=typeof k.tag)return;var Q,R=0===l.nodes.length;k.attrs.xmlns?p=k.attrs.xmlns:"svg"===k.tag&&(p="http://www.w3.org/2000/svg"),R?(Q=void 0===p?b.document.createElement(k.tag):b.document.createElementNS(p,k.tag),l={tag:k.tag,children:void 0!==k.children?d(Q,k.tag,void 0,void 0,k.children,l.children,!0,0,k.attrs.contenteditable?Q:o,p,q):void 0,attrs:e(Q,k.tag,k.attrs,{},p),nodes:[Q]},a.insertBefore(Q,a.childNodes[n]||null)):(Q=l.nodes[0],e(Q,k.tag,k.attrs,l.attrs,p),l.children=d(Q,k.tag,void 0,void 0,k.children,l.children,!1,0,k.attrs.contenteditable?Q:o,p,q),l.nodes.intact=!0,m===!0&&a.insertBefore(Q,a.childNodes[n]||null)),"[object Function]"==z.call(k.attrs.config)&&q.push(k.attrs.config.bind(b,Q,!R,l.configContext=l.configContext||{},l))}else{var v;0===l.nodes.length?(k.$trusted?v=h(a,n,k):(v=[b.document.createTextNode(k)],a.insertBefore(v[0],a.childNodes[n]||null)),l="string number boolean".indexOf(typeof k)>-1?new k.constructor(k):k,l.nodes=v):l.valueOf()!==k.valueOf()||m===!0?(v=l.nodes,o&&o===b.document.activeElement||(k.$trusted?(f(v,l),v=h(a,n,k)):"textarea"===c?a.value=k:o?o.innerHTML=k:((1==v[0].nodeType||v.length>1)&&(f(l.nodes,l),v=[b.document.createTextNode(k)]),a.insertBefore(v[0],a.childNodes[n]||null),v[0].nodeValue=k)),l=new k.constructor(k),l.nodes=v):l.nodes.intact=!0}return l}function e(a,c,d,e,f){for(var g in d){var h=d[g],i=e[g];if(!(g in e)||i!==h||a===b.document.activeElement){if(e[g]=h,"config"===g)continue;if("function"==typeof h&&0==g.indexOf("on"))a[g]=j(h,a);else if("style"===g&&"object"==typeof h){for(var k in h)(void 0===i||i[k]!==h[k])&&(a.style[k]=h[k]);for(var k in i)k in h||(a.style[k]="")}else void 0!==f?"href"===g?a.setAttributeNS("http://www.w3.org/1999/xlink","href",h):"className"===g?a.setAttribute("class",h):a.setAttribute(g,h):"value"===g&&"input"===c?a.value!==h&&(a.value=h):g in a&&"list"!=g&&"style"!=g?a[g]=h:a.setAttribute(g,h)}}return e}function f(a,b){for(var c=a.length-1;c>-1;c--)a[c]&&a[c].parentNode&&(a[c].parentNode.removeChild(a[c]),b=[].concat(b),b[c]&&g(b[c]));0!=a.length&&(a.length=0)}function g(a){if(a.configContext&&"function"==typeof a.configContext.onunload&&a.configContext.onunload(),a.children)if(a.children instanceof Array)for(var b=0;b<a.children.length;b++)g(a.children[b]);else a.children.tag&&g(a.children)}function h(a,c,d){var e=a.childNodes[c];if(e){var f=1!=e.nodeType,g=b.document.createElement("span");f?(a.insertBefore(g,e),g.insertAdjacentHTML("beforebegin",d),a.removeChild(g)):e.insertAdjacentHTML("beforebegin",d)}else a.insertAdjacentHTML("beforeend",d);for(var h=[];a.childNodes[c]!==e;)h.push(a.childNodes[c]),c++;return h}function i(a){for(var b=[],c=0;c<a.length;c++){var d=a[c];d instanceof Array?b.push.apply(b,i(d)):b.push(d)}return b}function j(a,b){return function(d){d=d||event,c.startComputation();try{return a.call(b,d)}finally{I||(I=-1),c.endComputation()}}}function k(a){var b=D.indexOf(a);return 0>b?D.push(a)-1:b}function l(){for(var a=0;a<F.length;a++)H[a]&&c.render(F[a],G[a].view(H[a]));J&&(J(),J=null),I=null}function m(a){return a.slice(M[c.route.mode].length)}function n(a,b,d){O={};var e=d.indexOf("?");-1!==e&&(O=s(d.substr(e+1,d.length)),d=d.substr(0,e));for(var f in b){if(f==d)return o(a),c.module(a,b[f]),!0;var g=new RegExp("^"+f.replace(/:[^\/]+?\.{3}/g,"(.*?)").replace(/:[^\/]+/g,"([^\\/]+)")+"/?$");if(g.test(d))return o(a),d.replace(g,function(){for(var d=f.match(/:[^\/]+/g)||[],e=[].slice.call(arguments,1,-2),g=0;g<d.length;g++)O[d[g].replace(/:|\./g,"")]=t(e[g]);c.module(a,b[f])}),!0}}function o(a){var b=k(a);f(a.childNodes,E[b]),E[b]=void 0}function p(a){a=a||event,a.ctrlKey||a.metaKey||2==a.which||(a.preventDefault(),c.route(a.currentTarget[c.route.mode].slice(M[c.route.mode].length)))}function q(){"hash"!=c.route.mode&&b.location.hash?b.location.hash=b.location.hash:b.scrollTo(0,0)}function r(a,b){var c=[];for(var d in a){var e=b?b+"["+d+"]":d,f=a[d];c.push("object"==typeof f?r(f,e):encodeURIComponent(e)+"="+encodeURIComponent(f))}return c.join("&")}function s(a){for(var b=a.split("&"),c={},d=0;d<b.length;d++){var e=b[d].split("=");c[t(e[0])]=e[1]?t(e[1]):1===e.length?!0:""}return c}function t(a){return decodeURIComponent(a.replace(/\+/g," "))}function u(a){return a}function v(a){var c=new b.XMLHttpRequest;if(c.open(a.method,a.url,!0,a.user,a.password),c.onreadystatechange=function(){4===c.readyState&&(c.status>=200&&c.status<300?a.onload({type:"load",target:c}):a.onerror({type:"error",target:c}))},a.serialize==JSON.stringify&&"GET"!=a.method&&c.setRequestHeader("Content-Type","application/json; charset=utf-8"),"function"==typeof a.config){var d=a.config(c,a);void 0!==d&&(c=d)}return c.send("GET"==a.method?"":a.data),c}function w(a,b,c){return b&&Object.keys(b).length>0&&("GET"==a.method?a.url=a.url+(a.url.indexOf("?")<0?"?":"&")+r(b):a.data=c(b)),a}function x(a,b){var c=a.match(/:[a-z]\w+/gi);if(c&&b)for(var d=0;d<c.length;d++){var e=c[d].slice(1);a=a.replace(c[d],b[e]),delete b[e]}return a}var y,z={}.toString,A=/(?:(^|#|\.)([^#\.\[\]]+))|(\[.+?\])/g,B=/\[(.+?)(?:=("|'|)(.*?)\2)?\]/,C={insertAdjacentHTML:function(a,c){b.document.write(c),b.document.close()},appendChild:function(a){void 0===y&&(y=b.document.createElement("html")),"HTML"==a.nodeName?y=a:y.appendChild(a),b.document.documentElement&&b.document.documentElement!==y?b.document.replaceChild(y,b.document.documentElement):b.document.appendChild(y)},insertBefore:function(a){this.appendChild(a)},childNodes:[]},D=[],E={};c.render=function(a,c){var e=[];if(!a)throw new Error("Please ensure the DOM element exists before rendering a template into it.");var g=k(a),h=a==b.document||a==b.document.documentElement?C:a;void 0===E[g]&&f(h.childNodes),E[g]=d(h,null,void 0,void 0,c,E[g],!1,0,null,void 0,e);for(var i=0;i<e.length;i++)e[i]()},c.trust=function(a){return a=new String(a),a.$trusted=!0,a};var F=[],G=[],H=[],I=0,J=null;c.module=function(a,b){var d=F.indexOf(a);0>d&&(d=F.length);var e=!1;if(H[d]&&"function"==typeof H[d].onunload){var f={preventDefault:function(){e=!0}};H[d].onunload(f)}e||(c.startComputation(),F[d]=a,G[d]=b,H[d]=new b.controller,c.endComputation())},c.redraw=function(){var a=b.cancelAnimationFrame||b.clearTimeout,c=b.requestAnimationFrame||b.setTimeout;I?(a(I),I=c(l,0)):(l(),I=c(function(){I=null},0))};var K=0;c.startComputation=function(){K++},c.endComputation=function(){K=Math.max(K-1,0),0==K&&c.redraw()},c.withAttr=function(a,b){return function(c){c=c||event,b(a in c.currentTarget?c.currentTarget[a]:c.currentTarget.getAttribute(a))}};var L,M={pathname:"",hash:"#",search:"?"},N=function(){},O={};c.route=function(){if(0===arguments.length)return L;if(3===arguments.length&&"string"==typeof arguments[1]){var a=arguments[0],d=arguments[1],e=arguments[2];N=function(b){var f=L=m(b);n(a,e,f)||c.route(d,!0)};var f="hash"==c.route.mode?"onhashchange":"onpopstate";b[f]=function(){L!=m(b.location[c.route.mode])&&N(b.location[c.route.mode])},J=q,b[f]()}else if(arguments[0].addEventListener){var g=arguments[0],h=arguments[1];g.href.indexOf(M[c.route.mode])<0&&(g.href=b.location.pathname+M[c.route.mode]+g.pathname),h||(g.removeEventListener("click",p),g.addEventListener("click",p))}else if("string"==typeof arguments[0]){L=arguments[0];var i="object"==typeof arguments[1]?r(arguments[1]):null;i&&(L+=(-1===L.indexOf("?")?"?":"&")+i);var j=(3==arguments.length?arguments[2]:arguments[1])===!0;b.history.pushState?(J=function(){b.history[j?"replaceState":"pushState"](null,b.document.title,M[c.route.mode]+L),q()},N(M[c.route.mode]+L)):b.location[c.route.mode]=L}},c.route.param=function(a){return O[a]},c.route.mode="search",c.prop=function(a){var b=function(){return arguments.length&&(a=arguments[0]),a};return b.toJSON=function(){return a},b};var P={};return c.deferred=function(){var a=[],b=[],d=P,e=P,f=c.prop(),g={resolve:function(c){d===P&&f(d=c);for(var e=0;e<a.length;e++)a[e](c);a.length=b.length=0},reject:function(c){e===P&&(e=c);for(var d=0;d<b.length;d++)b[d](c);a.length=b.length=0},promise:f};return g.promise.resolvers=a,g.promise.then=function(f,g){function h(a,b){return function(c){try{var d=b(c);d&&"function"==typeof d.then?d.then(i[a],g):i[a](void 0!==d?d:c)}catch(e){if(e instanceof Error&&e.constructor!==Error)throw e;i.reject(e)}}}var i=c.deferred();return f||(f=u),g||(g=u),d!==P?h("resolve",f)(d):e!==P?h("reject",g)(e):(a.push(h("resolve",f)),b.push(h("reject",g))),i.promise},g},c.sync=function(a){function b(a,b){return function(c){return g[a]=c,b||(d="reject"),0==--f&&(e.promise(g),e[d](g)),c}}for(var d="resolve",e=c.deferred(),f=a.length,g=new Array(f),h=0;h<a.length;h++)a[h].then(b(h,!0),b(h,!1));return e.promise},c.request=function(a){a.background!==!0&&c.startComputation();var b=c.deferred(),d=a.serialize=a.serialize||JSON.stringify,e=a.deserialize=a.deserialize||JSON.parse,f=a.extract||function(a){return 0===a.responseText.length&&e===JSON.parse?null:a.responseText};return a.url=x(a.url,a.data),a=w(a,a.data,d),a.onload=a.onerror=function(d){try{d=d||event;var g=("load"==d.type?a.unwrapSuccess:a.unwrapError)||u,h=g(e(f(d.target,a)));if("load"==d.type)if(h instanceof Array&&a.type)for(var i=0;i<h.length;i++)h[i]=new a.type(h[i]);else a.type&&(h=new a.type(h));b["load"==d.type?"resolve":"reject"](h)}catch(d){if(d instanceof SyntaxError)throw new SyntaxError("Could not parse HTTP response. See http://lhorie.github.io/mithril/mithril.request.html#using-variable-data-formats");if(d instanceof Error&&d.constructor!==Error)throw d;b.reject(d)}a.background!==!0&&c.endComputation()},v(a),b.promise},c.deps=function(a){return b=a},c.deps.factory=a,c}("undefined"!=typeof window?window:{}),"undefined"!=typeof module&&null!==module&&(module.exports=m),"function"==typeof define&&define.amd&&define(function(){return m});
 //# sourceMappingURL=mithril.min.map
+
+var logs = {};
+
+// Assign model directly to loaded content
+logs.List = m.prop("")
+m.request({method: "GET", url: "../components/alogs/logs.json"}).then(logs.List);
+
+// Model for individual logs
+logs.singleLog = function(logType, logContent){
+    this.logText = "";
+    switch(logType){
+        case "comment" :
+            this.logText =  " commented ";
+            break;
+        case "wiki" :
+            this.logText = " changed wiki to version ";
+            break;
+    }
+    this.logUserID = 1;
+    this.logUser = "Caner";;
+    this.logDate = new Date();
+    this.logContent = logContent;
+}
+
+// Log actions, add log
+logs.controller = function(){
+    // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
+    // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
+
+}
+
+// Log layout, loads directly from the model, not through the controller.
+logs.view = function(controller){
+    return [
+        m("table.table.table-condensed", [
+            m("tbody", [
+                logs.List().map(function(log, index){
+                    return m("tr", [
+                        m("td", [
+                            m("span.text-muted", log.logDate)
+                        ]),
+                        m("td", [
+                            m("a[href='user/1']", log.logUser),
+                            " ",
+                            m("span.logText", log.logText),
+                            m("i", log.logContent),
+                            ".\n                        "
+                        ])
+                    ])
+                })
+
+            ])
+        ])
+    ]
+}
+
+var comments = {};
+
+// Load existing comments from server
+comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
+
+// Comment Model, uses information from the App about User.
+comments.comment = function(content){
+    this.userid = 1;
+    this.username = "Caner";
+    this.content = content;
+    this.date = new Date();
+    this.show = true;
+}
+
+comments.controller = function (){
+    var self = this;
+    this.comments = comments.List;
+    // Filter search term to use for filtering later.
+    this.filterText = m.prop("");
+    // Declare and empty setter for content of the comment to bind it to the form.
+    this.content = m.prop("");
+    // add comment
+    this.add = function () {
+        if(self.content()){
+            // New comment
+            self.comments().push(new comments.comment(self.content()));
+            // Log this behavior by adding a new Log model
+            logs.List().push(new logs.singleLog("comment", self.content()));
+            // Reset the form for new comments.
+            self.content("");
+        }
+
+    }
+    // filtering
+    this.filter = function (){
+        var result;
+        // If filtertext is set run filter
+        if(self.filterText()){
+            // Go through each comment
+            self.comments().map(function(comment, index){
+                var text = self.filterText().toLowerCase()
+                result = comment.content.toLowerCase().indexOf(text);
+                // Compare text
+                if(result !== -1){
+                    // If found, add to comment an attribute called cmshow
+                    comment.show = true;
+                } else {
+                    // If not found, add to the comment and attribute called cmhide
+                    comment.show = false;
+                }
+            });
+        } else {
+        // If filtertext is not set reset view to show everything
+            self.comments().map(function(comment, index){
+                comment.show = true;
+            });
+        }
+    }
+    this.runFilter = function(e){
+        m.withAttr("value", self.filterText)(e);
+        console.log(self.comments())
+        self.filter();
+    }
+}
+
+// Loads commenting form and list of comments
+comments.view = function(ctrl){
+    return m(".container-fluid", [m(".row", [
+        m(".col-sm-12", [
+            m(".col-xs-12[id='cm-comment']", [
+                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
+                 ]),
+                m("hr"),
+                m("[id='cm-boxWrapper']", [
+                    m(".row", [
+                        m(".col-xs-9", [
+                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
+                        ]),
+                        m(".col-xs-3", [
+                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
+                        ])
+                    ]),
+                    m(".row", [
+                        m(".col-xs-12[id='cm-commentList']", [
+                            m("table.table.table-condensed", [
+                                m("tbody", [
+                                    ctrl.comments().map(function(comment, index){
+                                       console.log("Show", comment.show)
+                                        if(comment.show){
+                                            return m("tr", [
+                                                m("td", [
+                                                    m("b", comment.username)
+                                                ]),
+                                                m("td", comment.content),
+                                                m("td", [
+                                                    m("span.text-muted", comment.date)
+                                                ])
+                                            ])
+                                        }
+                                    })
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ]),
+        m(".col-sm-4.col-xs-12", [
+            m("[id='cm-logs']", [
+
+            ])
+        ])
+    ])
+}
+
+dashboard = {}
+
+dashboard.html= m.prop("");
+m.request({method: "GET", url: "../components/dashboard/dashboard.html", deserialize: function(value){ return value;  }}).then(dashboard.html);
+
+dashboard.controller = function(){
+    this.html = dashboard.html;
+}
+
+dashboard.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+var wiki = {};
+
+wiki.data = m.prop({});
+m.request({method: "GET", url: '../components/wiki/wiki.json'}).then(wiki.data)
+
+wiki.model = function(){
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version)
+}
+// Long way of binding the data to view
+wiki.controller = function(){
+    var self = this;
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version);
+
+    this.edit = m.prop(false);
+
+
+    this.toggleView = function(){
+        if(self.edit()){
+            // save
+            self.version(self.version()+1);
+            logs.List().push(new logs.singleLog("wiki", self.version()));
+            self.edit(false);
+        } else {
+
+            self.edit(true);
+        }
+    }
+    return self;
+}
+
+// Wiki html
+wiki.view = function (controller) {
+    if(controller.edit()){
+        return m(".panel.panel-default",  [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("span", "Change Title: "), m("input.form-control", { onchange: m.withAttr("value", controller.title), value: controller.title()} )
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView },  m("i.fa.fa-save", " Save"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("textarea.ht-wiki-edit", { onchange: m.withAttr("value", controller.content), value: controller.content()} )
+            ])
+        ])
+    } else {
+        return m(".panel", [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("h2.panel-title", controller.title())
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView }, m("i.fa.fa-pencil", " Edit"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("p#wiki-preview", controller.content())
+            ]),
+            m(".panel-footer", " Version " + controller.version())
+        ])
+    }
+
+
+};
+
 /*
  *   Jquery Exposé plugin by Alex Schiller
  *   Shrinks the contents of selected element to fit window width in the Mac expose style.
@@ -311,376 +572,103 @@ Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Obj
 
 }(jQuery));
 
-(function(){
-var totalWidth = 0;
-var modules = []; // created on load and checked at every resize
 
+    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
+//    // Get sample html content
+//    build.sample = m.prop("");
+//    m.request({method: "GET", url: "./component/sample.html", deserialize: function(value){ return value;  }}).then(build.sample);
 
-    // Get sample html content
-    build.sample = m.prop("");
-    var deserialize = function (value){
-        return value;
-    }
-    m.request({method: "GET", url: "./component/sample.html", deserialize: deserialize}).then(build.sample);
+    build.workspace = m.prop("");
+    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
 
 
-    build.module = function(title, id, color, columns){
-        if(!title){ title = "Module Title"};
-        if(!id){ id = 1};
-        this.id = id;
-        this.title = title ;
+    //  Models
+    // Module Model
+    build.module = function(title, id, color, columns, css){
+        this.id = id || 1;
+        this.title = title || "Module Title";
         this.order = 1;
         this.color = color;
         this.columns = columns;
         this.minimize = false;
         this.exposeWidth = 300;
         this.exposeHeight = 300;
+        this.css = css || "";
     }
-    build.column = function(widgets){
-        this.width = 400;
-        this.widgets = widgets;
+    // Column Model
+    build.column = function(width, widgets){
+        this.width = width;
+        this.widgets = widgets ;
         this.new = false;
     }
-    build.widget = function(title, content, iframeLink){
-        if(!title){ title = "Widget Title"};
-        if(!content) { content = "Lorem ipsum dolor sit amet"};
-        if(!iframeLink) { iframeLink = "https://osf.io/ezcuj/wiki/home/"};
-        this.title = title;
-        this.content = content;
+    // Widget Model
+    build.widget = function(title, content, iframeLink, hideHeader ){
+        this.title = title || "Widget Title";
+        this.content = content || "Lorem ipsum dolor sit amet";
         this.expandable = false;
         this.closable = true;
         this.height = 300;
         this.display = true;
-        this.iframeLink = iframeLink;
-
-    }
-    build.create = function(){
-        // builds a modules views from the models. It can be loading it from database. In this case it's just building an example set.
-        console.log(build.sample());
-        return m.prop([
-            new build.module("First Module", 1, "blue", [
-                new build.column( [
-                    new build.widget("Widget 1", build.sample()),
-                    new build.widget("Widget 2"),
-                    new build.widget("Widget 3")
-                ]),
-                new build.column([
-                    new build.widget("Widget 4", "<iframe src='https://osf.io/ezcuj/wiki/home/'></iframe>"),
-                    new build.widget("Widget 5", build.sample())
-                ])
-            ]),
-            new build.module("Second Module", 2, "yellow", [
-                new build.column( [
-                    new build.widget("Widget 6"),
-                    new build.widget("Widget 7")
-                ]),
-                new build.column([
-                    new build.widget("Widget 8"),
-                    new build.widget("Widget 9")
-                ])
-            ]),
-            new build.module("Third Module", 3, "orange", [
-                new build.column( [
-                    new build.widget("Widget 10"),
-                    new build.widget("Widget 11")
-                ])
-            ])
-        ])
+        this.iframeLink = iframeLink || "https://osf.io/ezcuj/wiki/home/";
+        this.hideHeader = hideHeader;
+        this.type = "normal"
     }
 
+
+//    // Our custom code to create base modules. -- In the larger app this will be loaded or defaults applied. In this case it's building an example .
+//    build.create = function(){
+//        return m.prop([
+//            new build.module("Dashboard", 0, "none", [
+//                new build.column(400, [
+//                    new build.widget("Welcome to Dashboard", "", "", true)
+//                ])
+//            ], "dashboard"
+//            ),
+//            new build.module("Reproducibility Project: Psychology", 1, "blue", [
+//                new build.column(240, [
+//                    new build.widget("Contributors", build.sample()),
+//                    new build.widget("Activity", "", "", true),
+//                    new build.widget("Citation")
+//                ]),
+//                new build.column(620, [
+//                    new build.widget("Wiki", "<iframe src='https://osf.io/ezcuj/wiki/home/'></iframe>"),
+//                    new build.widget("Files", build.sample())
+//                ])
+//            ]),
+//            new build.module(null, null, "yellow", [
+//                new build.column(400,  [
+//                    new build.widget("Wiki","","",true),
+//                    new build.widget("Component List")
+//                ]),
+//                new build.column(240, [
+//                    new build.widget("Files"),
+//                    new build.widget("View File")
+//                ])
+//            ]),
+//            new build.module("Economy Lab", 3, "orange", [
+//                new build.column( 400, [
+//                    new build.widget("Contributors"),
+//                    new build.widget("Components")
+//                ])
+//            ])
+//        ])
+//    }
+
+
+     // Controller
     build.controller = function(){
-        var self = this;
-        this.modules = build.create();
-        this.canReformat = true;
-        this.exposeOn = false;
-        this.localExpose = false;
-        this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}};
-        this.narrow = false;
-        this.updateSortable = function (){
-            $(".ht-column" ).sortable({
-                connectWith: ".ht-column",
-                handle: ".ht-widget-header",
-                placeholder: "ht-widget-placeholder",
-                beforeStop: function( event, ui ) {
-                    self.resizeWidgets();
-                    //clearColumns();
-                },
-                start : function (event, ui){
-                    self.temp.fromObj = {};
-                    self.temp.toObj = {};
-                    var from = {
-                        module : ui.item.parent().parent().parent().attr('data-index'),
-                        column : ui.item.parent().attr('data-index'),
-                        widget : ui.item.index()
-                    }
-                    console.log("From", from)
-                    self.temp.fromObj = from;
+        var self = this;  // use self for binding inner scopes:
+        this.modules = build.workspace; // Assign modules to the model we created. observableness is set in the create function.
 
-                },
-                stop : function(event, ui){
-                    var to = {
-                        module : ui.item.parent().parent().parent().attr('data-index'),
-                        column : ui.item.parent().attr('data-index'),
-                        widget : ui.item.index()
-                    }
-                    console.log("To", to)
-                    self.temp.toObj = to;
-
-                    $('.ht-column').sortable( "cancel" );
-                    self.moveWidget(self.temp.fromObj, self.temp.toObj);
-                }
-            });
-        }
-        this.beginExpose = function(){
-
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            $(".ghost-element").css('height', adjheight);
-
-            // get size of all mods
-            var modlens = 0; // full length of mods
-            $('.ht-tab').each(function(i, item) {
-                modlens += $(item).width() + 40;
-            });
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth)/(modlens);
-                var adjwidth = width*(headfinal-(40*self.modules().length)-adjpadding/2);
-                o.exposeWidth = adjwidth;
-                o.exposeHeight = adjheight;
-            }
-            $(".ghost-element").css('height', adjheight);
-            self.localExpose = true;
-            self.canReformat = false;
-        }
-        this.endExpose = function(){
-            self.localExpose = false;
-            self.canReformat = true;
-        }
-        this.moveWidget = function(from, to){
-
-
-            // get widget from the from location
-            var widget = self.modules()[from.module].columns[from.column].widgets[from.widget];
-
-            /// if columns are different do as usual - same column number within different widgets also okay
-            if(from.module !== to.module || from.column !== to.column){
-                // add it to the to location
-                self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
-                // remove original widget
-                self.modules()[from.module].columns[from.column].widgets.splice(from.widget, 1);
-
-            } else {
-                // manage the index numbers properly if they are within the same column
-                // if from < to first delete then add
-                if(from.widget < to.widget){
-                    self.modules()[from.module].columns[from.column].widgets.splice(from.widget, 1);
-                    self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
-                } else {
-                    // else first add than delete
-                    self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
-                    self.modules()[from.module].columns[from.column].widgets.splice(from.widget+1, 1);
-                }
-            }
-
-
-
-            self.removeExtraCols();
-            self.resizeWidgets();
-            console.log(self.modules());
-        }
-        this.moveModule = function(from, to){
-            // get module object with From module index
-            var module = self.modules()[from];
-            // add to To index
-            // if from < to first delete then add
-            if(from < to){
-                self.modules().splice(from, 1);
-                self.modules().splice(to, 0, module);
-            } else {
-            // else first add than delete
-                self.modules().splice(to, 0, module);
-                self.modules().splice(from+1, 1);
-            }
-            m.redraw();
-        }
-        this.addModule = function() {
-            // This will eventually be selected from lists
-            self.modules().push(
-                new build.module("Added Module", 4, "pink", [
-                    new build.column( [
-                        new build.widget("Widget 13"),
-                        new build.widget("Widget 14")
-                    ])
-                ])
-            )
-            m.redraw();
-            $('#ht-wrapper').scrollTo($('.ht-tab:last'), 150,  {offset:-50});
-
-        }
-        this.saveWorkspace = function () {
-             console.log(self.modules());
-        }
-        this.reformat = function(){
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-
-            // resize ht-content based on module length
-            var totalLength = 0;
-            $('.ht-tab').each(function(){
-                totalLength += $(this).outerWidth()+100;
-            })
-            $('#ht-content').css('width', totalLength + 'px')
-
-            if(wH < 500){
-                self.canReformat = false;
-            } else {
-                self.canReformat = true;
-            }
-            if(self.canReformat){
-                self.resizeContent();
-                // Size wrapper elements
-                var wrapperH = wH-40;
-                var tab = wrapperH-60;
-                var content = tab-51;
-                var column =  content-10;
-
-                $('#ht-head').css({ width : headfinal + 'px' } );
-                $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
-                $('.ht-tab').css({ height: tab + 'px'});
-                $('.ht-tab-content').css({ height: content+'px'});
-                $('.ht-column').css({height: column});
-                $('.ht-add-column').css({height: column});
-
-                // Adjust slider on changes
-                $('#ht-slider').width( Math.pow(headfinal, 2) / $('#ht-content').width() + 'px')
-                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
-                // Resize header modules
-                for(var i = 0; i < self.modules().length; i++){
-                    var o = self.modules()[i];
-                    var contentWidth = $('#ht-content').width();  // width of the module
-                    var headWidth = $('#ht-head').width();
-
-                    // +40 = fix for margin space
-                    var width = ($('.ht-tab[data-id="'+o.id+'"]').width()+40)/contentWidth*100;
-                    $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
-
-                    // update column widths in the model
-                    o.columns.map(function(item, index, array){
-                        item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).width();
-                        console.log(item.width);
-                    })
-                }
-
-
-            }
-            self.resizeWidgets();
-
-        }
-        this.resizeContent = function(){
-            var lensm = 2000;
-            $.each(self.modules(), function(i, module) {
-                   lensm += module.width + 40;
-                });
-            $('#ht-content').css('width', lensm +'px');
-        }
-        this.resizeWidgets = function() {
-            // for each column
-            $('.ht-column').each(function(){
-
-                // get column height
-                var setContentHeight = $(this).outerHeight();
-                var contentHeight = $(this)[0].scrollHeight;
-
-                // Total widgets height
-                var totalHeight = 0;
-                $(this).children('.ht-widget').each(function(){
-                    totalHeight = totalHeight+$(this).outerHeight();
-                })
-
-                    // for each children calculate their relative heights;
-                $(this).children('.ht-widget').each(function(){
-                    var childHeight = $(this).height();
-                    var newHeight;
-                    if(setContentHeight < contentHeight){
-                        newHeight = (childHeight/contentHeight)*setContentHeight;
-                    } else {
-                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
-                    }
-                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
-
-                    // resize iframes
-                    $(this).find('iframe').css({height : newHeight-60} );
-
-                    // show hide based on element width
-                    var width =  $(this).width();
-                    $(this).find('.ht-w-s').hide();
-                    $(this).find('.ht-w-m').hide();
-                    $(this).find('.ht-w-l').hide();
-                    if(width > 600){
-                        $(this).find('.ht-w-l').show();
-                    }
-                    if(width > 300 && width <= 600){
-                        $(this).find('.ht-w-m').show();
-                    }
-                    if(width <= 300 ){
-                        $(this).find('.ht-w-s').show();
-                    }
-                })
-
-            })
-        }
-        this.removeModule = function(module_index){
-            self.modules().splice(module_index, 1);
-        }
-        this.expandWidget = function(module, column, widget){
-            // create a column after this column
-            self.modules()[module].columns.splice(column+1,0, new build.column([]));
-            // move widget to this column
-            var from = { module : module, column : column, widget : widget}
-            var to = { module : module, column : column+1, widget : 0}
-            self.moveWidget(from, to);
-        }
-        this.addCol= function (module_index){
-            // is there an empty column?
-            var empty = false;
-            self.modules()[module_index].columns.map(function(item) {
-                if(item.widgets.length < 1 ){
-                    empty = true;
-                }
-            });
-            if(!empty){
-                self.modules()[module_index].columns.push(new build.column([]))
-                self.updateSortable();
-                self.reformat();
-                m.redraw();
-            }
-        }
-        this.removeExtraCols = function(){
-            self.modules().map(function(modules, modules_index){
-                modules.columns.map(function(column, column_index, array){
-                    if(column.widgets < 1){
-                        array.splice(column_index, 1);
-                    }
-                })
-            })
-            m.redraw();
-        }
+        this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
+        this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
+        this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
 
         this.init = function(){
             // Bind jquery events that we couldn't move to mithril
-            //self.buildScroll();
-            self.resizeContent();
             self.reformat();
             self.updateSortable();
-
             $( ".ht-widget" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix" )
             $('.ht-widget').resizable({
                 handles : "s",
@@ -699,24 +687,178 @@ var modules = []; // created on load and checked at every resize
                 }
             } );
             $(window).resize(self.reformat);
-
             $(document).on('click', '.ht-hdiv', function(){
                 var id = $(this).attr('data-hid');
                 $('#ht-wrapper').scrollTo($('.ht-tab[data-id="'+id+'"]'), 150,  {offset:-50});
             })
-
             // Scroller is its own jquery plugin now.
             $('#ht-slider').scroller({ scrollWrapper: "#ht-wrapper", complete : function(){ console.log("Scroller Completed!")} })
 
+            // Key listeners
+            $(document).keyup(function(e) {
+                // ESC
+                if (e.keyCode == 27) {
+                    if(self.localExpose == true ) {
+                        self.localExpose = false;
+                        m.redraw();
+                    }
+                }
+                if(e.keyCode >  48 && e.keyCode < 58){
+                    console.log(e.keyCode);
+                    var index = e.keyCode - 49;
+                    $('#ht-wrapper').scrollTo($('.ht-tab[data-index="'+index+'"]'), 150,  {offset:-50});
+                }
+            });
 
+            //Load Widgets
+            self.modules().map(function(module, module_index, module_array){
+                module.columns.map(function(column, column_index, column_array){
+                    column.widgets.map(function(widget, widget_index, widget_array){
+                        if(!widget.loaded){
+                            widget.loaded = true;
+                            switch(widget.type){
+                                case "dashboard":
+                                    var myDash = new dashboard.controller();
+                                    m.render(document.getElementById("widget"+widget.id), dashboard.view(myDash))
+                                    break;
+                                case "wiki" :
+                                    m.module(document.getElementById("widget"+widget.id), wiki );
+                                    break;
+                                case "comment" :
+                                    m.module(document.getElementById("widget"+widget.id), comments );
+                                    break;
+                                case "activity" :
+                                    m.module(document.getElementById("widget"+widget.id), logs );
+                                    break;
+                                default :
+                                    break;
+                            }
+                        }
+                        self.resizeWidgets();
 
+                    })
+                })
+            })
         }
+
+        // WIDGETS
+        // When widgets are moved we need to update the model itself with the changes.
+        this.updateSortable = function (){
+            $(".ht-column" ).sortable({
+                connectWith: ".ht-column",      // So that we can move widgets between other columns.
+                handle: ".ht-widget-header",    // Grab from the header div only.
+                placeholder: "ht-widget-placeholder",
+                start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
+                    self.temp.fromObj = {};     // empty temp objects so we don't use any of these values accidentally
+                    self.temp.toObj = {};
+                    var from = {
+                        module : ui.item.parent().parent().parent().attr('data-index'),
+                        column : ui.item.parent().attr('data-index'),
+                        widget : ui.item.index()
+                    }
+                    self.temp.fromObj = from; // assign the from object
+
+                },
+                stop : function(event, ui){     // get the widget placement that we want the original widget to drop to
+                    var to = {
+                        module : ui.item.parent().parent().parent().attr('data-index'), // ui returns the same widget but the indexes and placement has changed.
+                        column : ui.item.parent().attr('data-index'),
+                        widget : ui.item.index()
+                    }
+                    self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
+
+                    $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
+                    self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
+                }
+            });
+        }
+        this.moveWidget = function(from, to){
+            // modules >  column >  widget   modules[0].column[1].widget[1]
+            // get widget from the from location
+            var widget = self.modules()[from.module].columns[from.column].widgets[from.widget];
+            /// if columns are different do as usual - same column number within different widgets also okay
+            widget.loaded = false;
+            console.log(self.modules()[to.module].columns[to.column].widgets);
+            if(from.module !== to.module || from.column !== to.column){
+                // add it to the to location
+                self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
+                // remove original widget
+                self.modules()[from.module].columns[from.column].widgets.splice(from.widget, 1);
+            } else {
+                // manage the index numbers properly if they are within the same column
+                // if from < to first delete then add
+                if(from.widget < to.widget){
+                    self.modules()[from.module].columns[from.column].widgets.splice(from.widget, 1);
+                    self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
+                } else {
+                    // else first add than delete
+                    self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
+                    self.modules()[from.module].columns[from.column].widgets.splice(from.widget+1, 1);
+                }
+            }
+            self.removeExtraCols(); // After moving a widget is a column is empty delete it.
+            self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
+        }
+        this.resizeWidgets = function() {
+            $('.ht-column').each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
+               var setContentHeight = $(this).outerHeight(); // Height of the column
+                var contentHeight = $(this)[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
+                // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
+                var totalHeight = 0;
+                $(this).children('.ht-widget').each(function(){
+                    totalHeight = totalHeight+$(this).outerHeight();
+                })
+
+                // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
+                $(this).children('.ht-widget').each(function(){
+                    var childHeight = $(this).height();
+                    var newHeight;
+                    if(setContentHeight < contentHeight){
+                        newHeight = (childHeight/contentHeight)*setContentHeight;
+                    } else {
+                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                    }
+                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
+
+                    // While we are within widgets do other relevant things
+                    // resize iframes
+                    $(this).find('iframe').css({height : newHeight-60} );
+
+                    // show hide based on element width -- TODO: move this to higher level
+                    var width =  $(this).width();
+                    $(this).find('.ht-w-s').hide();
+                    $(this).find('.ht-w-m').hide();
+                    $(this).find('.ht-w-l').hide();
+                    if(width > 600){
+                        $(this).find('.ht-w-l').show();
+                    }
+                    if(width > 300 && width <= 600){
+                        $(this).find('.ht-w-m').show();
+                    }
+                    if(width <= 300 ){
+                        $(this).find('.ht-w-s').show();
+                    }
+                })
+
+            })
+        }
+        this.expandWidget = function(module, column, widget){
+            // create a column after this column
+            self.modules()[module].columns.splice(column+1,0, new build.column(620, []));
+            // move widget to this column
+            var from = { module : module, column : column, widget : widget}
+            var to = { module : module, column : column+1, widget : 0}
+            self.moveWidget(from, to);
+        }
+        // EXPOSE
         this.exposeInit = function(){
-            $(".expose-content").sortable({
+            $(".expose-modules").sortable({
                 placeholder: "ghost-element ht-tab ui-state-default",
                 beforeStop : function(event, ui){
+                    console.log(ui.item.index());
                     self.temp.stopIndex = ui.item.index();
-                    $( ".expose-content").sortable( "cancel" );
+                    $( ".expose-modules").sortable( "cancel" );
+                    console.log("Start", self.temp.startIndex, "Stop", self.temp.stopIndex )
                     self.moveModule(self.temp.startIndex, self.temp.stopIndex);
                 },
                 start : function(event, ui){
@@ -725,8 +867,153 @@ var modules = []; // created on load and checked at every resize
 
             })
         }
+        this.beginExpose = function(){
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var wrapperHeight = windowHeight-40;
+            var tab = wrapperHeight-80;
+            var adjheight = tab/2;
+            var adjpadding = tab/4;
+            $(".ghost-element").css('height', adjheight);
+            // get size of all modules
+            var modlens = 0; // full length of modules
+            $('.ht-tab').each(function(i, item) {
+                modlens += $(item).width() + 40;
+            });
 
+            for(var i = 0; i < self.modules().length; i++){
+                var o = self.modules()[i];
+                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
+                var width = (modwidth)/(modlens);   // The ratio of this module over all modules
+                var adjwidth = width*(windowWidth-(40*self.modules().length)-adjpadding/2); // calculate width, taking into account proper padding
+                o.exposeWidth = adjwidth; // assign the new widths to the model object
+                o.exposeHeight = adjheight;
+            }
+            $(".ghost-element").css('height', adjheight);
+            self.localExpose = true; // We can run expose in mithril view
+            self.canReformat = false; // Deactivate reformatting -- is this still necessary? yes but because we are using the same tab classes. Keep it for now.
+        }
+        this.endExpose = function(){
+            // Return view to normal
+            self.localExpose = false;
+            self.canReformat = true;
+        }
 
+        // MODULES
+        this.moveModule = function(from, to){       // Move module within the expose window. Gets triggered suring sortable in expose.
+            // get module object with From module index
+            var module = self.modules()[from];
+            // add to To index
+            // if from < to first delete then add
+            if(from < to){
+                self.modules().splice(from, 1);
+                self.modules().splice(to, 0, module);
+            } else {
+            // else first add than delete
+                self.modules().splice(to, 0, module);
+                self.modules().splice(from+1, 1);
+            }
+            m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
+        }
+        this.addModule = function() {
+            // This will eventually be selected from lists
+            self.modules().push(
+                new build.module("Added Module", 4, "pink", [
+                    new build.column(620, [
+                        new build.widget("Widget 13"),
+                        new build.widget("Widget 14")
+                    ])
+                ])
+            )
+            m.redraw();
+            $('#ht-wrapper').scrollTo($('.ht-tab:last'), 150,  {offset:-50});
+        }
+        this.removeModule = function(module_index){
+            self.modules().splice(module_index, 1);
+        }
+
+        // COLUMNS
+        this.addCol= function (module_index){
+            // is there an empty column?
+            var empty = false;
+            self.modules()[module_index].columns.map(function(item) {
+                if(item.widgets.length < 1 ){
+                    empty = true;
+                }
+            });
+            if(!empty){
+                self.modules()[module_index].columns.push({ width: 400, widgets : [], new : true});
+                self.updateSortable();
+                self.reformat();
+                //m.redraw();
+            }
+        }
+        this.removeExtraCols = function(){
+            self.modules().map(function(modules, modules_index){
+                modules.columns.map(function(column, column_index, array){
+                    if(column.widgets < 1){
+                        array.splice(column_index, 1);
+                    }
+                })
+            })
+            m.redraw();
+        }
+
+        // LAYOUT and INIT
+        this.saveWorkspace = function () {
+             console.log(self.modules());
+        }
+        this.reformat = function(){
+            var headfinal = $(window).width(); // final width of the header taking into account the navbar
+            var wH = $(window).height();
+            // resize ht-content based on module length
+            var totalLength = 0;
+            $('.ht-tab').each(function(){
+                totalLength += $(this).outerWidth()+100;
+            })
+            $('#ht-content').css('width', totalLength + 'px')
+
+            if(wH < 500){
+                self.canReformat = false;
+            } else {
+                self.canReformat = true;
+            }
+            if(self.canReformat){
+                var lensm = 2000;
+                $.each(self.modules(), function(i, module) {
+                    lensm += module.width + 40;
+                });
+                $('#ht-content').css('width', lensm +'px');
+                // Size wrapper elements
+                var wrapperH = wH-40;
+                var tab = wrapperH-80;
+                var content = tab-51;
+                var column =  content-10;
+                $('#ht-head').css({ width : headfinal + 'px' } );
+                $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
+                $('.ht-tab').css({ height: tab + 'px'});
+                $('.ht-tab-content').css({ height: content+'px'});
+                $('.ht-column').css({height: column});
+                $('.ht-add-column').css({height: column});
+                // Adjust slider on changes
+                $('#ht-slider').width( Math.pow(headfinal, 2) / $('#ht-content').width() + 'px')
+                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+                // Resize header modules
+                for(var i = 0; i < self.modules().length; i++){
+                    var o = self.modules()[i];
+                    var contentWidth = $('#ht-content').width();  // width of the module
+                    var headWidth = $('#ht-head').width();
+                    // +40 = fix for margin space
+                    var width = ($('.ht-tab[data-id="'+o.id+'"]').width()+40)/contentWidth*100;
+                    $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : (width-1)+'%'});
+                    // update column widths in the model
+                    o.columns.map(function(item, index, array){
+                        item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).width();
+                    })
+                }
+            }
+            self.resizeWidgets();
+        }
 
     }
 
@@ -764,7 +1051,7 @@ var modules = []; // created on load and checked at every resize
                             })
                         ]),
                         m('.expose-actions', [
-                            m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")]),
+                            m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")])
                         ])
 
                     ])
@@ -774,9 +1061,9 @@ var modules = []; // created on load and checked at every resize
         } else {
             return [
                 m("", { style: {"position": "absolute", "right": "0", "top": "0"}}, [
-                    m("div.pull-right", [
-                        m("button.btn.btn-primary.exposeOpen",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                        m("button.btn.btn-success",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
+                    m("div.pull-right.appBtnDiv", [
+                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
+                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
 
                     ])
                 ]),
@@ -791,7 +1078,7 @@ var modules = []; // created on load and checked at every resize
                     m("[id='ht-content']", [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.minimize){
-                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
+                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", {  'data-index' : module_index, 'data-id' : module.id}, [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m(".ht-windowBtn", [
                                                 m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
@@ -801,7 +1088,7 @@ var modules = []; // created on load and checked at every resize
                                         m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
                                     ])]
                                 }else {
-                                    return [" ", m(".ht-tab.ht-light-shadow.animated.fadeIn", {'data-index' : module_index,  'data-id' : module.id}, [
+                                    return [" ", m(".ht-tab.ht-light-shadow.animated.fadeIn", {'class' : module.css, 'data-index' : module_index,  'data-id' : module.id}, [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m("h3", module.title),
                                             m(".ht-windowBtn", [
@@ -811,6 +1098,7 @@ var modules = []; // created on load and checked at every resize
                                         ]),
                                         m(".ht-tab-content", [
                                             module.columns.map(function(column, column_index, column_array){
+                                                console.log(column);
                                                 if(column.widgets.length > 0 || column.new){
                                                     // If the view is not narrow in height show full.
                                                     return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
@@ -818,22 +1106,25 @@ var modules = []; // created on load and checked at every resize
                                                             if (column.widgets.length > 0) {
                                                                 return column.widgets.map(function(widget, widget_index, widget_array){
                                                                     if(widget.display){
-                                                                        return m(".ht-widget", { 'data-index' : widget_index, "style" : "height : "+widget.height+"px"}, [
-                                                                            m(".ht-widget-header", [
-                                                                                widget.title,
-                                                                                m(".ht-widget-actions", [
-                                                                                    m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index ) } } ),
-                                                                                    (function(){
-                                                                                        if(widget.closable){
-                                                                                            return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1);  ctrl.removeExtraCols(); }})
-                                                                                        }
-                                                                                    })()
-                                                                                ])
-                                                                            ]),
-                                                                            m(".ht-widget-body", [m("div.widget-body-inner", [m("", m.trust(
-                                                                                    // widget.content
-                                                                                    build.sample()
-                                                                            ))])] )
+                                                                        return m(".ht-widget", { 'data-index' : widget_index, "style" : "height : "+widget.height+"px", "class" : widget.css}, [
+                                                                            (function(){
+                                                                                if(!widget.hideHeader){
+                                                                                    return m(".ht-widget-header", [
+                                                                                        widget.title,
+                                                                                        m(".ht-widget-actions", [
+                                                                                            m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index ) } } ),
+                                                                                            (function(){
+                                                                                                if(widget.closable){
+                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1);  ctrl.removeExtraCols(); }})
+                                                                                                }
+                                                                                            })()
+                                                                                        ])
+                                                                                    ])
+                                                                                }
+                                                                            })(),
+
+                                                                            m(".ht-widget-body",  [m("div.widget-body-inner",{ id : "widget"+widget.id}, "") ])
+
                                                                         ])
 
                                                                     }
@@ -865,11 +1156,4 @@ var modules = []; // created on load and checked at every resize
 
     }
 
-    m.module(document.body, build);
 
-
-
-
-
-
-})();
