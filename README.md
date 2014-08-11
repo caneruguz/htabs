@@ -20,10 +20,13 @@ http://gulpjs.com/
 builds the distribution by running important tasks including concatenation, minification(we are not doing this yet, but will), compiling less files. 
 
 
+**Browserify**  
+http://browserify.org/
+Browserify handles dependencies and scope for js libraries. It uses the CommonJS method. All components need to be working with browserify. There is a gulp task that is takign care of applying browserify.  
+
 **Bootstrap**  
 http://getbootstrap.com/  
-forms the basic design with flat colors taken from elsewhere. 
-
+Forms the basic design with flat colors taken from elsewhere. If you are working with html you need to use the Bootstrap syntax. 
 
 **Mithril**  
 http://lhorie.github.io/mithril/  
