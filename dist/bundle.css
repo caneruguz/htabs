@@ -314,7 +314,7 @@ select{background:#fff!important}
 .glyphicon-tree-deciduous:before{content:"\e200"}
 *,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 html{font-size:10px;-webkit-tap-highlight-color:transparent}
-body{font-size:14px;line-height:1.42857143;color:#333;background-color:#fff}
+body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;background-color:#fff}
 button,input,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}
 a{color:#428bca;text-decoration:none}
 a:focus,a:hover{color:#2a6496;text-decoration:underline}
@@ -1483,7 +1483,7 @@ button.ui-button::-moz-focus-inner,input.ui-button::-moz-focus-inner{border:0;pa
 .ui-resizable-autohide .ui-resizable-handle,.ui-resizable-disabled .ui-resizable-handle{display:none}
 .ui-resizable-n{cursor:n-resize;height:7px;width:100%;top:-5px;left:0}
 .ui-resizable-s{cursor:s-resize;height:7px;width:100%;bottom:-5px;left:0}
-.ui-resizable-e{cursor:e-resize;width:7px;right:-5px;top:0;height:100%}
+.ui-resizable-e{cursor:col-resize;width:7px;right:-5px;top:0;height:100%}
 .ui-resizable-w{cursor:w-resize;width:7px;left:-5px;top:0;height:100%}
 .ui-resizable-se{cursor:se-resize;width:12px;height:12px;right:1px;bottom:1px}
 .ui-resizable-sw{cursor:sw-resize;width:9px;height:9px;left:-5px;bottom:-5px}
@@ -1738,36 +1738,6 @@ body .ui-tooltip{border-width:2px}
 .ui-corner-all,.ui-corner-bottom,.ui-corner-br,.ui-corner-right{border-bottom-right-radius:4px}
 .ui-widget-overlay{background:url(images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% #666;opacity:.5;filter:Alpha(Opacity=50)}
 .ui-widget-shadow{margin:-5px 0 0 -5px;padding:5px;background:url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x #000;opacity:.2;filter:Alpha(Opacity=20);border-radius:5px}
-body{font-family:Helvetica}
-.bg-blue{background-color:#45b29d}
-.bg-orange{background-color:#e27a3f}
-.bg-yellow{background-color:#efc94c}
-.tall{width:300px}
-.grande{width:600px}
-.venti{width:800px}
-.ht-tab{min-width:600px;border:1px solid #aaa;margin:10px 20px;padding:0;display:inline-block;vertical-align:top;background:#fff;box-shadow:0 0 5px #ccc}
-.ht-tab-header{color:#fff;padding:1px 10px}
-.ht-tab-header h3{font-weight:100;font-family:Helvetica Neue;letter-spacing:1px;margin:10px 0;font-size:25px}
-.ht-tab-header .fa{font-size:20px;font-weight:200}
-.ht-tab-header .ht-windowBtn{position:absolute;top:0;right:0;width:39px;background:rgba(255,255,255,.28);padding:5px 11px 0;margin-top:-1px}
-.ht-tab-content{background-color:#efefef;color:#333;padding:10px}
-.ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
-#ht-main{position:fixed;top:0;left:0;background-color:#789}
-#ht-head{height:26px;background-color:lightslategrey;color:#fff}
-#ht-content{padding:20px;width:5000px;overflow-y:scroll}
-.ht-hdiv{display:inline-block;padding:3px;text-align:center}
-#ht-wrapper{overflow:auto;background:url(images/wavegrid.png)}
-.ht-hdiv-content{white-space:nowrap;overflow:hidden}
-.grid{border:1px dashed #ccc;position:relative;width:100%}
-.grid>div{background:#CCC;height:400px;position:absolute;width:80px}
-.grid>div[data-ss-colspan='1']{width:160px}
-.grid>div[data-ss-colspan='2']{width:320px}
-.grid>div[data-ss-colspan='3']{width:480px}
-.grid>div[data-ss-colspan='4']{width:640px}
-.grid .ss-placeholder-child{background:0 0;border:1px dashed red}
-.gridster ul li{background:#fff;overflow:auto;list-style:none;border:1px solid #ccc;overflow-y:hidden}
-.gridster ul li .handle{width:100%;height:30px;background:#333}
-.ht-tab:after{content:"";display:table;clear:both}
 /*!
  *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
