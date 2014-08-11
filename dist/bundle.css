@@ -313,7 +313,6 @@ select{background:#fff!important}
 .glyphicon-cloud-upload:before{content:"\e198"}
 .glyphicon-tree-conifer:before{content:"\e199"}
 .glyphicon-tree-deciduous:before{content:"\e200"}
-*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 html{font-size:10px;-webkit-tap-highlight-color:transparent}
 body{font-size:14px;line-height:1.42857143;color:#333;background-color:#fff}
 button,input,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}
@@ -2675,6 +2674,7 @@ Copyright (c) 2014 Daniel Eden
 .fa-share-alt:before{content:"\f1e0"}
 .fa-share-alt-square:before{content:"\f1e1"}
 .fa-bomb:before{content:"\f1e2"}
+*,:after,:before{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 .ht-textarea{width:100%;border:1px dotted #ccc;padding:10px}
 .large-textarea{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .small-textarea{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
@@ -2697,7 +2697,7 @@ body{font-family:Helvetica}
 .tall{width:300px}
 .grande{width:600px}
 .venti{width:800px}
-.ht-tab{min-width:600px;margin:20px 20px 2px;padding:0;display:inline-block;vertical-align:top;background:#fff}
+.ht-tab{margin:0 20px;padding:0;display:inline-block;vertical-align:top;background:#fff}
 .ht-tab-minimized{width:60px;min-width:60px}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
@@ -2710,7 +2710,7 @@ body{font-family:Helvetica}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
 #ht-head{height:30px;background-color:lightslategrey;color:#fff}
-#ht-content{padding:10px;width:auto;overflow-y:scroll}
+#ht-content{padding:10px}
 .ht-hdiv{display:inline-block;padding:5px 3px;text-align:center;height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 #ht-slider{background-color:#646464;width:50px;height:15px;position:absolute}
 #ht-wrapper{overflow:auto;background:url(images/wavegrid.png)}
@@ -2743,7 +2743,7 @@ body{font-family:Helvetica}
 .expose-button:hover{background:#eee;color:#333;cursor:pointer}
 .ht-slider-wrap{position:relative;height:15px}
 .ht-w-s{background:#ccc}
-.appBtnDiv{background:rgba(255,255,255,.71);padding:5px 10px}
+.appBtnDiv{background:rgba(255,255,255,.71);padding:5px 10px;float:right;margin-top:-30px}
 .appBtn{margin:0 5px}
 .ht-wiki-edit{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .ht-comment-box{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}

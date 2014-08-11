@@ -1,3 +1,4 @@
+var logs = require('../logs/logs');
 
 var comments = {};
 
@@ -113,3 +114,5 @@ comments.view = function(ctrl){
         ])
     ])
 }
+
+module.exports = comments;

@@ -3,7 +3,7 @@ var logs = {};
 
 // Assign model directly to loaded content
 logs.List = m.prop("")
-m.request({method: "GET", url: "../components/alogs/logs.json"}).then(logs.List);
+m.request({method: "GET", url: "../components/logs/logs.json"}).then(logs.List);
 
 // Model for individual logs
 logs.singleLog = function(logType, logContent){
@@ -53,3 +53,5 @@ logs.view = function(controller){
         ])
     ]
 }
+
+module.exports = logs;

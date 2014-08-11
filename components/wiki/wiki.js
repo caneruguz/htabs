@@ -1,3 +1,5 @@
+var logs = require('../logs/logs');
+
 var wiki = {};
 
 wiki.data = m.prop({});
@@ -75,3 +77,5 @@ wiki.view = function (controller) {
 
 
 };
+
+module.exports = wiki;

@@ -38,484 +38,6 @@ License: MIT
 */
 Mithril=m=new function a(b){function c(){for(var a,b=arguments,c=(!("[object Object]"!=z.call(b[1])||"tag"in b[1]||"subtree"in b[1])),d=c?b[1]:{},e=("class"in d?"class":"className"),f={tag:"div",attrs:{}},g=[];a=A.exec(b[0]);)if(""==a[1])f.tag=a[2];else if("#"==a[1])f.attrs.id=a[2];else if("."==a[1])g.push(a[2]);else if("["==a[3][0]){var h=B.exec(a[3]);f.attrs[h[1]]=h[3]||(h[2]?"":!0)}g.length>0&&(f.attrs[e]=g.join(" ")),f.children=c?b[2]:b[1];for(var i in d)f.attrs[i]=i==e?(f.attrs[i]||"")+" "+d[i]:d[i];return f}function d(a,c,g,j,k,l,m,n,o,p,q){if((null===k||void 0===k)&&(k=""),"retain"===k.subtree)return l;var r=z.call(l),s=z.call(k);if(r!=s){if(null!==l&&void 0!==l)if(g&&g.nodes){var t=n-j,u=t+("[object Array]"==s?k:l.nodes).length;f(g.nodes.slice(t,u),g.slice(t,u))}else f(l.nodes,l);l=new k.constructor,l.nodes=[]}if("[object Array]"==s){k=i(k);for(var v=[],w=l.length===k.length,x=0,y=1,A=2,B=3,C={},D=[],E=!1,F=0;F<l.length;F++)l[F]&&l[F].attrs&&void 0!==l[F].attrs.key&&(E=!0,C[l[F].attrs.key]={action:y,index:F});if(E){for(var F=0;F<k.length;F++)if(k[F]&&k[F].attrs)if(void 0!==k[F].attrs.key){var G=k[F].attrs.key;C[G]=C[G]?{action:B,index:F,from:C[G].index,element:a.childNodes[C[G].index]}:{action:A,index:F}}else D.push({index:F,element:a.childNodes[F]});for(var H,I=Object.keys(C).map(function(a){return C[a]}),J=I.sort(function(a,b){return a.action-b.action||a.index-b.index}),K=l.slice(),F=0;H=J[F];F++){if(H.action==y&&(f(l[H.index].nodes,l[H.index]),K.splice(H.index,1)),H.action==A){var L=b.document.createElement("div");L.key=k[H.index].attrs.key,a.insertBefore(L,a.childNodes[H.index]),K.splice(H.index,0,{attrs:{key:k[H.index].attrs.key},nodes:[L]})}H.action==B&&(a.childNodes[H.index]!==H.element&&a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.from])}for(var F=0;F<D.length;F++){var H=D[F];a.insertBefore(H.element,a.childNodes[H.index]),K[H.index]=l[H.index]}l=K,l.nodes=[];for(var M,F=0;M=a.childNodes[F];F++)l.nodes.push(M)}for(var F=0,N=0;F<k.length;F++){var O=d(a,c,l,n,k[F],l[N],m,n+x||x,o,p,q);if(void 0!==O){O.nodes.intact||(w=!1);var P=O instanceof Array;x+=P?O.length:1,l[N++]=O}}if(!w){for(var F=0;F<k.length;F++)void 0!==l[F]&&(v=v.concat(l[F].nodes));for(var Q,F=0;Q=l.nodes[F];F++)null!==Q.parentNode&&v.indexOf(Q)<0&&Q.parentNode.removeChild(Q);for(var Q,F=l.nodes.length;Q=v[F];F++)null===Q.parentNode&&a.appendChild(Q);k.length<l.length&&(l.length=k.length),l.nodes=v}}else if("[object Object]"==s){if((k.tag!=l.tag||Object.keys(k.attrs).join()!=Object.keys(l.attrs).join()||k.attrs.id!=l.attrs.id)&&(f(l.nodes),l.configContext&&"function"==typeof l.configContext.onunload&&l.configContext.onunload()),"string"!=typeof k.tag)return;var Q,R=0===l.nodes.length;k.attrs.xmlns?p=k.attrs.xmlns:"svg"===k.tag&&(p="http://www.w3.org/2000/svg"),R?(Q=void 0===p?b.document.createElement(k.tag):b.document.createElementNS(p,k.tag),l={tag:k.tag,children:void 0!==k.children?d(Q,k.tag,void 0,void 0,k.children,l.children,!0,0,k.attrs.contenteditable?Q:o,p,q):void 0,attrs:e(Q,k.tag,k.attrs,{},p),nodes:[Q]},a.insertBefore(Q,a.childNodes[n]||null)):(Q=l.nodes[0],e(Q,k.tag,k.attrs,l.attrs,p),l.children=d(Q,k.tag,void 0,void 0,k.children,l.children,!1,0,k.attrs.contenteditable?Q:o,p,q),l.nodes.intact=!0,m===!0&&a.insertBefore(Q,a.childNodes[n]||null)),"[object Function]"==z.call(k.attrs.config)&&q.push(k.attrs.config.bind(b,Q,!R,l.configContext=l.configContext||{},l))}else{var v;0===l.nodes.length?(k.$trusted?v=h(a,n,k):(v=[b.document.createTextNode(k)],a.insertBefore(v[0],a.childNodes[n]||null)),l="string number boolean".indexOf(typeof k)>-1?new k.constructor(k):k,l.nodes=v):l.valueOf()!==k.valueOf()||m===!0?(v=l.nodes,o&&o===b.document.activeElement||(k.$trusted?(f(v,l),v=h(a,n,k)):"textarea"===c?a.value=k:o?o.innerHTML=k:((1==v[0].nodeType||v.length>1)&&(f(l.nodes,l),v=[b.document.createTextNode(k)]),a.insertBefore(v[0],a.childNodes[n]||null),v[0].nodeValue=k)),l=new k.constructor(k),l.nodes=v):l.nodes.intact=!0}return l}function e(a,c,d,e,f){for(var g in d){var h=d[g],i=e[g];if(!(g in e)||i!==h||a===b.document.activeElement){if(e[g]=h,"config"===g)continue;if("function"==typeof h&&0==g.indexOf("on"))a[g]=j(h,a);else if("style"===g&&"object"==typeof h){for(var k in h)(void 0===i||i[k]!==h[k])&&(a.style[k]=h[k]);for(var k in i)k in h||(a.style[k]="")}else void 0!==f?"href"===g?a.setAttributeNS("http://www.w3.org/1999/xlink","href",h):"className"===g?a.setAttribute("class",h):a.setAttribute(g,h):"value"===g&&"input"===c?a.value!==h&&(a.value=h):g in a&&"list"!=g&&"style"!=g?a[g]=h:a.setAttribute(g,h)}}return e}function f(a,b){for(var c=a.length-1;c>-1;c--)a[c]&&a[c].parentNode&&(a[c].parentNode.removeChild(a[c]),b=[].concat(b),b[c]&&g(b[c]));0!=a.length&&(a.length=0)}function g(a){if(a.configContext&&"function"==typeof a.configContext.onunload&&a.configContext.onunload(),a.children)if(a.children instanceof Array)for(var b=0;b<a.children.length;b++)g(a.children[b]);else a.children.tag&&g(a.children)}function h(a,c,d){var e=a.childNodes[c];if(e){var f=1!=e.nodeType,g=b.document.createElement("span");f?(a.insertBefore(g,e),g.insertAdjacentHTML("beforebegin",d),a.removeChild(g)):e.insertAdjacentHTML("beforebegin",d)}else a.insertAdjacentHTML("beforeend",d);for(var h=[];a.childNodes[c]!==e;)h.push(a.childNodes[c]),c++;return h}function i(a){for(var b=[],c=0;c<a.length;c++){var d=a[c];d instanceof Array?b.push.apply(b,i(d)):b.push(d)}return b}function j(a,b){return function(d){d=d||event,c.startComputation();try{return a.call(b,d)}finally{I||(I=-1),c.endComputation()}}}function k(a){var b=D.indexOf(a);return 0>b?D.push(a)-1:b}function l(){for(var a=0;a<F.length;a++)H[a]&&c.render(F[a],G[a].view(H[a]));J&&(J(),J=null),I=null}function m(a){return a.slice(M[c.route.mode].length)}function n(a,b,d){O={};var e=d.indexOf("?");-1!==e&&(O=s(d.substr(e+1,d.length)),d=d.substr(0,e));for(var f in b){if(f==d)return o(a),c.module(a,b[f]),!0;var g=new RegExp("^"+f.replace(/:[^\/]+?\.{3}/g,"(.*?)").replace(/:[^\/]+/g,"([^\\/]+)")+"/?$");if(g.test(d))return o(a),d.replace(g,function(){for(var d=f.match(/:[^\/]+/g)||[],e=[].slice.call(arguments,1,-2),g=0;g<d.length;g++)O[d[g].replace(/:|\./g,"")]=t(e[g]);c.module(a,b[f])}),!0}}function o(a){var b=k(a);f(a.childNodes,E[b]),E[b]=void 0}function p(a){a=a||event,a.ctrlKey||a.metaKey||2==a.which||(a.preventDefault(),c.route(a.currentTarget[c.route.mode].slice(M[c.route.mode].length)))}function q(){"hash"!=c.route.mode&&b.location.hash?b.location.hash=b.location.hash:b.scrollTo(0,0)}function r(a,b){var c=[];for(var d in a){var e=b?b+"["+d+"]":d,f=a[d];c.push("object"==typeof f?r(f,e):encodeURIComponent(e)+"="+encodeURIComponent(f))}return c.join("&")}function s(a){for(var b=a.split("&"),c={},d=0;d<b.length;d++){var e=b[d].split("=");c[t(e[0])]=e[1]?t(e[1]):1===e.length?!0:""}return c}function t(a){return decodeURIComponent(a.replace(/\+/g," "))}function u(a){return a}function v(a){var c=new b.XMLHttpRequest;if(c.open(a.method,a.url,!0,a.user,a.password),c.onreadystatechange=function(){4===c.readyState&&(c.status>=200&&c.status<300?a.onload({type:"load",target:c}):a.onerror({type:"error",target:c}))},a.serialize==JSON.stringify&&"GET"!=a.method&&c.setRequestHeader("Content-Type","application/json; charset=utf-8"),"function"==typeof a.config){var d=a.config(c,a);void 0!==d&&(c=d)}return c.send("GET"==a.method?"":a.data),c}function w(a,b,c){return b&&Object.keys(b).length>0&&("GET"==a.method?a.url=a.url+(a.url.indexOf("?")<0?"?":"&")+r(b):a.data=c(b)),a}function x(a,b){var c=a.match(/:[a-z]\w+/gi);if(c&&b)for(var d=0;d<c.length;d++){var e=c[d].slice(1);a=a.replace(c[d],b[e]),delete b[e]}return a}var y,z={}.toString,A=/(?:(^|#|\.)([^#\.\[\]]+))|(\[.+?\])/g,B=/\[(.+?)(?:=("|'|)(.*?)\2)?\]/,C={insertAdjacentHTML:function(a,c){b.document.write(c),b.document.close()},appendChild:function(a){void 0===y&&(y=b.document.createElement("html")),"HTML"==a.nodeName?y=a:y.appendChild(a),b.document.documentElement&&b.document.documentElement!==y?b.document.replaceChild(y,b.document.documentElement):b.document.appendChild(y)},insertBefore:function(a){this.appendChild(a)},childNodes:[]},D=[],E={};c.render=function(a,c){var e=[];if(!a)throw new Error("Please ensure the DOM element exists before rendering a template into it.");var g=k(a),h=a==b.document||a==b.document.documentElement?C:a;void 0===E[g]&&f(h.childNodes),E[g]=d(h,null,void 0,void 0,c,E[g],!1,0,null,void 0,e);for(var i=0;i<e.length;i++)e[i]()},c.trust=function(a){return a=new String(a),a.$trusted=!0,a};var F=[],G=[],H=[],I=0,J=null;c.module=function(a,b){var d=F.indexOf(a);0>d&&(d=F.length);var e=!1;if(H[d]&&"function"==typeof H[d].onunload){var f={preventDefault:function(){e=!0}};H[d].onunload(f)}e||(c.startComputation(),F[d]=a,G[d]=b,H[d]=new b.controller,c.endComputation())},c.redraw=function(){var a=b.cancelAnimationFrame||b.clearTimeout,c=b.requestAnimationFrame||b.setTimeout;I?(a(I),I=c(l,0)):(l(),I=c(function(){I=null},0))};var K=0;c.startComputation=function(){K++},c.endComputation=function(){K=Math.max(K-1,0),0==K&&c.redraw()},c.withAttr=function(a,b){return function(c){c=c||event,b(a in c.currentTarget?c.currentTarget[a]:c.currentTarget.getAttribute(a))}};var L,M={pathname:"",hash:"#",search:"?"},N=function(){},O={};c.route=function(){if(0===arguments.length)return L;if(3===arguments.length&&"string"==typeof arguments[1]){var a=arguments[0],d=arguments[1],e=arguments[2];N=function(b){var f=L=m(b);n(a,e,f)||c.route(d,!0)};var f="hash"==c.route.mode?"onhashchange":"onpopstate";b[f]=function(){L!=m(b.location[c.route.mode])&&N(b.location[c.route.mode])},J=q,b[f]()}else if(arguments[0].addEventListener){var g=arguments[0],h=arguments[1];g.href.indexOf(M[c.route.mode])<0&&(g.href=b.location.pathname+M[c.route.mode]+g.pathname),h||(g.removeEventListener("click",p),g.addEventListener("click",p))}else if("string"==typeof arguments[0]){L=arguments[0];var i="object"==typeof arguments[1]?r(arguments[1]):null;i&&(L+=(-1===L.indexOf("?")?"?":"&")+i);var j=(3==arguments.length?arguments[2]:arguments[1])===!0;b.history.pushState?(J=function(){b.history[j?"replaceState":"pushState"](null,b.document.title,M[c.route.mode]+L),q()},N(M[c.route.mode]+L)):b.location[c.route.mode]=L}},c.route.param=function(a){return O[a]},c.route.mode="search",c.prop=function(a){var b=function(){return arguments.length&&(a=arguments[0]),a};return b.toJSON=function(){return a},b};var P={};return c.deferred=function(){var a=[],b=[],d=P,e=P,f=c.prop(),g={resolve:function(c){d===P&&f(d=c);for(var e=0;e<a.length;e++)a[e](c);a.length=b.length=0},reject:function(c){e===P&&(e=c);for(var d=0;d<b.length;d++)b[d](c);a.length=b.length=0},promise:f};return g.promise.resolvers=a,g.promise.then=function(f,g){function h(a,b){return function(c){try{var d=b(c);d&&"function"==typeof d.then?d.then(i[a],g):i[a](void 0!==d?d:c)}catch(e){if(e instanceof Error&&e.constructor!==Error)throw e;i.reject(e)}}}var i=c.deferred();return f||(f=u),g||(g=u),d!==P?h("resolve",f)(d):e!==P?h("reject",g)(e):(a.push(h("resolve",f)),b.push(h("reject",g))),i.promise},g},c.sync=function(a){function b(a,b){return function(c){return g[a]=c,b||(d="reject"),0==--f&&(e.promise(g),e[d](g)),c}}for(var d="resolve",e=c.deferred(),f=a.length,g=new Array(f),h=0;h<a.length;h++)a[h].then(b(h,!0),b(h,!1));return e.promise},c.request=function(a){a.background!==!0&&c.startComputation();var b=c.deferred(),d=a.serialize=a.serialize||JSON.stringify,e=a.deserialize=a.deserialize||JSON.parse,f=a.extract||function(a){return 0===a.responseText.length&&e===JSON.parse?null:a.responseText};return a.url=x(a.url,a.data),a=w(a,a.data,d),a.onload=a.onerror=function(d){try{d=d||event;var g=("load"==d.type?a.unwrapSuccess:a.unwrapError)||u,h=g(e(f(d.target,a)));if("load"==d.type)if(h instanceof Array&&a.type)for(var i=0;i<h.length;i++)h[i]=new a.type(h[i]);else a.type&&(h=new a.type(h));b["load"==d.type?"resolve":"reject"](h)}catch(d){if(d instanceof SyntaxError)throw new SyntaxError("Could not parse HTTP response. See http://lhorie.github.io/mithril/mithril.request.html#using-variable-data-formats");if(d instanceof Error&&d.constructor!==Error)throw d;b.reject(d)}a.background!==!0&&c.endComputation()},v(a),b.promise},c.deps=function(a){return b=a},c.deps.factory=a,c}("undefined"!=typeof window?window:{}),"undefined"!=typeof module&&null!==module&&(module.exports=m),"function"==typeof define&&define.amd&&define(function(){return m});
 //# sourceMappingURL=mithril.min.map
-
-var logs = {};
-
-// Assign model directly to loaded content
-logs.List = m.prop("")
-m.request({method: "GET", url: "../components/alogs/logs.json"}).then(logs.List);
-
-// Model for individual logs
-logs.singleLog = function(logType, logContent){
-    this.logText = "";
-    switch(logType){
-        case "comment" :
-            this.logText =  " commented ";
-            break;
-        case "wiki" :
-            this.logText = " changed wiki to version ";
-            break;
-    }
-    this.logUserID = 1;
-    this.logUser = "Caner";;
-    this.logDate = new Date();
-    this.logContent = logContent;
-}
-
-// Log actions, add log
-logs.controller = function(){
-    // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
-    // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
-
-}
-
-// Log layout, loads directly from the model, not through the controller.
-logs.view = function(controller){
-    return [
-        m("table.table.table-condensed", [
-            m("tbody", [
-                logs.List().map(function(log, index){
-                    return m("tr", [
-                        m("td", [
-                            m("span.text-muted", log.logDate)
-                        ]),
-                        m("td", [
-                            m("a[href='user/1']", log.logUser),
-                            " ",
-                            m("span.logText", log.logText),
-                            m("i", log.logContent),
-                            ".\n                        "
-                        ])
-                    ])
-                })
-
-            ])
-        ])
-    ]
-}
-
-var comments = {};
-
-// Load existing comments from server
-comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
-
-// Comment Model, uses information from the App about User.
-comments.comment = function(content){
-    this.userid = 1;
-    this.username = "Caner";
-    this.content = content;
-    this.date = new Date();
-    this.show = true;
-}
-
-comments.controller = function (){
-    var self = this;
-    this.comments = comments.List;
-    // Filter search term to use for filtering later.
-    this.filterText = m.prop("");
-    // Declare and empty setter for content of the comment to bind it to the form.
-    this.content = m.prop("");
-    // add comment
-    this.add = function () {
-        if(self.content()){
-            // New comment
-            self.comments().push(new comments.comment(self.content()));
-            // Log this behavior by adding a new Log model
-            logs.List().push(new logs.singleLog("comment", self.content()));
-            // Reset the form for new comments.
-            self.content("");
-        }
-
-    }
-    // filtering
-    this.filter = function (){
-        var result;
-        // If filtertext is set run filter
-        if(self.filterText()){
-            // Go through each comment
-            self.comments().map(function(comment, index){
-                var text = self.filterText().toLowerCase()
-                result = comment.content.toLowerCase().indexOf(text);
-                // Compare text
-                if(result !== -1){
-                    // If found, add to comment an attribute called cmshow
-                    comment.show = true;
-                } else {
-                    // If not found, add to the comment and attribute called cmhide
-                    comment.show = false;
-                }
-            });
-        } else {
-        // If filtertext is not set reset view to show everything
-            self.comments().map(function(comment, index){
-                comment.show = true;
-            });
-        }
-    }
-    this.runFilter = function(e){
-        m.withAttr("value", self.filterText)(e);
-        console.log(self.comments())
-        self.filter();
-    }
-}
-
-// Loads commenting form and list of comments
-comments.view = function(ctrl){
-    return m(".container-fluid", [m(".row", [
-        m(".col-sm-12", [
-            m(".col-xs-12[id='cm-comment']", [
-                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
-                 ]),
-                m("hr"),
-                m("[id='cm-boxWrapper']", [
-                    m(".row", [
-                        m(".col-xs-9", [
-                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
-                        ]),
-                        m(".col-xs-3", [
-                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
-                        ])
-                    ]),
-                    m(".row", [
-                        m(".col-xs-12[id='cm-commentList']", [
-                            m("table.table.table-condensed", [
-                                m("tbody", [
-                                    ctrl.comments().map(function(comment, index){
-                                       console.log("Show", comment.show)
-                                        if(comment.show){
-                                            return m("tr", [
-                                                m("td", [
-                                                    m("b", comment.username)
-                                                ]),
-                                                m("td", comment.content),
-                                                m("td", [
-                                                    m("span.text-muted", comment.date)
-                                                ])
-                                            ])
-                                        }
-                                    })
-                                ])
-                            ])
-                        ])
-                    ])
-                ])
-            ])
-        ]),
-        m(".col-sm-4.col-xs-12", [
-            m("[id='cm-logs']", [
-
-            ])
-        ])
-    ])
-}
-
-dashboard = {}
-
-dashboard.html= m.prop("");
-m.request({method: "GET", url: "../components/dashboard/dashboard.html", deserialize: function(value){ return value;  }}).then(dashboard.html);
-
-dashboard.controller = function(){
-    this.html = dashboard.html;
-}
-
-dashboard.view = function(ctrl){
-    return m.trust(ctrl.html());
-}
-var wiki = {};
-
-wiki.data = m.prop({});
-m.request({method: "GET", url: '../components/wiki/wiki.json'}).then(wiki.data)
-
-wiki.model = function(){
-    this.title = m.prop(wiki.data().title);
-    this.content = m.prop(wiki.data().content);
-    this.version = m.prop(wiki.data().version)
-}
-// Long way of binding the data to view
-wiki.controller = function(){
-    var self = this;
-    this.title = m.prop(wiki.data().title);
-    this.content = m.prop(wiki.data().content);
-    this.version = m.prop(wiki.data().version);
-
-    this.edit = m.prop(false);
-
-
-    this.toggleView = function(){
-        if(self.edit()){
-            // save
-            self.version(self.version()+1);
-            logs.List().push(new logs.singleLog("wiki", self.version()));
-            self.edit(false);
-        } else {
-
-            self.edit(true);
-        }
-    }
-    return self;
-}
-
-// Wiki html
-wiki.view = function (controller) {
-    if(controller.edit()){
-        return m(".panel.panel-default",  [
-            m(".panel-heading", [
-                m(".row", [
-                    m(".col-md-9", [
-                        m("span", "Change Title: "), m("input.form-control", { onchange: m.withAttr("value", controller.title), value: controller.title()} )
-                    ]),
-                    m(".col-md-3.cm-wikiBar", [
-                        m(".btn-group", [
-                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView },  m("i.fa.fa-save", " Save"))
-                        ])
-                    ])
-                ])
-            ]),
-            m(".panel-body", [
-                m("textarea.ht-wiki-edit", { onchange: m.withAttr("value", controller.content), value: controller.content()} )
-            ])
-        ])
-    } else {
-        return m(".panel", [
-            m(".panel-heading", [
-                m(".row", [
-                    m(".col-md-9", [
-                        m("h2.panel-title", controller.title())
-                    ]),
-                    m(".col-md-3.cm-wikiBar", [
-                        m(".btn-group", [
-                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView }, m("i.fa.fa-pencil", " Edit"))
-                        ])
-                    ])
-                ])
-            ]),
-            m(".panel-body", [
-                m("p#wiki-preview", controller.content())
-            ]),
-            m(".panel-footer", " Version " + controller.version())
-        ])
-    }
-
-
-};
-
-/*
- *   Jquery Exposé plugin by Alex Schiller
- *   Shrinks the contents of selected element to fit window width in the Mac expose style.
- */
-(function($) {
-    $.fn.expose = function(options) {
-
-        // Default options
-        var settings = $.extend({
-            min : 300,
-            mithril : null,  // mithril module name to tie to controller variables
-            complete : null
-        }, options);
-
-        var ctrl = settings.mithril;
-        var el = this;   // The element we run the plugin on.
-
-        $(document).keyup(function(e) {
-            if (e.keyCode == 27) {$('#exposeOff').click(), $('#exposeFalse').click()}   // esc
-        });
-
-        $('#exposeTrue').click(function(){
-            ctrl.canReformat = false;
-            ctrl.exposeOn = true;
-            el.scrollTo(el, 0,  {offset:-1*$('#ht-content').width()});
-            $('#exposeTrue').hide();
-            $('#exposeFalse').show();
-
-            $('#exLeftNav').show();
-            $('#exRightNav').show();
-
-            $('#exposebtns').fadeIn();
-
-            $('#ht-head').slideUp(200);
-
-
-            $('#exRightNav').css('opacity', 1-el.scrollLeft()/$('#ht-content').width());
-            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
-            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
-
-
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            var adjbtn = tab*0.25;
-            var modlens = 0; // full length of mods
-            var modsmin = settings.min;
-            var newmodlens = 900; // start with a bit of extra room just in case
-            // get size of all mods
-            $('#exposebtns').css('bottom', adjbtn + 'px');
-            $.each(ctrl.modules(), function(i, module) {
-                modlens += module.width + 40;
-            });
-
-            // resize all content
-
-            for(var i = 0; i < ctrl.modules().length; i++){
-                var o = ctrl.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth-40)/(modlens+80);
-                var adjwidth = width*headfinal;
-
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                if(adjwidth < 300){
-                    newmodlens += 300;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : '300px', height : adjheight +'px' }, { duration : 200, queue : false } );
-                }else{
-                    newmodlens += adjwidth;
-                    $('.ht-tab[data-id="'+o.id+'"]').animate( { width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
-                }
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').css('width', newmodlens +'px');
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
-            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
-        });
-
-        $('#exposeFalse').click(function(){
-            ctrl.canReformat = true;
-            ctrl.exposeOn = false;
-            $('#exposeTrue').show();
-            $('#exposeFalse').hide();
-            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
-            $('#ht-head').slideDown(200);
-            $('#exposebtns').fadeOut();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-
-
-
-            for(var i = 0; i < ctrl.modules().length; i++){
-                var o = ctrl.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-
-                setTimeout(function(){
-                    ctrl.reformat();
-                    ctrl.resizeContent();
-                }, 200);
-
-            }
-            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
-            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
-            ctrl.resizeWidgets();
-            ctrl.reformat();
-
-        });
-
-
-        // shrink the state to show all mods
-        $('#exposeOn').click(function(){
-            ctrl.canReformat = false;
-            $('#exposeOn').hide();
-            $('#exposeOff').show();
-            var headfinal = $(window).width();
-            var wH = $(window).height();
-            var wrapperH = wH-40;
-            var tab = wrapperH-80;
-            var adjheight = tab/2;
-            var adjpadding = tab/4;
-            $(".ghost-element").css('height', adjheight);
-            var modlens = 0; // full length of mods
-
-            $('#ht-content').switchClass("", "dim-background", 200, "easeInOutQuad" );
-
-            // get size of all mods
-            $('.ht-tab').each(function(i, item) {
-                console.log("module.width", $(item).width());
-                modlens += $(item).width() + 40;
-            });
-
-            for(var i = 0; i < ctrl.modules().length; i++){
-                var o = ctrl.modules()[i];
-                var contentWidth = $('#ht-content').width();  // width of the module
-                var headWidth = $('#ht-head').width();
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth)/(modlens);
-                console.log("Width", width, "modwith", modwidth, "modlens", modlens);
-                var adjwidth = width*(headfinal-(40*ctrl.modules().length)-adjpadding/2);
-                console.log("adjwidth", adjwidth, "id", o.id);
-
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').hide();
-                $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width', modwidth);
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { minWidth : 0, width : adjwidth+'px', height : adjheight +'px' }, { duration : 200, queue : false } );
-                $( "#ht-content" ).sortable("enable");
-            }
-            $('#ht-content').animate({'padding': adjpadding + 'px', 'padding-left': adjpadding/2 + 'px'}, { duration : 200, queue : false } );
-            $('.ht-tab').removeClass('ht-light-shadow').addClass('ht-dark-shadow');
-
-        });
-
-        // re expand the state
-        $('#exposeOff').click(function(){
-            ctrl.canReformat = true;
-            $('#exposeOn').show();
-            $('#exposeOff').hide();
-
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
-            var wH = $(window).height();
-            var wrapperH = wH-26;
-            var tab = wrapperH-60;
-            $('#ht-content').switchClass("dim-background", "", 200, "easeInOutQuad" );
-
-            for(var i = 0; i < ctrl.modules().length; i++){
-                var o = ctrl.modules()[i];
-                var width = $('.ht-tab[data-id="'+o.id+'"]').attr('restore-width');
-                $('.ht-tab[data-id="'+o.id+'"]').animate( { width : width},{ duration : 200, queue : false } );
-                $('.ht-tab[data-id="'+o.id+'"] .ht-tab-content').show();
-                $("#ht-content").sortable("disable");
-                setTimeout(function(){
-                    ctrl.reformat();
-                }, 200);
-            }
-            $('#ht-content').animate({'padding': '20px'},{ duration : 200, queue : false } );
-            $('.ht-tab').removeClass('ht-dark-shadow').addClass('ht-light-shadow');
-            ctrl.resizeWidgets();
-            ctrl.reformat();
-
-        });    // let escape key exit expanded state
-
-        $(function() {
-            $("#ht-content").sortable({
-                placeholder: "ghost-element ht-tab ui-state-default"
-            });
-
-            $("#ht-content").sortable( "disable" );
-            $("#ht-content").disableSelection();
-        });
-
-        el.on('scroll', function(){
-            $('#exRightNav').css('opacity', 1-el.scrollLeft()/($('#ht-content').width()-$(window).width()));
-            $('#exLeftNav').css('opacity', el.scrollLeft()/$('#ht-content').width());
-        });
-
-        // Run the complete function if there is one
-        if ( $.isFunction( settings.complete ) ) {
-            settings.complete.call( this );
-        }
-
-    // Return the element so jquery can chain it
-    return this;
-
-    }
-
-}(jQuery));
-
 /*
  *   Jquery Scroller plugin by Alex Schiller
  *   Provides handles for scrolling.
@@ -572,8 +94,13 @@ wiki.view = function (controller) {
 
 }(jQuery));
 
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var logs = require('../components/logs/logs');
+var dashboard = require('../components/dashboard/dashboard');
+var comments = require('../components/comments/comments')
+var wiki = require('../components/wiki/wiki')
 
-    // Initialize the mithril application module. -- this will be broken down in larger implementation
+// Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
 //    // Get sample html content
 //    build.sample = m.prop("");
@@ -615,49 +142,8 @@ wiki.view = function (controller) {
         this.type = "normal"
     }
 
-
-//    // Our custom code to create base modules. -- In the larger app this will be loaded or defaults applied. In this case it's building an example .
-//    build.create = function(){
-//        return m.prop([
-//            new build.module("Dashboard", 0, "none", [
-//                new build.column(400, [
-//                    new build.widget("Welcome to Dashboard", "", "", true)
-//                ])
-//            ], "dashboard"
-//            ),
-//            new build.module("Reproducibility Project: Psychology", 1, "blue", [
-//                new build.column(240, [
-//                    new build.widget("Contributors", build.sample()),
-//                    new build.widget("Activity", "", "", true),
-//                    new build.widget("Citation")
-//                ]),
-//                new build.column(620, [
-//                    new build.widget("Wiki", "<iframe src='https://osf.io/ezcuj/wiki/home/'></iframe>"),
-//                    new build.widget("Files", build.sample())
-//                ])
-//            ]),
-//            new build.module(null, null, "yellow", [
-//                new build.column(400,  [
-//                    new build.widget("Wiki","","",true),
-//                    new build.widget("Component List")
-//                ]),
-//                new build.column(240, [
-//                    new build.widget("Files"),
-//                    new build.widget("View File")
-//                ])
-//            ]),
-//            new build.module("Economy Lab", 3, "orange", [
-//                new build.column( 400, [
-//                    new build.widget("Contributors"),
-//                    new build.widget("Components")
-//                ])
-//            ])
-//        ])
-//    }
-
-
      // Controller
-    build.controller = function(){
+     build.controller = function(){
         var self = this;  // use self for binding inner scopes:
         this.modules = build.workspace; // Assign modules to the model we created. observableness is set in the create function.
 
@@ -964,7 +450,7 @@ wiki.view = function (controller) {
              console.log(self.modules());
         }
         this.reformat = function(){
-            var headfinal = $(window).width(); // final width of the header taking into account the navbar
+            var headfinal = $(window).width();
             var wH = $(window).height();
             // resize ht-content based on module length
             var totalLength = 0;
@@ -985,11 +471,12 @@ wiki.view = function (controller) {
                 });
                 $('#ht-content').css('width', lensm +'px');
                 // Size wrapper elements
-                var wrapperH = wH-40;
-                var tab = wrapperH-80;
+                var wrapperH = wH-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
+                var tab = wrapperH-35; // wrapping parent ht-content has a total of 20px padding on top and bottom with additional 15px for the scroll bars;
                 var content = tab-51;
                 var column =  content-10;
-                $('#ht-head').css({ width : headfinal + 'px' } );
+                var head = headfinal -75; // allowing room for expose buttons, element width is 75px
+                $('#ht-head').css({ width : head + 'px' } );
                 $('#ht-wrapper').css({ width : headfinal + 'px', height: wrapperH + "px" } );
                 $('.ht-tab').css({ height: tab + 'px'});
                 $('.ht-tab-content').css({ height: content+'px'});
@@ -1060,19 +547,23 @@ wiki.view = function (controller) {
             ]
         } else {
             return [
-                m("", { style: {"position": "absolute", "right": "0", "top": "0"}}, [
-                    m("div.pull-right.appBtnDiv", [
-                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
+               m(".ht-head-wrapper", [
+                   m("[id='ht-head']", [
+                       ctrl.modules().map(function(module, module_index, module_array){
+                           return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
 
-                    ])
-                ]),
-                m("[id='ht-head']", [
-                    ctrl.modules().map(function(module, module_index, module_array){
-                        return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                       })
 
-                    })
-                ]),
+                   ]),
+
+                   m("div.appBtnDiv", [
+                       m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
+                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
+
+                   ])
+
+               ]),
+
                 m(".ht-slider-wrap", [m("[id='ht-slider']")]),
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", [
@@ -1157,3 +648,279 @@ wiki.view = function (controller) {
     }
 
 
+
+},{"../components/comments/comments":2,"../components/dashboard/dashboard":3,"../components/logs/logs":4,"../components/wiki/wiki":5}],2:[function(require,module,exports){
+var logs = require('../logs/logs');
+
+var comments = {};
+
+// Load existing comments from server
+comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
+
+// Comment Model, uses information from the App about User.
+comments.comment = function(content){
+    this.userid = 1;
+    this.username = "Caner";
+    this.content = content;
+    this.date = new Date();
+    this.show = true;
+}
+
+comments.controller = function (){
+    var self = this;
+    this.comments = comments.List;
+    // Filter search term to use for filtering later.
+    this.filterText = m.prop("");
+    // Declare and empty setter for content of the comment to bind it to the form.
+    this.content = m.prop("");
+    // add comment
+    this.add = function () {
+        if(self.content()){
+            // New comment
+            self.comments().push(new comments.comment(self.content()));
+            // Log this behavior by adding a new Log model
+            logs.List().push(new logs.singleLog("comment", self.content()));
+            // Reset the form for new comments.
+            self.content("");
+        }
+
+    }
+    // filtering
+    this.filter = function (){
+        var result;
+        // If filtertext is set run filter
+        if(self.filterText()){
+            // Go through each comment
+            self.comments().map(function(comment, index){
+                var text = self.filterText().toLowerCase()
+                result = comment.content.toLowerCase().indexOf(text);
+                // Compare text
+                if(result !== -1){
+                    // If found, add to comment an attribute called cmshow
+                    comment.show = true;
+                } else {
+                    // If not found, add to the comment and attribute called cmhide
+                    comment.show = false;
+                }
+            });
+        } else {
+        // If filtertext is not set reset view to show everything
+            self.comments().map(function(comment, index){
+                comment.show = true;
+            });
+        }
+    }
+    this.runFilter = function(e){
+        m.withAttr("value", self.filterText)(e);
+        console.log(self.comments())
+        self.filter();
+    }
+}
+
+// Loads commenting form and list of comments
+comments.view = function(ctrl){
+    return m(".container-fluid", [m(".row", [
+        m(".col-sm-12", [
+            m(".col-xs-12[id='cm-comment']", [
+                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
+                 ]),
+                m("hr"),
+                m("[id='cm-boxWrapper']", [
+                    m(".row", [
+                        m(".col-xs-9", [
+                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
+                        ]),
+                        m(".col-xs-3", [
+                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
+                        ])
+                    ]),
+                    m(".row", [
+                        m(".col-xs-12[id='cm-commentList']", [
+                            m("table.table.table-condensed", [
+                                m("tbody", [
+                                    ctrl.comments().map(function(comment, index){
+                                       console.log("Show", comment.show)
+                                        if(comment.show){
+                                            return m("tr", [
+                                                m("td", [
+                                                    m("b", comment.username)
+                                                ]),
+                                                m("td", comment.content),
+                                                m("td", [
+                                                    m("span.text-muted", comment.date)
+                                                ])
+                                            ])
+                                        }
+                                    })
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ]),
+        m(".col-sm-4.col-xs-12", [
+            m("[id='cm-logs']", [
+
+            ])
+        ])
+    ])
+}
+
+module.exports = comments;
+},{"../logs/logs":4}],3:[function(require,module,exports){
+var dashboard = {};
+
+dashboard.html= m.prop("");
+m.request({method: "GET", url: "../components/dashboard/dashboard.html", deserialize: function(value){ return value;  }}).then(dashboard.html);
+
+dashboard.controller = function(){
+    this.html = dashboard.html;
+}
+
+dashboard.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = dashboard;
+},{}],4:[function(require,module,exports){
+
+var logs = {};
+
+// Assign model directly to loaded content
+logs.List = m.prop("")
+m.request({method: "GET", url: "../components/logs/logs.json"}).then(logs.List);
+
+// Model for individual logs
+logs.singleLog = function(logType, logContent){
+    this.logText = "";
+    switch(logType){
+        case "comment" :
+            this.logText =  " commented ";
+            break;
+        case "wiki" :
+            this.logText = " changed wiki to version ";
+            break;
+    }
+    this.logUserID = 1;
+    this.logUser = "Caner";;
+    this.logDate = new Date();
+    this.logContent = logContent;
+}
+
+// Log actions, add log
+logs.controller = function(){
+    // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
+    // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
+
+}
+
+// Log layout, loads directly from the model, not through the controller.
+logs.view = function(controller){
+    return [
+        m("table.table.table-condensed", [
+            m("tbody", [
+                logs.List().map(function(log, index){
+                    return m("tr", [
+                        m("td", [
+                            m("span.text-muted", log.logDate)
+                        ]),
+                        m("td", [
+                            m("a[href='user/1']", log.logUser),
+                            " ",
+                            m("span.logText", log.logText),
+                            m("i", log.logContent),
+                            ".\n                        "
+                        ])
+                    ])
+                })
+
+            ])
+        ])
+    ]
+}
+
+module.exports = logs;
+},{}],5:[function(require,module,exports){
+var logs = require('../logs/logs');
+
+var wiki = {};
+
+wiki.data = m.prop({});
+m.request({method: "GET", url: '../components/wiki/wiki.json'}).then(wiki.data)
+
+wiki.model = function(){
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version)
+}
+// Long way of binding the data to view
+wiki.controller = function(){
+    var self = this;
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version);
+
+    this.edit = m.prop(false);
+
+
+    this.toggleView = function(){
+        if(self.edit()){
+            // save
+            self.version(self.version()+1);
+            logs.List().push(new logs.singleLog("wiki", self.version()));
+            self.edit(false);
+        } else {
+
+            self.edit(true);
+        }
+    }
+    return self;
+}
+
+// Wiki html
+wiki.view = function (controller) {
+    if(controller.edit()){
+        return m(".panel.panel-default",  [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("span", "Change Title: "), m("input.form-control", { onchange: m.withAttr("value", controller.title), value: controller.title()} )
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView },  m("i.fa.fa-save", " Save"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("textarea.ht-wiki-edit", { onchange: m.withAttr("value", controller.content), value: controller.content()} )
+            ])
+        ])
+    } else {
+        return m(".panel", [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("h2.panel-title", controller.title())
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView }, m("i.fa.fa-pencil", " Edit"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("p#wiki-preview", controller.content())
+            ]),
+            m(".panel-footer", " Version " + controller.version())
+        ])
+    }
+
+
+};
+
+module.exports = wiki;
+},{"../logs/logs":4}]},{},[1]);

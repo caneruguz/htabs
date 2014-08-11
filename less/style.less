@@ -1,3 +1,7 @@
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
 /* Color Palette */
 
 @col-size : 160px;
@@ -96,8 +100,7 @@ body {
     width: 800px;
 }
 .ht-tab {
-   min-width: 600px;
-    margin: 20px 20px 2px 20px;
+    margin: 0px 20px;
     padding: 0;
     display: inline-block;
     vertical-align: top;
@@ -181,8 +184,6 @@ body {
 
 #ht-content{
     padding: 10px;
-    width: auto;
-    overflow-y: scroll;
 }
 
 .ht-hdiv {
@@ -392,6 +393,8 @@ body {
 .appBtnDiv {
   background: rgba(255, 255, 255, 0.71);
   padding: 5px 10px;
+  float: right;
+  margin-top: -30px;
 }
 .appBtn {
   margin: 0 5px;
