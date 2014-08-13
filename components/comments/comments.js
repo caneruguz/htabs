@@ -3,7 +3,7 @@ var logs = require('../logs/logs');
 var comments = {};
 
 // Load existing comments from server
-comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
+//comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
 
 // Comment Model, uses information from the App about User.
 comments.comment = function(content){
@@ -16,7 +16,8 @@ comments.comment = function(content){
 
 comments.controller = function (){
     var self = this;
-    this.comments = comments.List;
+    this.comments = m.prop("");
+    m.request({method: "GET", url: "../components/comments/comments.json"}).then(this.comments);
     // Filter search term to use for filtering later.
     this.filterText = m.prop("");
     // Declare and empty setter for content of the comment to bind it to the form.
@@ -87,7 +88,6 @@ comments.view = function(ctrl){
                             m("table.table.table-condensed", [
                                 m("tbody", [
                                     ctrl.comments().map(function(comment, index){
-                                       console.log("Show", comment.show)
                                         if(comment.show){
                                             return m("tr", [
                                                 m("td", [

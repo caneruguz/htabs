@@ -35,6 +35,8 @@
 }
 body {
     font-family: Helvetica;
+  width : 100%;
+  overflow: hidden;
 }
 
 .bg-blue {
@@ -100,11 +102,14 @@ body {
     width: 800px;
 }
 .ht-tab {
-    margin: 0px 20px;
+    margin: 0px 10px;
     padding: 0;
     display: inline-block;
     vertical-align: top;
   background: white;
+}
+.ht-expose-tab {
+  .ht-tab;
 }
 .ht-tab-minimized {
   width: 60px;
@@ -203,8 +208,11 @@ body {
   position:absolute;
 }
 #ht-wrapper {
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y : hidden;
   background: url("images/wavegrid.png");
+  padding: 0;
+  margin: 0;
 }
 
 .ht-column {
@@ -338,7 +346,14 @@ body {
   margin-left: -88px;
   margin-top: 200px;
 }
-
+.rotatedText-expose {
+  .rotatedText;
+  margin-left: 6px;
+  margin-top: 44px;
+  font-size: 17px;
+  height: 195px;
+  text-overflow: ellipsis;
+}
 .ui-resizable-e {
    cursor : col-resize !important;
 }

@@ -23,8 +23,21 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : "ht-inverted",
-                        "loaded" : false
+                        "css" : "ht-inverted"
+
+                    },
+                    {
+                        "id" : 11,
+                        "title" : "Welcome to Dashboard",
+                        "type" : "dashboard",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : true,
+                        "content" : "",
+                        "css" : "ht-inverted"
 
                     }
                 ]
@@ -60,9 +73,20 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : "",
-                        "loaded" : false
-
+                        "css" : ""
+                    },
+                    {
+                        "id" : 12,
+                        "title" : "Wiki",
+                        "type" : "wiki",
+                        "data" : "../components/wiki/wiki.json",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : true,
+                        "content" : "",
+                        "css" : ""
                     }
                 ]
             },
@@ -73,7 +97,7 @@
                     {
                         "id" : 3,
                         "title" : "Comments",
-                        "type" : "comment",
+                        "type" : "comments",
                         "data" : "",
                         "closable" : true,
                         "expandable" : true,
@@ -81,10 +105,20 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : "",
-                        "loaded" : false
-
-
+                        "css" : ""
+                    },
+                    {
+                        "id" : 13,
+                        "title" : "Comments",
+                        "type" : "comments",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : false,
+                        "content" : "",
+                        "css" : ""
                     }
                 ]
             },
@@ -95,7 +129,7 @@
                     {
                         "id" : 4,
                         "title" : "Activity Log",
-                        "type" : "activity",
+                        "type" : "logs",
                         "data" : "",
                         "closable" : true,
                         "expandable" : true,
@@ -103,9 +137,21 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : "",
-                        "loaded" : false
+                        "css" : ""
 
+                    },
+                    {
+                        "id" : 5,
+                        "title" : "Comments",
+                        "type" : "comments",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : true,
+                        "content" : "",
+                        "css" : ""
                     }
                 ]
             }
