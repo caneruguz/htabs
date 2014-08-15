@@ -2675,10 +2675,16 @@ Copyright (c) 2014 Daniel Eden
 .fa-share-alt-square:before{content:"\f1e1"}
 .fa-bomb:before{content:"\f1e2"}
 *,:after,:before{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+#ht-mobile-header{height:50px;padding:10px;background:#222;color:#EEE;position:fixed;top:0;left:0;width:100%;z-index:999}
+#ht-mobile-content{overflow-x:hidden;overflow-y:auto;margin-top:50px}
+#ht-mobile-title{width:90%;display:inline-block;font-size:20px;font-weight:100;font-family:Helvetica Neue;letter-spacing:1px}
+#ht-mobile-menu{width:10%;display:inline-block;text-align:center;font-size:22px}
+.ht-mobile-module{display:block;overflow-x:auto}
+.ht-mobile-widget{display:inline-block;float:left;padding:10px;overflow-x:hidden;overflow-y:auto}
 .ht-textarea{width:100%;border:1px dotted #ccc;padding:10px}
 .large-textarea{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .small-textarea{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
-body{font-family:Helvetica;width:100%;overflow:hidden}
+body{font-family:Helvetica;width:100%}
 .bg-blue{background-color:#45b29d}
 .bg-orange{background-color:#e27a3f}
 .bg-yellow{background-color:#efc94c}

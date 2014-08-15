@@ -23,7 +23,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : "ht-inverted"
+                        "css" : "ht-inverted",
+                        "cssmobile" : ""
 
                     },
                     {
@@ -37,7 +38,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : "ht-inverted"
+                        "css" : "ht-inverted",
+                        "cssmobile" : ""
 
                     }
                 ]
@@ -73,7 +75,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "cssmobile" : ""
                     },
                     {
                         "id" : 12,
@@ -86,7 +89,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "cssmobile" : ""
                     }
                 ]
             },
@@ -118,7 +122,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "cssmobile" : ""
                     }
                 ]
             },
@@ -137,7 +142,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "cssmobile" : ""
 
                     },
                     {
@@ -151,7 +157,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "cssmobile" : ""
                     }
                 ]
             }

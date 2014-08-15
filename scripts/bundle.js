@@ -10,9 +10,12 @@ app.wiki = require('../components/wiki/wiki')
    // buildnormal
    // buildmobile
 
+   console.log("Window width", $(window).width());
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
+
+    build.layout = m.prop($(window).width());
 
     build.workspace = m.prop("");
     m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
@@ -58,7 +61,7 @@ app.wiki = require('../components/wiki/wiki')
         this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
-
+        this.layout = build.layout;
         var controllers = this.controllers = {}
 
          self.applyModules = function(){
@@ -430,77 +433,196 @@ app.wiki = require('../components/wiki/wiki')
             //self.resizeWidgets();
             self.eventsOn();
         }
+         this.saveColumnSize = function(){
+             for(var i = 0; i < self.modules().length; i++){
+                 var o = self.modules()[i];
+                 o.columns.map(function(item, index, array){
+                     item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).width();
+                 })
+             }
+         }
+
+
+         // MOBILE
+         this.mobileInit = function(){
+             $(".ht-mobile-widget").swipe( {
+                 //Generic swipe handler for all directions
+                 swipe:function(event, direction, distance, duration, fingerCount) {
+                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
+                     var element;
+                     switch(direction){
+                        case "up" :
+                            element = $(".ht-mobile-module[data-index"+(parseInt(target_module)+1)+"]")
+                            if(fingerCount>1 && element.length > 0){
+                                $('#ht-mobile-content').scrollTo(element, 150,  {offset:0});
+                            }
+                            break;
+                        case "down":
+                            element = $(".ht-mobile-module[data-index"+(parseInt(target_module)-1)+"]")
+                            if(fingerCount>1 && element.length > 0){
+
+                            }
+                            break;
+                        case "left" :
+                            var element = $(this).next();
+                            if(element.length > 0){
+                                $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
+                            }
+                            break;
+                        case "right" :
+                            var element = $(this).prev();
+                            if(element.length > 0){
+                                 $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
+                            }
+                            break;
+                    }
+                     console.log("direction", direction, "fingerCount", fingerCount);
+//                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
+//)
+//
+//                     var element = $(this).next();
+//                     console.log(element);
+//
+//                     if(element.length > 0){
+//                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
+//                     }
+//                     }
+                 }
+//                 swipeRight:function(event, direction, distance, duration, fingerCount) {
+////                     var target_id = $(this).attr("data-index");
+//                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
+////                     var element = $('.ht-mobile-module[data-index='+target_module+']').find('.ht-mobile-widget[data-id="'+(parseInt(target_id)-1)+'"]');
+////                     if(element != undefined){
+////                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo($('.ht-mobile-widget[data-id="'+(parseInt(target_id)-1)+'"]'), 150,  {offset:0});
+////                     }
+//                     var element = $(this).prev();
+//                     if(element.length > 0){
+//                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
+//                     }
+//                 }
+             });
+         }
+         this.mobileModuleInit = function (){
+             var mobileContentHeight = $(window).height()-50;
+             var mobileContentWidth = $(window).width();
+             console.log(mobileContentHeight);
+             $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
+             $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
+
+
+         }
+         this.mobileWidgetInit = function(module_index){
+             var mobileContentHeight = $(window).height()-40;
+             var mobileContentWidth = $(window).width();
+             $('.ht-mobile-widget').css({ 'height': mobileContentHeight + 'px', width : mobileContentWidth + 'px'})
+            // calculate module width based on total widgets, this needs to refresh every time a widget is loaded.
+             var totalWidgets = 1; // title page is one widget;
+             self.modules()[module_index].columns.map(function(column){
+                 totalWidgets += column.widgets.length;
+             })
+            $('.ht-mobile-module[data-index='+module_index+']').children('.ht-mobile-module-inner').css('width', mobileContentWidth*totalWidgets);
+
+
+         }
+         // Swipe Actions
+
+
+
+
     }
 
-    self.saveColumnSize = function(){
-        for(var i = 0; i < self.modules().length; i++){
-            var o = self.modules()[i];
-            o.columns.map(function(item, index, array){
-                item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).width();
-            })
-        }
-    }
+
 
     build.view = function(ctrl){
-
-        if(ctrl.localExpose){
-            return [
-                m("#exposeDiv.animated.fadeIn", [
-                    m(".exposeClose", [m("i.fa.fa-times", { onclick : ctrl.endExpose })]),
-                    m(".expose-content", { config : ctrl.exposeInit } , [
-                        m(".expose-modules", [
-                            ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false )}})
+        console.log(ctrl.layout());
+        if(ctrl.layout() < 481){
+            return m("#ht-mobile-wrapper", { config : ctrl.mobileInit}, [
+                m("#ht-mobile-header", [
+                    m('#ht-mobile-title', "Htabs Mobile Version"),
+                    m('#ht-mobile-menu', [
+                        m('i.fa.fa-bars')
+                    ])
+                ]),
+                m("#ht-mobile-content", [
+                    ctrl.modules().map(function(module, module_index, module_array){
+                        return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
+                                m('.ht-mobile-module-inner', [
+                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1},  "Mobile Column Header"),
+                                    module.columns.map(function(column){
+                                        return column.widgets.map(function(widget, widget_index, widget_array){
+                                            return m('.ht-mobile-widget', { config : function(){ ctrl.mobileWidgetInit(module_index) } , 'style' : 'background:white', "data-id" : widget.id } , [
+                                                m('.ht-mobile-widget-title', widget.title),
+                                                (function(){  return app[widget.type].view(ctrl.controllers[widget.id])})()
                                             ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
-                                    ])]
-                                }else {
-                                    return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m("h3", module.title),
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true ) }})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [ m("") ])
+                                        })
+                                    })
+                                ])
 
-                                    ])]
-                                }
-                            })
-                        ]),
-                        m('.expose-actions', [
-                            m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")])
+                        ])
+                    })
+                ])
+
+            ])
+        }
+        else {
+            if(ctrl.localExpose){
+                return [
+                    m("#exposeDiv.animated.fadeIn", [
+                        m(".exposeClose", [m("i.fa.fa-times", { onclick : ctrl.endExpose })]),
+                        m(".expose-content", { config : ctrl.exposeInit } , [
+                            m(".expose-modules", [
+                                ctrl.modules().map(function(module, module_index, module_array){
+                                    if(module.minimize){
+                                        return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false )}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
+                                        ])]
+                                    }else {
+                                        return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m("h3", module.title),
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true ) }})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [ m("") ])
+
+                                        ])]
+                                    }
+                                })
+                            ]),
+                            m('.expose-actions', [
+                                m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")])
+                            ])
+
                         ])
 
                     ])
+                ]
+            } else {
+                return [
+                    m(".ht-head-wrapper", [
+                        m("[id='ht-head']", [
+                            ctrl.modules().map(function(module, module_index, module_array){
+                                return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
 
-                ])
-            ]
-        } else {
-            return [
-               m(".ht-head-wrapper", [
-                   m("[id='ht-head']", [
-                       ctrl.modules().map(function(module, module_index, module_array){
-                           return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                            })
+                        ]),
+                        m("div.appBtnDiv", [
+                            m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
+                            m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
 
-                       })
-                   ]),
-                   m("div.appBtnDiv", [
-                       m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
-
-                   ])
-               ]),
-                m(".ht-slider-wrap", [m("[id='ht-slider']")]),
-                m("[id='ht-wrapper']", { config : ctrl.init }, [
-                    m("[id='ht-content']", {config : ctrl.reformat },    [
+                        ])
+                    ]),
+                    m(".ht-slider-wrap", [m("[id='ht-slider']")]),
+                    m("[id='ht-wrapper']", { config : ctrl.init }, [
+                        m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.minimize){
                                     return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", { 'data-index' : module_index, 'data-id' : module.id}, [
@@ -550,7 +672,7 @@ app.wiki = require('../components/wiki/wiki')
                                                                             m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
                                                                                 (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id])})()
 
-                                                                     ) ])
+                                                                            ) ])
 
                                                                         ])
 
@@ -573,11 +695,13 @@ app.wiki = require('../components/wiki/wiki')
                                 }
 
                             })
+                        ])
                     ])
-                ])
-            ];
+                ];
 
+            }
         }
+
 
 
 
