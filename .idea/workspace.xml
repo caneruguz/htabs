@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15da4009-7e5e-42e6-9702-1b4725c5b25c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/jquery_rescon.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/css/dashboard/dashboard.css" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.css" afterPath="$PROJECT_DIR$/dist/bundle.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bundle.js" afterPath="$PROJECT_DIR$/dist/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/bundle.js" afterPath="$PROJECT_DIR$/scripts/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/components/comments/comments.js" afterPath="$PROJECT_DIR$/components/comments/comments.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/jquery_rescon.js" afterPath="$PROJECT_DIR$/scripts/jquery_rescon.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/script.js" afterPath="$PROJECT_DIR$/scripts/script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/less/style.less" afterPath="$PROJECT_DIR$/less/style.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workspace.json" afterPath="$PROJECT_DIR$/workspace.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="htabs.iws" />
@@ -38,17 +32,28 @@
       <file leaf-file-name="gulpfile.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="38" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1040">
+            <state line="22" column="38" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0" vertical-offset="440" max-vertical-offset="1040">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="script.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="script.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="206" column="0" selection-start="10221" selection-end="10221" vertical-scroll-proportion="0.75796664" vertical-offset="3121" max-vertical-offset="11780">
+            <state line="181" column="23" selection-start="8411" selection-end="8421" vertical-scroll-proportion="0.0" vertical-offset="3881" max-vertical-offset="11820">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jquery_rescon.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/jquery_rescon.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="93" column="46" selection-start="3912" selection-end="3912" vertical-scroll-proportion="2.4473684" vertical-offset="0" max-vertical-offset="2460">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,7 +61,7 @@
       <file leaf-file-name="style.less" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/less/style.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="336" column="25" selection-start="5325" selection-end="5325" vertical-scroll-proportion="-4.4415584" vertical-offset="6378" max-vertical-offset="8560">
+            <state line="336" column="25" selection-start="5325" selection-end="5325" vertical-scroll-proportion="0.0" vertical-offset="6720" max-vertical-offset="8560">
               <folding />
             </state>
           </provider>
@@ -65,7 +70,7 @@
       <file leaf-file-name="workspace.json" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="32" selection-start="3623" selection-end="3623" vertical-scroll-proportion="-7.6153846" vertical-offset="2002" max-vertical-offset="3320">
+            <state line="110" column="32" selection-start="3623" selection-end="3623" vertical-scroll-proportion="0.0" vertical-offset="2200" max-vertical-offset="3320">
               <folding />
             </state>
           </provider>
@@ -105,18 +110,20 @@
         <option value="$PROJECT_DIR$/components/wiki/wiki.js" />
         <option value="$PROJECT_DIR$/components/logs/logs.js" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
-        <option value="$PROJECT_DIR$/scripts/jquery_rescon.js" />
         <option value="$PROJECT_DIR$/components/comments/comments.js" />
         <option value="$PROJECT_DIR$/workspace.json" />
         <option value="$PROJECT_DIR$/less/style.less" />
         <option value="$PROJECT_DIR$/scripts/script.js" />
+        <option value="$PROJECT_DIR$/scripts/jquery_rescon.js" />
       </list>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="width" value="2560" />
-    <option name="height" value="1440" />
+    <option name="x" value="227" />
+    <option name="y" value="77" />
+    <option name="width" value="1999" />
+    <option name="height" value="878" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -160,6 +167,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="htabs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htabs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htabs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -251,7 +272,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="FullScreen" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.General" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -309,7 +330,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
+    <frame x="227" y="77" width="1999" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992125" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -318,7 +339,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.071088165" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22381195" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -326,11 +347,11 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -373,11 +394,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scripts/jquery_expose.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="184" column="49" selection-start="8066" selection-end="8066" vertical-scroll-proportion="0.0" vertical-offset="3075" max-vertical-offset="4440">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="184" column="49" selection-start="8066" selection-end="8066" vertical-scroll-proportion="0.0" vertical-offset="3075" max-vertical-offset="4440" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/less/style.less">
@@ -408,11 +425,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/jquery_expose.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="184" column="49" selection-start="8066" selection-end="8066" vertical-scroll-proportion="0.0" vertical-offset="3225" max-vertical-offset="4440">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="184" column="49" selection-start="8066" selection-end="8066" vertical-scroll-proportion="0.0" vertical-offset="3225" max-vertical-offset="4440" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/less/style.less">
@@ -555,11 +568,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/jquery_expose.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="512" selection-end="658" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4440">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="17" column="0" selection-start="512" selection-end="658" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4440" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/dashboard/dashboard.less">
@@ -584,69 +593,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/bootstrap/less/alerts.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1480">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1480" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/bootstrap/dist/css/bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1407" column="1" selection-start="22882" selection-end="22882" vertical-scroll-proportion="0.4793453" vertical-offset="27525" max-vertical-offset="124180">
-          <folding />
-        </state>
+        <state line="1407" column="1" selection-start="22882" selection-end="22882" vertical-scroll-proportion="0.4793453" vertical-offset="27525" max-vertical-offset="124180" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="21" selection-start="743" selection-end="743" vertical-scroll-proportion="0.4021164" vertical-offset="0" max-vertical-offset="945">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/jquery_rescon.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="9" selection-start="779" selection-end="779" vertical-scroll-proportion="0.51184344" vertical-offset="3" max-vertical-offset="1340">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="19" column="21" selection-start="743" selection-end="743" vertical-scroll-proportion="0.4021164" vertical-offset="0" max-vertical-offset="945" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/jquery_scroller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="39" selection-start="679" selection-end="679" vertical-scroll-proportion="0.2827381" vertical-offset="0" max-vertical-offset="1344">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="19" column="39" selection-start="679" selection-end="679" vertical-scroll-proportion="0.2827381" vertical-offset="0" max-vertical-offset="1344" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/wiki/wiki.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="29" selection-start="393" selection-end="393" vertical-scroll-proportion="0.32869786" vertical-offset="0" max-vertical-offset="1720">
-          <folding />
-        </state>
+        <state line="13" column="29" selection-start="393" selection-end="393" vertical-scroll-proportion="0.32869786" vertical-offset="0" max-vertical-offset="1720" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/dashboard/dashboard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="11" selection-start="308" selection-end="308" vertical-scroll-proportion="0.2528445" vertical-offset="0" max-vertical-offset="791">
-          <folding />
-        </state>
+        <state line="10" column="11" selection-start="308" selection-end="308" vertical-scroll-proportion="0.2528445" vertical-offset="0" max-vertical-offset="791" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/dashboard/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="22" selection-start="377" selection-end="377" vertical-scroll-proportion="0.2875817" vertical-offset="0" max-vertical-offset="765">
-          <folding />
-        </state>
+        <state line="11" column="22" selection-start="377" selection-end="377" vertical-scroll-proportion="0.2875817" vertical-offset="0" max-vertical-offset="765" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/comments/comments.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="51" selection-start="1441" selection-end="1441" vertical-scroll-proportion="1.0619469" vertical-offset="0" max-vertical-offset="2460">
-          <folding />
-        </state>
+        <state line="42" column="51" selection-start="1441" selection-end="1441" vertical-scroll-proportion="1.0619469" vertical-offset="0" max-vertical-offset="2460" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/bundle.js">
@@ -658,30 +640,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="15" selection-start="366" selection-end="366" vertical-scroll-proportion="0.35989717" vertical-offset="0" max-vertical-offset="840">
-          <folding />
-        </state>
+        <state line="14" column="15" selection-start="366" selection-end="366" vertical-scroll-proportion="0.35989717" vertical-offset="0" max-vertical-offset="840" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="552" selection-end="552" vertical-scroll-proportion="0.7455013" vertical-offset="0" max-vertical-offset="778">
-          <folding />
-        </state>
+        <state line="29" column="0" selection-start="552" selection-end="552" vertical-scroll-proportion="0.7455013" vertical-offset="0" max-vertical-offset="778" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/comments/comments.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="25" selection-start="1340" selection-end="1340" vertical-scroll-proportion="0.66013074" vertical-offset="375" max-vertical-offset="1140">
-          <folding />
-        </state>
+        <state line="44" column="25" selection-start="1340" selection-end="1340" vertical-scroll-proportion="0.66013074" vertical-offset="375" max-vertical-offset="1140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/logs/logs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="1707" selection-end="1707" vertical-scroll-proportion="1.0505689" vertical-offset="269" max-vertical-offset="1240">
-          <folding />
-        </state>
+        <state line="55" column="0" selection-start="1707" selection-end="1707" vertical-scroll-proportion="1.0505689" vertical-offset="269" max-vertical-offset="1240" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
@@ -693,22 +667,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="32" selection-start="3623" selection-end="3623" vertical-scroll-proportion="-7.6153846" vertical-offset="2002" max-vertical-offset="3320">
+        <state line="110" column="32" selection-start="3623" selection-end="3623" vertical-scroll-proportion="0.0" vertical-offset="2200" max-vertical-offset="3320">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/less/style.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="336" column="25" selection-start="5325" selection-end="5325" vertical-scroll-proportion="-4.4415584" vertical-offset="6378" max-vertical-offset="8560">
+        <state line="336" column="25" selection-start="5325" selection-end="5325" vertical-scroll-proportion="0.0" vertical-offset="6378" max-vertical-offset="8560">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="206" column="0" selection-start="10221" selection-end="10221" vertical-scroll-proportion="0.75796664" vertical-offset="3121" max-vertical-offset="11780">
+        <state line="181" column="23" selection-start="8411" selection-end="8421" vertical-scroll-proportion="0.0" vertical-offset="3881" max-vertical-offset="11820">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/jquery_rescon.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="46" selection-start="3912" selection-end="3912" vertical-scroll-proportion="2.4473684" vertical-offset="0" max-vertical-offset="2460">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

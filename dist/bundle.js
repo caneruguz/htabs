@@ -103,7 +103,11 @@ app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments')
 app.wiki = require('../components/wiki/wiki')
 
-// Initialize the mithril application module. -- this will be broken down in larger implementation
+   // buildnormal
+   // buildmobile
+
+
+   // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
 
     build.workspace = m.prop("");
@@ -161,7 +165,6 @@ app.wiki = require('../components/wiki/wiki')
                      })
                  })
              })
-
          }
         self.applyModules();
 
@@ -301,7 +304,6 @@ app.wiki = require('../components/wiki/wiki')
             self.removeExtraCols(); // After moving a widget is a column is empty delete it.
             self.reformat();   // We need to redo sizes. Maybe we should push this to resize Widgets.
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
-
         }
         this.resizeWidgets = function() {
                 console.log("resize running")
@@ -433,6 +435,7 @@ app.wiki = require('../components/wiki/wiki')
             $('#ht-wrapper').scrollTo($('.ht-tab:last'), 150,  {offset:-50});
         }
         this.removeModule = function(module_index){
+            // unload, turn events off etc.
             self.modules().splice(module_index, 1);
             self.reformat();
         }
@@ -522,9 +525,7 @@ app.wiki = require('../components/wiki/wiki')
             }
             //self.resizeWidgets();
             self.eventsOn();
-
         }
-
     }
 
     self.saveColumnSize = function(){
@@ -537,6 +538,7 @@ app.wiki = require('../components/wiki/wiki')
     }
 
     build.view = function(ctrl){
+
         if(ctrl.localExpose){
             return [
                 m("#exposeDiv.animated.fadeIn", [
