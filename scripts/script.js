@@ -237,20 +237,6 @@ app.wiki = require('../components/wiki/wiki')
                     // resize iframes
                     $(this).find('iframe').css({height : newHeight-60} );
 
-                    // show hide based on element width -- TODO: move this to higher level
-                    var width =  $(this).width();
-                    $(this).find('.ht-w-s').hide();
-                    $(this).find('.ht-w-m').hide();
-                    $(this).find('.ht-w-l').hide();
-                    if(width > 600){
-                        $(this).find('.ht-w-l').show();
-                    }
-                    if(width > 300 && width <= 600){
-                        $(this).find('.ht-w-m').show();
-                    }
-                    if(width <= 300 ){
-                        $(this).find('.ht-w-s').show();
-                    }
                 })
 
             })
@@ -476,29 +462,7 @@ app.wiki = require('../components/wiki/wiki')
                             break;
                     }
                      console.log("direction", direction, "fingerCount", fingerCount);
-//                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
-//)
-//
-//                     var element = $(this).next();
-//                     console.log(element);
-//
-//                     if(element.length > 0){
-//                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
-//                     }
-//                     }
                  }
-//                 swipeRight:function(event, direction, distance, duration, fingerCount) {
-////                     var target_id = $(this).attr("data-index");
-//                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
-////                     var element = $('.ht-mobile-module[data-index='+target_module+']').find('.ht-mobile-widget[data-id="'+(parseInt(target_id)-1)+'"]');
-////                     if(element != undefined){
-////                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo($('.ht-mobile-widget[data-id="'+(parseInt(target_id)-1)+'"]'), 150,  {offset:0});
-////                     }
-//                     var element = $(this).prev();
-//                     if(element.length > 0){
-//                         $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, 150,  {offset:0});
-//                     }
-//                 }
              });
          }
          this.mobileModuleInit = function (){
@@ -523,9 +487,6 @@ app.wiki = require('../components/wiki/wiki')
 
 
          }
-         // Swipe Actions
-
-
 
 
     }
