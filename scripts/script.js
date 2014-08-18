@@ -59,7 +59,8 @@ app.wiki = require('../components/wiki/wiki')
         this.modules = build.workspace; // Assign modules to the model we created. observableness is set in the create function.
         this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
-        this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
+        this.mobileExpose = false; // turn expose mode for mobile on or off
+         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
         this.layout = build.layout;
         var controllers = this.controllers = {}
 
@@ -484,10 +485,10 @@ app.wiki = require('../components/wiki/wiki')
                  totalWidgets += column.widgets.length;
              })
             $('.ht-mobile-module[data-index='+module_index+']').children('.ht-mobile-module-inner').css('width', mobileContentWidth*totalWidgets);
-
-
          }
-
+         this.mobileExposeToggle = function () {
+                self.mobileExpose = true;
+         }
 
     }
 
@@ -496,16 +497,29 @@ app.wiki = require('../components/wiki/wiki')
     build.view = function(ctrl){
         console.log(ctrl.layout());
         if(ctrl.layout() < 481){
-            return m("#ht-mobile-wrapper", { config : ctrl.mobileInit}, [
-                m("#ht-mobile-header", [
-                    m('#ht-mobile-title', "Htabs Mobile Version"),
-                    m('#ht-mobile-menu', [
-                        m('i.fa.fa-bars')
+            if(ctrl.mobileExpose){
+                return m("#ht-mobile-expose", { config : ctrl.mobileInit}, [
+                    m(".ht-mobile-expose-header", [
+                        m('.fa.fa-times.text-white')
+                    ]),
+                    m(".ht-mobile-expose-wrap", [
+                        ctrl.modules().map(function(module, module_index, module_array){
+                            return m('.ht-mobile-expose-module',  module.title)
+                        })
                     ])
-                ]),
-                m("#ht-mobile-content", [
-                    ctrl.modules().map(function(module, module_index, module_array){
-                        return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
+
+                ])
+            } else {
+                return m("#ht-mobile-wrapper", { config : ctrl.mobileInit}, [
+                    m("#ht-mobile-header", [
+                        m('#ht-mobile-title', "Htabs Mobile Version"),
+                        m('#ht-mobile-menu', [
+                            m('i.fa.fa-bars', { onclick : ctrl.mobileExposeToggle })
+                        ])
+                    ]),
+                    m("#ht-mobile-content", [
+                        ctrl.modules().map(function(module, module_index, module_array){
+                            return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
                                 m('.ht-mobile-module-inner', [
                                     m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1},  "Mobile Column Header"),
                                     module.columns.map(function(column){
@@ -518,11 +532,15 @@ app.wiki = require('../components/wiki/wiki')
                                     })
                                 ])
 
-                        ])
-                    })
-                ])
+                            ])
+                        })
+                    ])
 
-            ])
+                ])
+            }
+
+
+
         }
         else {
             if(ctrl.localExpose){
