@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var app = {}; // Create a namespace for the entire app
 
 // Load components and add them to the app namespace
@@ -583,3 +584,279 @@ app.wiki = require('../components/wiki/wiki')
     }
 
 
+
+},{"../components/comments/comments":2,"../components/dashboard/dashboard":3,"../components/logs/logs":4,"../components/wiki/wiki":5}],2:[function(require,module,exports){
+var logs = require('../logs/logs');
+
+var comments = {};
+
+// Load existing comments from server
+//comments.List = m.request({method: "GET", url: "../components/comments/comments.json"});
+
+// Comment Model, uses information from the App about User.
+comments.comment = function(content){
+    this.userid = 1;
+    this.username = "Caner";
+    this.content = content;
+    this.date = new Date();
+    this.show = true;
+}
+
+comments.controller = function (){
+    var self = this;
+    this.comments = m.prop("");
+    m.request({method: "GET", url: "../components/comments/comments.json"}).then(this.comments);
+    // Filter search term to use for filtering later.
+    this.filterText = m.prop("");
+    // Declare and empty setter for content of the comment to bind it to the form.
+    this.content = m.prop("");
+    // add comment
+    this.add = function () {
+        if(self.content()){
+            // New comment
+            self.comments().push(new comments.comment(self.content()));
+            // Log this behavior by adding a new Log model
+            logs.List().push(new logs.singleLog("comment", self.content()));
+            // Reset the form for new comments.
+            self.content("");
+        }
+
+    }
+    // filtering
+    this.filter = function (){
+        var result;
+        // If filtertext is set run filter
+        if(self.filterText()){
+            // Go through each comment
+            self.comments().map(function(comment, index){
+                var text = self.filterText().toLowerCase()
+                result = comment.content.toLowerCase().indexOf(text);
+                // Compare text
+                if(result !== -1){
+                    // If found, add to comment an attribute called cmshow
+                    comment.show = true;
+                } else {
+                    // If not found, add to the comment and attribute called cmhide
+                    comment.show = false;
+                }
+            });
+        } else {
+        // If filtertext is not set reset view to show everything
+            self.comments().map(function(comment, index){
+                comment.show = true;
+            });
+        }
+    }
+    this.runFilter = function(e){
+        m.withAttr("value", self.filterText)(e);
+        console.log(self.comments())
+        self.filter();
+    }
+}
+
+// Loads commenting form and list of comments
+comments.view = function(ctrl){
+    return m(".container-fluid", [m(".row", [
+        m(".col-sm-12", [
+            m(".col-xs-12[id='cm-comment']", [
+                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
+                 ]),
+                m("hr"),
+                m("[id='cm-boxWrapper']", [
+                    m(".row", [
+                        m(".col-xs-9", [
+                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
+                        ]),
+                        m(".col-xs-3", [
+                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
+                        ])
+                    ]),
+                    m(".row", [
+                        m(".col-xs-12[id='cm-commentList']", [
+                            m("table.table.table-condensed", [
+                                m("tbody", [
+                                    ctrl.comments().map(function(comment, index){
+                                        if(comment.show){
+                                            return m("tr", [
+                                                m("td", [
+                                                    m("b", comment.username)
+                                                ]),
+                                                m("td", comment.content),
+                                                m("td", [
+                                                    m("span.text-muted", comment.date)
+                                                ])
+                                            ])
+                                        }
+                                    })
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ]),
+        m(".col-sm-4.col-xs-12", [
+            m("[id='cm-logs']", [
+
+            ])
+        ])
+    ])
+}
+
+module.exports = comments;
+},{"../logs/logs":4}],3:[function(require,module,exports){
+var dashboard = {};
+
+dashboard.html= m.prop("");
+m.request({method: "GET", url: "../components/dashboard/dashboard.html", deserialize: function(value){ return value;  }}).then(dashboard.html);
+
+dashboard.controller = function(){
+    this.html = dashboard.html;
+}
+
+dashboard.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = dashboard;
+},{}],4:[function(require,module,exports){
+
+var logs = {};
+
+// Assign model directly to loaded content
+logs.List = m.prop("")
+m.request({method: "GET", url: "../components/logs/logs.json"}).then(logs.List);
+
+// Model for individual logs
+logs.singleLog = function(logType, logContent){
+    this.logText = "";
+    switch(logType){
+        case "comment" :
+            this.logText =  " commented ";
+            break;
+        case "wiki" :
+            this.logText = " changed wiki to version ";
+            break;
+    }
+    this.logUserID = 1;
+    this.logUser = "Caner";;
+    this.logDate = new Date();
+    this.logContent = logContent;
+}
+
+// Log actions, add log
+logs.controller = function(){
+    // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
+    // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
+
+}
+
+// Log layout, loads directly from the model, not through the controller.
+logs.view = function(controller){
+    return [
+        m("table.table.table-condensed", [
+            m("tbody", [
+                logs.List().map(function(log, index){
+                    return m("tr", [
+                        m("td", [
+                            m("span.text-muted", log.logDate)
+                        ]),
+                        m("td", [
+                            m("a[href='user/1']", log.logUser),
+                            " ",
+                            m("span.logText", log.logText),
+                            m("i", log.logContent),
+                            ".\n                        "
+                        ])
+                    ])
+                })
+
+            ])
+        ])
+    ]
+}
+
+module.exports = logs;
+},{}],5:[function(require,module,exports){
+var logs = require('../logs/logs');
+
+var wiki = {};
+
+wiki.data = m.prop({});
+m.request({method: "GET", url: '../components/wiki/wiki.json'}).then(wiki.data)
+
+wiki.model = function(){
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version)
+}
+// Long way of binding the data to view
+wiki.controller = function(){
+    var self = this;
+    this.title = m.prop(wiki.data().title);
+    this.content = m.prop(wiki.data().content);
+    this.version = m.prop(wiki.data().version);
+
+    this.edit = m.prop(false);
+
+
+    this.toggleView = function(){
+        if(self.edit()){
+            // save
+            self.version(self.version()+1);
+            logs.List().push(new logs.singleLog("wiki", self.version()));
+            self.edit(false);
+        } else {
+
+            self.edit(true);
+        }
+    }
+    return self;
+}
+
+// Wiki html
+wiki.view = function (controller) {
+    if(controller.edit()){
+        return m(".panel.panel-default",  [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("span", "Change Title: "), m("input.form-control", { onchange: m.withAttr("value", controller.title), value: controller.title()} )
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView },  m("i.fa.fa-save", " Save"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("textarea.ht-wiki-edit", { onchange: m.withAttr("value", controller.content), value: controller.content()} )
+            ])
+        ])
+    } else {
+        return m(".panel", [
+            m(".panel-heading", [
+                m(".row", [
+                    m(".col-md-9", [
+                        m("h2.panel-title", controller.title())
+                    ]),
+                    m(".col-md-3.cm-wikiBar", [
+                        m(".btn-group", [
+                            m("button.btn.btn-sm.btn-default[type='button']",{ onclick : controller.toggleView }, m("i.fa.fa-pencil", " Edit"))
+                        ])
+                    ])
+                ])
+            ]),
+            m(".panel-body", [
+                m("p#wiki-preview", controller.content())
+            ]),
+            m(".panel-footer", " Version " + controller.version())
+        ])
+    }
+
+
+};
+
+module.exports = wiki;
+},{"../logs/logs":4}]},{},[1]);
