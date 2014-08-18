@@ -48,6 +48,23 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+/* Mobile Expose */
+#ht-mobile-expose {
+  background: #222;
+  color: #FFF;
+  padding: 20px;
+}
+#ht-mobile-expose .ht-mobile-expose-header {
+  font-size: 20px;
+}
+#ht-mobile-expose .ht-mobile-expose-wrap {
+  margin-top: 45px;
+}
+#ht-mobile-expose .ht-mobile-expose-wrap .ht-mobile-expose-module {
+  padding: 20px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
 .ht-textarea {
   width: 100%;
   border: 1px dotted #ccc;

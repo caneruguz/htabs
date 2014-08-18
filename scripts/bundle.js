@@ -148,7 +148,7 @@ app.wiki = require('../components/wiki/wiki')
         }
         this.init = function(element, isInitialized){
             if(isInitialized) return;
-
+            self.canReformat = true;
             // When window resizes the view changes to fit the height.
             $(window).resize(self.reformat);
             self.reformat();
@@ -432,6 +432,7 @@ app.wiki = require('../components/wiki/wiki')
 
          // MOBILE
          this.mobileInit = function(){
+             console.trace();
              $(".ht-mobile-widget").swipe( {
                  //Generic swipe handler for all directions
                  swipe:function(event, direction, distance, duration, fingerCount) {
@@ -466,6 +467,7 @@ app.wiki = require('../components/wiki/wiki')
                      console.log("direction", direction, "fingerCount", fingerCount);
                  }
              });
+             self.canReformat = false;
          }
          this.mobileModuleInit = function (){
              var mobileContentHeight = $(window).height()-50;
@@ -473,8 +475,10 @@ app.wiki = require('../components/wiki/wiki')
              console.log(mobileContentHeight);
              $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
              $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
-
-
+         }
+         this.mobileExposeInit = function(){
+             var mobileContentHeight = $(window).height();
+             $('#ht-mobile-expose').css({'height': mobileContentHeight + 'px'});
          }
          this.mobileWidgetInit = function(module_index){
              var mobileContentHeight = $(window).height()-40;
@@ -488,7 +492,7 @@ app.wiki = require('../components/wiki/wiki')
             $('.ht-mobile-module[data-index='+module_index+']').children('.ht-mobile-module-inner').css('width', mobileContentWidth*totalWidgets);
          }
          this.mobileExposeToggle = function () {
-                self.mobileExpose = true;
+                self.mobileExpose = !self.mobileExpose;
          }
 
     }
@@ -496,19 +500,20 @@ app.wiki = require('../components/wiki/wiki')
 
 
     build.view = function(ctrl){
-        console.log(ctrl.layout());
         if(ctrl.layout() < 481){
             if(ctrl.mobileExpose){
-                return m("#ht-mobile-expose", { config : ctrl.mobileInit}, [
-                    m(".ht-mobile-expose-header", [
-                        m('.fa.fa-times.text-white')
+                return m("#ht-mobile-expose", { config : ctrl.mobileExposeInit}, [
+                    m(".ht-mobile-expose-header.pull-right", [
+                        m('.fa.fa-times.text-white', { onclick : ctrl.mobileExposeToggle })
                     ]),
                     m(".ht-mobile-expose-wrap", [
                         ctrl.modules().map(function(module, module_index, module_array){
-                            return m('.ht-mobile-expose-module',  module.title)
+                            return m('.ht-mobile-expose-module.clearfix', {"class" : 'bg-'+module.color } ,  [
+                                m("i.fa.fa-times.pull-right", { onclick : function(){ ctrl.removeModule(module_index); } }, ""),
+                                m("", module.title)
+                            ])
                         })
                     ])
-
                 ])
             } else {
                 return m("#ht-mobile-wrapper", { config : ctrl.mobileInit}, [
@@ -539,9 +544,6 @@ app.wiki = require('../components/wiki/wiki')
 
                 ])
             }
-
-
-
         }
         else {
             if(ctrl.localExpose){
