@@ -25,20 +25,6 @@
                         "content" : "",
                         "css" : "ht-inverted"
 
-                    },
-                    {
-                        "id" : 11,
-                        "title" : "Welcome to Dashboard",
-                        "type" : "dashboard",
-                        "data" : "",
-                        "closable" : true,
-                        "expandable" : true,
-                        "height" : 300,
-                        "display" : true,
-                        "hideHeader" : true,
-                        "content" : "",
-                        "css" : "ht-inverted"
-
                     }
                 ]
             },

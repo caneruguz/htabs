@@ -107,13 +107,14 @@ app.wiki = require('../components/wiki/wiki');
                 minWidth : 160,
                 stop : function (){
                     self.saveColumnSize();
-                    self.reformatWidth($(window).width() + 15);
+                    self.reformatWidth();
                 }
             } );
 
             $(".ht-column" ).sortable({
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
+                containment: "#ht-content",
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
                     self.temp.fromObj = {};     // empty temp objects so we don't use any of these values accidentally
@@ -150,16 +151,16 @@ app.wiki = require('../components/wiki/wiki');
                     if ($(window).height()==oldHeight || $(window).height() < 500) return; 
                     else
                         oldHeight = $(window).height();
-                        self.reformatHeight(oldHeight);
+                        self.reformatHeight();
                         self.resizeWidgets();
                 })();
                 // Always run width but only run height if necessary and taller than 500px;
                 oldWidth = $(window).width();
-                self.reformatWidth(oldWidth + 15);
+                self.reformatWidth();
             });
 
-            self.reformatWidth(oldWidth + 15);
-            self.reformatHeight(oldHeight);
+            self.reformatWidth();
+            self.reformatHeight();
             
 
 
@@ -205,6 +206,10 @@ app.wiki = require('../components/wiki/wiki');
                 self.modules()[to.module].columns[to.column].widgets.splice(to.widget,0,widget);
                 // remove original widget
                 self.modules()[from.module].columns[from.column].widgets.splice(from.widget, 1);
+                // remove extra col if from.column empty
+                if(self.modules()[from.module].columns[from.column].widgets < 1){
+                    self.modules()[from.module].columns.splice(from.column, 1);
+                }
             } else {
                 // manage the index numbers properly if they are within the same column
                 // if from < to first delete then add
@@ -217,11 +222,10 @@ app.wiki = require('../components/wiki/wiki');
                     self.modules()[from.module].columns[from.column].widgets.splice(from.widget+1, 1);
                 }
             }
-            console.log("widget moved", from, to);
-            console.log(self.modules());
+            // console.log("widget moved", from, to);
+            // console.log(self.modules());
             m.redraw();
-            self.removeExtraCols(); // After moving a widget is a column is empty delete it.
-            self.reformatWidth($(window).width + 15);   // We need to redo sizes. Maybe we should push this to resize Widgets.
+            self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
 
         };
@@ -353,11 +357,12 @@ app.wiki = require('../components/wiki/wiki');
                 ])
             );
             self.applyModules();
-            $('#ht-wrapper').scrollTo($('.ht-tab:last'), 150,  {offset:-50});
+            $('#ht-wrapper').scrollTo($('.ht-tabin:last'), 150,  {offset:-50});
+
         };
         this.removeModule = function(module_index){
             self.modules().splice(module_index, 1);
-            self.reformatWidth($(window).width() + 15);
+            self.reformatWidth();
         };
         this.toggleModule = function(index, state){
             self.modules()[index].minimize = state;
@@ -376,7 +381,7 @@ app.wiki = require('../components/wiki/wiki');
             if(!empty){
                 self.modules()[module_index].columns.push({ width: 400, widgets : [], new : true});
                 self.eventsOn();
-                self.reformatWidth($(window).width() + 15);
+                self.reformatWidth();
             }
         };
         this.removeExtraCols = function(){
@@ -388,66 +393,81 @@ app.wiki = require('../components/wiki/wiki');
                 });
             });
         };
-
+        // this.removeExtraCols = function(id){
+        //     self.modules().map(function(modules, modules_index){
+        //         modules.columns.map(function(column, column_index, array){
+        //             if(column.widgets < 1 & modules[modules_index] === id){
+        //                 array.splice(column_index, 1);
+        //             }
+        //         });
+        //     });
+        // };
         // LAYOUT and INIT
         this.saveWorkspace = function () {
              console.log(self.modules());
         };
 
-
-
-
         // Creating separate function for each action that can occur
-        this.reformatWidth = function (window_width) {
-            var totalLength = 20; // Padding of the content tab
-            $('.ht-tab').each(function(){
-                totalLength += $(this).outerWidth()+23; // 20px padding, 2 pixel borders, + 1 ??
-            });
-            var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
-            var ht_content_width = totalLength;
-        
-            $('#ht-head').css({ width : ht_head_width + 'px' } );
-            $('#ht-wrapper').css({ width : window_width + 'px' } );
-            $('#ht-content').css('width', ht_content_width + 'px'); 
-
-            // Adjust slider on changes
+        this.reformatWidth = function () {
+            if(self.canReformat){
+                window_width = $(window).width();
+                var totalLength = 20; // Padding of the content tab
+                $('.ht-tab').each(function(){
+                    totalLength += $(this).outerWidth()+24; // 20px padding, 2 pixel borders, + 2 for something I don't know ??
+                });
+                var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
+                // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
+                var ht_content_width = totalLength;
             
+                $('#ht-head').css({ width : ht_head_width + 'px' } );
+                $('#ht-wrapper').css({ width : window_width + 'px' } );
+                $('#ht-content').css('width', ht_content_width + 'px'); 
 
+                // Adjust slider on changes
 
-            $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').width() + 'px') // 
-                .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').width() + 'px') // 
+                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+                
+                // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
+                for(var i = 0; i < self.modules().length; i++){
+                        var o = self.modules()[i];
+                        // +40 = fix for margin space
+                        // if window width is bigger then adjust to the window width, otherwise content width
 
-            for(var i = 0; i < self.modules().length; i++){
-                    var o = self.modules()[i];
-                    // +40 = fix for margin space
-                    // if window width is bigger then adjust to the window width, otherwise content width
-
-                    var use_width = (window_width > ht_content_width) ? window_width : ht_content_width;
-                    var width = ($('.ht-tab[data-id="'+o.id+'"]').outerWidth())/use_width*100;
-
-                    $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
-                    // update column widths in the model
-                }
-            self.resizeWidgets();
-            self.eventsOn();
-
+                        var use_width = (window_width > ht_content_width) ? window_width : ht_content_width;
+                        // use width is width of the whole page 
+                        
+                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()))/(use_width)*100
+                        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
+                        // update column widths in the model
+                    }
+                self.resizeWidgets();
+                self.eventsOn();
+            }
         };
 
-        this.reformatHeight = function(window_height){
-            console.log("YOU NEED TO PUT THE CHECKING OF CANREFORMAT BACK IN!!!!!!!!!")
-            // heights :
-            var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
-            var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
-            var ht_tab_content_height = ht_tab_height-51;
-            var ht_column_height =  ht_tab_content_height-10;
-            $('.ht-tab').css({ height: ht_tab_height + 'px'}); // tab h
-            $('.ht-tab-content').css({ height: ht_tab_content_height+'px'}); // content h
-            $('.ht-column').css({height: ht_column_height});  // widget column heigh
-            $('.ht-add-column').css({height: ht_column_height}); // new col button height
-            $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
+        this.reformatHeight = function(){
+            if(self.canReformat){
+            window_height = $(window).height() + 15;
+                // heights :
+                var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
+                var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
+                var ht_tab_content_height = ht_tab_height-51;
+                var ht_column_height =  ht_tab_content_height-10;
+                $('.ht-tab').css({ height: ht_tab_height + 'px'}); // tab h
+                $('.ht-tab-content').css({ height: ht_tab_content_height+'px'}); // content h
+                $('.ht-column').css({height: ht_column_height});  // widget column heigh
+                $('.ht-add-column').css({height: ht_column_height}); // new col button height
+                $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
 
-            self.resizeWidgets();
-            self.eventsOn();
+                self.resizeWidgets();
+                self.eventsOn();
+            }
+        };
+
+        this.reformat = function(){
+            self.reformatHeight();
+            self.reformatWidth();
         };
 
         // this.reformat = function(){
@@ -581,7 +601,7 @@ app.wiki = require('../components/wiki/wiki');
                                                                                             m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
                                                                                             (function(){
                                                                                                 if(widget.closable){
-                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1);  ctrl.removeExtraCols(); }});
+                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
                                                                                                 }
                                                                                             })()
                                                                                         ])
@@ -607,7 +627,8 @@ app.wiki = require('../components/wiki/wiki');
                                                 // module_array[0].columns[0].widgets.splice(0,1);
                                             }),
                                             m(".ht-add-column", [
-                                                m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "])
+                                                m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }))
+
                                             ])
 
                                         ])
