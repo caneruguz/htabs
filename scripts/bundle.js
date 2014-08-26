@@ -84,27 +84,33 @@ app.wiki = require('../components/wiki/wiki');
                 minHeight: 100,
                 containment : "parent",
                 resize : function (event, ui){
-                    console.log($(event.target).parent());
-                    var column = $(event.target).parent();
-                    var setContentHeight = column.outerHeight(); // Height of the column
-                    var contentHeight = column[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
-                    // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
-                    var totalHeight = 0;
-                    column.children('.ht-widget').each(function(){
-                        totalHeight = totalHeight+$(this).outerHeight();
-                    });
+                    var oldH = ui.originalSize.height;
+                    var newH = ui.size.height;
+                    if(newH !== oldH){
+                        console.log(oldH, newH);
+                        console.log($(event.target).parent());
+                        var column = $(event.target).parent();
+                        var setContentHeight = column.outerHeight(); // Height of the column
+                        var contentHeight = column[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
+                        // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
+                        var totalHeight = 0;
+                        column.children('.ht-widget').each(function(){
+                            totalHeight = totalHeight+$(this).outerHeight();
+                        });
 
-                    // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
-                    column.children('.ht-widget').each(function(){
-                        var childHeight = $(this).height();
-                        var newHeight;
-                        if(setContentHeight < contentHeight){
-                            newHeight = (childHeight/contentHeight)*setContentHeight;
-                        } else {
-                            newHeight = (childHeight/(totalHeight+25))*setContentHeight;
-                        }
-                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
-                    });
+                        // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
+                        column.children('.ht-widget').each(function(){
+                            var childHeight = $(this).height();
+                            var newHeight;
+                            if(setContentHeight < contentHeight){
+                                newHeight = (childHeight/contentHeight)*setContentHeight;
+                            } else {
+                                newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                            }
+                            $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
+                        });
+                    }
+
                 }
             } );
             $('.ht-column').resizable({
@@ -175,7 +181,7 @@ app.wiki = require('../components/wiki/wiki');
 
             self.reformatWidth();
             self.reformatHeight();
-            
+            self.resizeWidgets();
 
 
             // ScrollTo take you to the module when clicked on the header
@@ -456,7 +462,7 @@ app.wiki = require('../components/wiki/wiki');
                         $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
                         // update column widths in the model
                     }
-                self.resizeWidgets();
+                // self.resizeWidgets(); don't need this.
                 self.eventsOn();
             }
         };
