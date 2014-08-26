@@ -116,8 +116,8 @@ body {
   height: 100%;
 }
 .ghost-element {
-  height: 341px;
-  width: 50px;
+  height: 300px;
+  width: 300px;
   background: grey;
   opacity: 0.4;
 }
@@ -136,12 +136,11 @@ body {
 .ht-tab-header .fa {
   font-size: 20px;
   font-weight: 200;
+  margin: 0 5px;
 }
 .ht-tab-header .ht-windowBtn {
   float: right;
-  width: 39px;
-  background: rgba(255, 255, 255, 0.28);
-  padding: 5px 11px 0;
+  padding: 8px 3px;
   margin-top: -49px;
   margin-right: -11px;
 }
@@ -178,6 +177,10 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
+}
+.ht-hdiv:hover {
+  cursor: pointer;
+  cursor: hand;
 }
 #ht-slider {
   background-color: #646464;
@@ -372,6 +375,7 @@ body {
 .ht-slider-wrap {
   position: relative;
   height: 15px;
+  background-color: lightslategrey;
 }
 .ht-w-s {
   background: #ccc;

@@ -56,7 +56,7 @@ app.wiki = require('../components/wiki/wiki');
         this.modules = build.workspace; // Assign modules to the model we created. observableness is set in the create function.
         this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
-        this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
+        this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
 
         var controllers = this.controllers = {};
 
@@ -119,8 +119,16 @@ app.wiki = require('../components/wiki/wiki');
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
                 containment: "#ht-content",
+                cursor : "move",
+                opacity : 0.7,
+                helper : 'clone',
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
+                    ui.helper.css({
+                        width: 200,
+                        height: 200,
+                        overflow : 'hidden'
+                    });
                     self.temp.fromObj = {};     // empty temp objects so we don't use any of these values accidentally
                     self.temp.toObj = {};
                     var from = {
@@ -140,7 +148,8 @@ app.wiki = require('../components/wiki/wiki');
 
                     $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
-                }
+                },
+                cursorAt: {left:100, top:25}
             });
         };
         this.init = function(element, isInitialized){
@@ -288,6 +297,8 @@ app.wiki = require('../components/wiki/wiki');
         this.exposeInit = function(){
             $(".expose-modules").sortable({
                 placeholder: "ghost-element ht-tab ui-state-default",
+                cursor : "move",
+                helper : "clone",
                 beforeStop : function(event, ui){
                     console.log(ui.item.index());
                     self.temp.stopIndex = ui.item.index();
@@ -297,7 +308,15 @@ app.wiki = require('../components/wiki/wiki');
                 },
                 start : function(event, ui){
                     self.temp.startIndex = ui.item.index();
-                }
+                    ui.helper.css({
+                        width: 300,
+                        height: 300
+                    });
+
+                },
+                cursorAt: {left:100, top:25}
+
+
             });
         };
         this.beginExpose = function(){
@@ -359,7 +378,7 @@ app.wiki = require('../components/wiki/wiki');
                 ])
             );
             self.applyModules();
-            $('#ht-wrapper').scrollTo($('.ht-tabin:last'), 150,  {offset:-50});
+            self.temp.scrollTo = '.ht-tab[data-id="4"]';
 
         };
         this.removeModule = function(module_index){
@@ -385,6 +404,7 @@ app.wiki = require('../components/wiki/wiki');
                 self.modules()[module_index].columns.push({ width: 400, widgets : [], new : true});
                 self.eventsOn();
                 self.reformatWidth();
+                self.temp.scrollTo = '.ht-tab[data-index="'+module_index+'"] > .ht-tab-content > .ht-column:last';
             }
         };
         this.removeExtraCols = function(){
@@ -396,16 +416,7 @@ app.wiki = require('../components/wiki/wiki');
                 });
             });
         };
-        // this.removeExtraCols = function(id){
-        //     self.modules().map(function(modules, modules_index){
-        //         modules.columns.map(function(column, column_index, array){
-        //             if(column.widgets < 1 & modules[modules_index] === id){
-        //                 array.splice(column_index, 1);
-        //             }
-        //         });
-        //     });
-        // };
-        // LAYOUT and INIT
+
         this.saveWorkspace = function () {
              console.log(self.modules());
         };
@@ -451,7 +462,7 @@ app.wiki = require('../components/wiki/wiki');
 
         this.reformatHeight = function(){
             if(self.canReformat){
-            window_height = $(window).height() + 15;
+            var window_height = $(window).height() + 15;
                 // heights :
                 var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
                 var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
@@ -472,26 +483,13 @@ app.wiki = require('../components/wiki/wiki');
             self.reformatHeight();
             self.reformatWidth();
         };
-
-        // this.reformat = function(){
-        //     console.trace();
-        //     var window_width = $(window).width()+15; // 15 is from the scroll bar fix since jquery doesn't always give correct width. Since we don't need to be precise with the width we can add padding to not go into cross-browser fixes or loading libraries.
-        //     var window_height = $(window).height();
-        //     if(window_height < 500){
-        //         self.canReformat = false;
-        //     } else {
-        //         self.canReformat = true;
-        //     }
-        //     if(self.canReformat){
-
-        //         //adjust header width
-        //         reformatWidth(window_width);
-
-        //         //adjust content height
-        //         reformatHeight(window_height);                
-        //     }
-
-        //     };
+        this.widgetInit = function() {
+            if (self.temp.scrollTo) {
+                $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50});
+                self.temp.scrollTo = "";
+            }
+            console.log("widgetInit ran");
+        }
 
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
@@ -581,8 +579,8 @@ app.wiki = require('../components/wiki/wiki');
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m("h3", module.title),
                                             m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
+                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}}),
+                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
                                             ])
                                         ]),
                                         m(".ht-tab-content", [
@@ -594,7 +592,7 @@ app.wiki = require('../components/wiki/wiki');
                                                             if (column.widgets.length > 0) {
                                                                 return column.widgets.map(function(widget, widget_index, widget_array){
                                                                     if(widget.display){
-                                                                        return m(".ht-widget", { 'data-index' : widget_index, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-widget-content ui-helper-clearfix " +widget.css}, [
+                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-widget-content ui-helper-clearfix " +widget.css}, [
                                                                             (function(){
                                                                                 if(!widget.hideHeader){
                                                                                     return m(".ht-widget-header", [
@@ -613,23 +611,26 @@ app.wiki = require('../components/wiki/wiki');
 
                                                                             m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
                                                                                 (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
-
                                                                      ) ])
-
                                                                         ]);
-
                                                                     }
-
                                                                 });
                                                             }
                                                         })()
                                                     ]);
-
                                                 }
                                                 // module_array[0].columns[0].widgets.splice(0,1);
                                             }),
                                             m(".ht-add-column", [
-                                                m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }))
+                                                (function(){
+                                                    console.log(module.columns[module.columns.length-1]);
+                                                    if(module.columns[module.columns.length-1].new){
+                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [" ",m("i.fa.fa-minus")," "], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                    } else {
+                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                    }
+                                                })()
+
 
                                             ])
 

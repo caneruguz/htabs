@@ -7,7 +7,7 @@ var source = require('vinyl-source-stream');
 
 var paths = {
     cssfiles : ["./bower_components/bootstrap/dist/css/*.min.css", "./bower_components/jquery-ui/themes/ui-lightness/*.min.css", "./css/**/*.css", "./css/*.css"],
-    jsfiles : [ "./bower_components/jquery/dist/*.min.js", "./bower_components/jquery-ui/*.min.js", "./bower_components/jquery.scrollTo/*.min.js", "./bower_components/bootstrap/dist/js/*.min.js", "./node_modules/mithril/*.min.js", "./scripts/jquery_scroller.js", "./scripts/bundle.js" ],
+    jsfiles : [ "./bower_components/jquery/dist/*.min.js", "./bower_components/jquery-ui/*.min.js", "./bower_components/jquery.scrollTo/*.min.js", "./bower_components/jquery-rescon/dist/*.min.js",  "./bower_components/bootstrap/dist/js/*.min.js", "./node_modules/mithril/mithril.js", "./scripts/jquery_scroller.js" , "./scripts/bundle.js" ],
     less : [ "./less/*.less", "./components/**/*.less"]
 }
 
