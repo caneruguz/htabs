@@ -130,6 +130,8 @@ app.wiki = require('../components/wiki/wiki');
                 helper : 'clone',
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
+                    ui.placeholder.height(ui.item.height()*2/3);
+                    ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
                         height: 200,
