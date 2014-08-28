@@ -376,10 +376,10 @@ app.wiki = require('../components/wiki/wiki');
         this.addModule = function() {
             // This will eventually be selected from lists
             self.modules().push(
-                new build.module("Added Module", 4, "pink", [
+                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, "pink", [
                     new build.column(620, [
-                        new build.widget(6, "Widget 13"),
-                        new build.widget(7, "Widget 14")
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 13"),
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 14")
                     ])
                 ])
             );
