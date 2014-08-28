@@ -474,6 +474,7 @@ app.wiki = require('../components/wiki/wiki');
         this.reformatHeight = function(){
             if(self.canReformat){
             var window_height = $(window).height() + 15;
+
                 // heights :
                 var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
                 var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
@@ -576,14 +577,14 @@ app.wiki = require('../components/wiki/wiki');
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.minimize){
-                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", { 'data-index' : module_index, 'data-id' : module.id}, [
+                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m(".ht-windowBtn", [
                                                 m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                 m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
                                             ])
                                         ]),
-                                        m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
+                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                     ])];
                                 }else {
                                     return [" ",  m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
