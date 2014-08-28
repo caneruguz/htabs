@@ -637,8 +637,12 @@ app.wiki = require('../components/wiki/wiki');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    console.log(module.columns[module.columns.length-1]);
-                                                    if(module.columns[module.columns.length-1].new){
+                                                    console.log(ctrl.modules[0]===module);
+                                                    console.log(ctrl.modules[1]===module);
+                                                    console.log(module.columns[module.columns.length-1].widgets);
+                                                    console.log(module.columns);
+
+                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
                                                         return m(".add-column", { onclick : function(){ module.columns.pop() } }, [" ",m("i.fa.fa-minus")," "], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
                                                         return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }));
