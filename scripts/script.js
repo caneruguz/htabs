@@ -374,9 +374,14 @@ app.wiki = require('../components/wiki/wiki');
             m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
         };
         this.addModule = function() {
+
+            
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var randomNumber = Math.floor(Math.random()*clrs.length);
+            
             // This will eventually be selected from lists
             self.modules().push(
-                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, "pink", [
+                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, clrs[randomNumber], [
                     new build.column(620, [
                         new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 13"),
                         new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 14")
