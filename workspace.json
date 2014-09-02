@@ -29,7 +29,7 @@
                 ]
             },
             {
-                "width" : 200,
+                "width" : 260,
                 "new" : true,
                 "widgets" : []
             }
@@ -109,7 +109,7 @@
                 ]
             },
             {
-                "width" : 200,
+                "width" : 260,
                 "new" : false,
                 "widgets" : [
                     {
