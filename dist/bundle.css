@@ -2701,17 +2701,18 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-tab-minimized{width:60px;min-width:60px}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
-.ghost-element{height:341px;width:50px;background:grey;opacity:.4}
+.ghost-element{height:300px;width:300px;background:grey;opacity:.4}
 .ht-tab-header{color:#fff;padding:1px 10px}
 .ht-tab-header h3{font-weight:100;font-family:Helvetica Neue;letter-spacing:1px;margin:10px 0;font-size:25px}
-.ht-tab-header .fa{font-size:20px;font-weight:200}
-.ht-tab-header .ht-windowBtn{float:right;width:39px;background:rgba(255,255,255,.28);padding:5px 11px 0;margin-top:-49px;margin-right:-11px}
+.ht-tab-header .fa{font-size:20px;font-weight:200;margin:0 5px}
+.ht-tab-header .ht-windowBtn{float:right;padding:8px 3px;margin-top:-49px;margin-right:-11px}
 .ht-tab-content{background-color:#fff;color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
 #ht-head{height:30px;background-color:lightslategrey;color:#fff}
 #ht-content{padding:10px}
 .ht-hdiv{display:inline-block;padding:5px 3px;text-align:center;height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.ht-hdiv:hover{cursor:pointer;cursor:hand}
 #ht-slider{background-color:#646464;width:50px;height:15px;position:absolute}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:url(images/wavegrid.png);padding:0;margin:0}
 .ht-column{min-width:250px;display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px dotted #fff}
@@ -2742,7 +2743,7 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .expose-button{display:inline;margin:10px 20px;border:1px solid #aaa;padding:17px 25px}
 .expose-button span{margin-left:20px}
 .expose-button:hover{background:#eee;color:#333;cursor:pointer}
-.ht-slider-wrap{position:relative;height:15px}
+.ht-slider-wrap{position:relative;height:15px;background-color:lightslategrey}
 .ht-w-s{background:#ccc}
 .appBtnDiv{background:rgba(255,255,255,.71);padding:5px 10px;float:right;margin-top:-30px}
 .appBtn{margin:0 5px}
