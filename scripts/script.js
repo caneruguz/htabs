@@ -115,9 +115,12 @@ app.wiki = require('../components/wiki/wiki');
             $('.ht-column').resizable({
                 handles : "e",
                 minWidth : 160,
-                stop : function (){
+                resize : function (){
                     self.saveColumnSize();
                     self.reformatWidth();
+                },
+                stop : function (){
+                    self.saveColumnSize();
                 }
             } );
 
@@ -130,6 +133,8 @@ app.wiki = require('../components/wiki/wiki');
                 helper : 'clone',
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
+                    ui.placeholder.height(ui.item.height()*2/3);
+                    ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
                         height: 200,
@@ -374,12 +379,17 @@ app.wiki = require('../components/wiki/wiki');
             m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
         };
         this.addModule = function() {
+
+            
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var randomNumber = Math.floor(Math.random()*clrs.length);
+            
             // This will eventually be selected from lists
             self.modules().push(
-                new build.module("Added Module", 4, "pink", [
+                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, clrs[randomNumber], [
                     new build.column(620, [
-                        new build.widget(6, "Widget 13"),
-                        new build.widget(7, "Widget 14")
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 13"),
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 14")
                     ])
                 ])
             );
@@ -407,7 +417,7 @@ app.wiki = require('../components/wiki/wiki');
                 }
             });
             if(!empty){
-                self.modules()[module_index].columns.push({ width: 400, widgets : [], new : true});
+                self.modules()[module_index].columns.push({ width: 300, widgets : [], new : true});
                 self.eventsOn();
                 self.reformatWidth();
                 self.temp.scrollTo = '.ht-tab[data-index="'+module_index+'"] > .ht-tab-content > .ht-column:last';
@@ -430,25 +440,40 @@ app.wiki = require('../components/wiki/wiki');
         // Creating separate function for each action that can occur
         this.reformatWidth = function () {
             if(self.canReformat){
-                window_width = $(window).width();
-                var totalLength = 20; // Padding of the content tab
+                window_width = $(window).outerWidth();
+                var totalLength = 20; // This is not a good number, why does this work right? 
+                // self.modules().map(function(module){
+                //     var thisWidth = 60+20+20; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding
+                //     module.columns.map(function(column){
+                //         columnW = column.width+10; // right padding + right margin + right border
+                //         thisWidth += columnW;
+                //     });
+                //     totalLength += thisWidth;
+                // });
+
                 $('.ht-tab').each(function(){
-                    totalLength += $(this).outerWidth()+24; // 20px padding, 2 pixel borders, + 2 for something I don't know ??
+                       totalLength += $(this).width() + 20; // 20px padding, 2 pixel borders, + 2 for something I don't know ??
                 });
+
+
+
                 var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
             
                 $('#ht-head').css({ width : ht_head_width + 'px' } );
+                console.log('ht-head');
+                console.log(ht_head_width);
                 $('#ht-wrapper').css({ width : window_width + 'px' } );
                 $('#ht-content').css('width', ht_content_width + 'px'); 
 
                 // Adjust slider on changes
 
-                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').width() + 'px') // 
-                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').outerWidth() + 'px') // 
+                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
                 
                 // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
+                var remainder = 0;
                 for(var i = 0; i < self.modules().length; i++){
                         var o = self.modules()[i];
                         // +40 = fix for margin space
@@ -456,9 +481,11 @@ app.wiki = require('../components/wiki/wiki');
 
                         var use_width = (window_width > ht_content_width) ? window_width : ht_content_width;
                         // use width is width of the whole page 
+                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()+20))/(use_width-20)*ht_head_width + remainder;
+                        var adjWidth = Math.floor(width);
+                        remainder = width - adjWidth;
                         
-                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()))/(use_width)*100
-                        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
+                        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : adjWidth+'px'});
                         // update column widths in the model
                     }
                 // self.resizeWidgets(); don't need this.
@@ -469,6 +496,7 @@ app.wiki = require('../components/wiki/wiki');
         this.reformatHeight = function(){
             if(self.canReformat){
             var window_height = $(window).height() + 15;
+
                 // heights :
                 var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
                 var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
@@ -571,17 +599,17 @@ app.wiki = require('../components/wiki/wiki');
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.minimize){
-                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", { 'data-index' : module_index, 'data-id' : module.id}, [
+                                    return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m(".ht-windowBtn", [
                                                 m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                 m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
                                             ])
                                         ]),
-                                        m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
+                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                     ])];
                                 }else {
-                                    return [" ",  m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
+                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m("h3", module.title),
                                             m(".ht-windowBtn", [
@@ -629,11 +657,10 @@ app.wiki = require('../components/wiki/wiki');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    console.log(module.columns[module.columns.length-1]);
-                                                    if(module.columns[module.columns.length-1].new){
-                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [" ",m("i.fa.fa-minus")," "], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
+                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
-                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
                                                     }
                                                 })()
 

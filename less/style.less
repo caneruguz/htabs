@@ -11,13 +11,30 @@
 @coral: #E74C3C; 
 @white : #ECF0F1;
 @light-blue: #3498DB;
-@silver : #646464; 
+@dark-silver : #646464; 
 
 @flat-navy : #334D5C; 
 @flat-blue: #45B29D;
 @flat-yellow: #EFC94C; 
 @flat-orange: #E27A3F;
 @flat-pink: #DF4949; 
+
+@black : #111111;
+@maroon : #85144B;
+@gray : #AAAAAA;
+@purple : #B10DC9;
+@silver : #DDDDDD;
+@fuchsia : #F012BE;
+@red : #FF4136;
+@orange : #FF851B;
+@yellow : #FFDC00;
+@aqua : #7FDBFF;
+@olive : #3D9970;
+@teal : #39CCCC;
+@green : #2ECC40;
+@lime : #01FF70;
+@blue : #0074D9;
+@navy : #001F3F;
 
 .ht-textarea {
   width: 100%;
@@ -39,21 +56,21 @@ body {
   overflow: hidden;
 }
 
-.bg-blue {
-     background-color: @flat-blue;
-}
-.bg-orange {
-    background-color: @flat-orange;
-}
-.bg-yellow {
-    background-color: @flat-yellow;
-}
-.bg-navy {
-     background-color: @flat-navy;
-}
-.bg-pink {
-     background-color: @flat-pink;
-}
+.bg-maroon{ background-color: @maroon;}
+.bg-gray{ background-color: @gray;}
+.bg-purple{ background-color: @purple;}
+.bg-silver{ background-color: @silver;}
+.bg-fuchsia{ background-color: @fuchsia;}
+.bg-red{ background-color: @red;}
+.bg-orange{ background-color: @orange;}
+.bg-yellow{ background-color: @yellow;}
+.bg-aqua{ background-color: @aqua;}
+.bg-olive{ background-color: @olive;}
+.bg-teal{ background-color: @teal;}
+.bg-green{ background-color: @green;}
+.bg-lime{ background-color: @lime;}
+.bg-blue{ background-color: @blue;}
+.bg-navy{ background-color: @navy;}
 
 .dim-background{
   background: rgba(0, 0, 0, 0.7);
@@ -80,6 +97,7 @@ body {
   color: white;
   background: transparent;
   border: none;
+  border-bottom: 2px dotted rgba(153, 153, 153, 0.19)
 }
 .ht-module-inverted {
   .ht-column {
@@ -182,8 +200,9 @@ body {
 
 #ht-head{
     height: 30px;
-    background-color: lightslategrey;
+    /* background-color: lightslategrey; */
     color: white;
+    display:inline-block;
 }
 
 #ht-content{
@@ -206,7 +225,7 @@ body {
 
 }
 #ht-slider{
-  background-color:@silver;
+  background-color:@dark-silver;
   width:50px;
   height:15px;
   position:absolute;
@@ -217,6 +236,7 @@ body {
   background: url("images/wavegrid.png");
   padding: 0;
   margin: 0;
+  display:inline-block;
 }
 
 .ht-column {
@@ -257,7 +277,7 @@ body {
   box-shadow: 0 0 5px 0 #aaa;
 }
 .ht-dark-shadow {
-  border: 1px solid #222;
+  /*border: 1px solid #222;*/
   box-shadow: 0 0 32px -5px #000;
 }
 .ht-add-column {
@@ -355,7 +375,7 @@ body {
   margin-left: 6px;
   margin-top: 44px;
   font-size: 17px;
-  height: 195px;
+  height: 182px;
   text-overflow: ellipsis;
 }
 .ui-resizable-e {
@@ -414,7 +434,8 @@ body {
   background: rgba(255, 255, 255, 0.71);
   padding: 5px 10px;
   float: right;
-  margin-top: -30px;
+  display:inline-bock;
+  /*margin-top: -30px; */
 }
 .appBtn {
   margin: 0 5px;
