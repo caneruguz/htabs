@@ -438,9 +438,14 @@ app.wiki = require('../components/wiki/wiki');
         this.reformatWidth = function () {
             if(self.canReformat){
                 window_width = $(window).width();
-                var totalLength = 20; // Padding of the content tab
-                $('.ht-tab').each(function(){
-                    totalLength += $(this).outerWidth()+24; // 20px padding, 2 pixel borders, + 2 for something I don't know ??
+                var totalLength = 90; // Padding of the content tab
+                self.modules().map(function(module){
+                    var thisWidth = 60+22+20; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding
+                    module.columns.map(function(column){
+                        columnW = column.width+17; // right padding + right margin + right border
+                        thisWidth += columnW;
+                    });
+                    totalLength += thisWidth;
                 });
                 var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
@@ -637,11 +642,6 @@ app.wiki = require('../components/wiki/wiki');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    console.log(ctrl.modules[0]===module);
-                                                    console.log(ctrl.modules[1]===module);
-                                                    console.log(module.columns[module.columns.length-1].widgets);
-                                                    console.log(module.columns);
-
                                                     if(module.columns[module.columns.length-1].widgets.length  < 1){
                                                         return m(".add-column", { onclick : function(){ module.columns.pop() } }, [" ",m("i.fa.fa-minus")," "], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
