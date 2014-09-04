@@ -417,16 +417,20 @@ app.wiki = require('../components/wiki/wiki');
             var randomNumber = Math.floor(Math.random()*clrs.length);
             
             // This will eventually be selected from lists
+            var moduleId = Math.floor((Math.random() * 100000) + 1)+3;
+            var col1Id = Math.floor((Math.random() * 100000) + 1)+6;
+            var col2Id = Math.floor((Math.random() * 100000) + 1)+6;
+
             self.modules().push(
-                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, clrs[randomNumber], [
+                new build.module("Added Module " + moduleId, moduleId, clrs[randomNumber], [
                     new build.column(620, [
-                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 13"),
-                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 14")
+                        new build.widget(col1Id, "Widget " + col1Id),
+                        new build.widget(col2Id, "Widget " + col2Id)
                     ])
                 ])
             );
             self.applyModules();
-            self.temp.scrollTo = '.ht-tab[data-id="4"]';
+            self.temp.scrollTo = '.ht-tab[data-id="'+ moduleId + '"]';
 
         };
         this.removeModule = function(module_index){
@@ -507,11 +511,10 @@ app.wiki = require('../components/wiki/wiki');
 
                 // Adjust slider on changes
 
-                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').outerWidth() + 'px') // 
-                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
-                
+
                 // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
                 var remainder = 0;
+                var actual_ht_head = 0;
                 for(var i = 0; i < self.modules().length; i++){
                         var o = self.modules()[i];
                         // +40 = fix for margin space
@@ -521,11 +524,16 @@ app.wiki = require('../components/wiki/wiki');
                         // use width is width of the whole page 
                         var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()+20))/(use_width-20)*ht_head_width + remainder;
                         var adjWidth = Math.floor(width);
+                        actual_ht_head += adjWidth;
                         remainder = width - adjWidth;
                         
                         $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : adjWidth+'px'});
                         // update column widths in the model
                     }
+
+                $('#ht-slider').width(Math.floor(window_width*actual_ht_head/($('#ht-content').outerWidth()+10)) + 'px') // as usual, I have no idea why this number works
+                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
+                    
                 // self.resizeWidgets(); don't need this.
                 self.eventsOn();
             }
