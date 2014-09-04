@@ -58,7 +58,6 @@ app.wiki = require('../components/wiki/wiki');
         this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
-
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -87,6 +86,7 @@ app.wiki = require('../components/wiki/wiki');
                     var oldH = ui.originalSize.height;
                     var newH = ui.size.height;
                     if(newH !== oldH){
+                        console.log("widget is resizing")
                         console.log(oldH, newH);
                         console.log($(event.target).parent());
                         var column = $(event.target).parent();
@@ -115,27 +115,40 @@ app.wiki = require('../components/wiki/wiki');
             } );
             $('.ht-column').resizable({
                 handles : "e",
-                minWidth : 160,
-                stop : function (){
+                minWidth : 250,
+//                alsoResize : "#ht-content",
+                resize : function (){
                     self.saveColumnSize();
                     self.reformatWidth();
+                },
+                stop : function (){
+//                    self.saveColumnSize();
+                },
+                create : function(){
+                    console.log("Resizable created");
                 }
             } );
 
             $(".ht-column" ).sortable({
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
-                containment: "#ht-content",
+//                containment: "#ht-content",
                 cursor : "move",
                 opacity : 0.7,
                 helper : 'clone',
+//                tolerance : 'pointer',
+                appendTo : '#ht-content',
+                forceHelperSize : true,
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
+
+                    ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
                         height: 200,
                         overflow : 'hidden'
                     });
+                    console.log(ui.offset)
                     self.temp.fromObj = {};     // empty temp objects so we don't use any of these values accidentally
                     self.temp.toObj = {};
                     var from = {
@@ -144,6 +157,7 @@ app.wiki = require('../components/wiki/wiki');
                         widget : ui.item.index()
                     };
                     self.temp.fromObj = from; // assign the from object
+                    console.log(ui.item);
                 },
                 stop : function(event, ui){     // get the widget placement that we want the original widget to drop to
                     var to = {
@@ -152,11 +166,11 @@ app.wiki = require('../components/wiki/wiki');
                         widget : ui.item.index()
                     };
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
-
                     $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
+
                 },
-                cursorAt: {left:100, top:25}
+                  cursorAt: {left:100, top:25}
             });
         };
         this.init = function(element, isInitialized){
@@ -182,7 +196,6 @@ app.wiki = require('../components/wiki/wiki');
             self.reformatWidth();
             self.reformatHeight();
             self.resizeWidgets();
-
 
             // ScrollTo take you to the module when clicked on the header
             $(document).on('click', '.ht-hdiv', function(){
@@ -242,16 +255,19 @@ app.wiki = require('../components/wiki/wiki');
                     self.modules()[from.module].columns[from.column].widgets.splice(from.widget+1, 1);
                 }
             }
+            console.log(self.modules())
             // console.log("widget moved", from, to);
             // console.log(self.modules());
-            m.redraw();
             self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
+            m.redraw(true);
+
         };
         this.resizeWidgets = function() {
                 // console.log("resize running");
+
             $('.ht-column').each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
-               var setContentHeight = $(this).outerHeight(); // Height of the column
+                var setContentHeight = $(this).outerHeight(); // Height of the column
                 var contentHeight = $(this)[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
                 // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
                 var totalHeight = 0;
@@ -288,6 +304,8 @@ app.wiki = require('../components/wiki/wiki');
                     if(width <= 300 ){
                         $(this).find('.ht-w-s').show();
                     }
+
+
                 });
 
             });
@@ -327,36 +345,55 @@ app.wiki = require('../components/wiki/wiki');
             });
         };
         this.beginExpose = function(){
+
+
+            self.calculateExposeWidths();
+//
+            self.localExpose = true; // We can run expose in mithril view
+//            self.canReformat = false; // Deactivate reformatting -- is this still necessary? yes but because we are using the same tab classes. Keep it for now.
+            console.log(self.canReformat);
+        };
+        this.endExpose = function(){
+            // Return view to normal
+            self.localExpose = false;
+//            self.canReformat = true;
+        };
+        this.calculateExposeWidths = function(){
             var windowWidth = $(window).width();
             var windowHeight = $(window).height();
             var wrapperHeight = windowHeight-40;
             var tab = wrapperHeight-80;
             var adjheight = tab/2;
             var adjpadding = tab/4;
-            $(".ghost-element").css('height', adjheight);
             // get size of all modules
-            var modlens = 0; // full length of modules
-            $('.ht-tab').each(function(i, item) {
-                modlens += $(item).width() + 40;
-            });
-
-            for(var i = 0; i < self.modules().length; i++){
-                var o = self.modules()[i];
-                var modwidth = $('.ht-tab[data-id="'+o.id+'"]').width() +2; //  +2 compensates for border
-                var width = (modwidth)/(modlens);   // The ratio of this module over all modules
-                var adjwidth = width*(windowWidth-(40*self.modules().length)-adjpadding/2); // calculate width, taking into account proper padding
-                o.exposeWidth = adjwidth; // assign the new widths to the model object
-            }
+            var modlens = self.calculateContentLength();
             $(".ghost-element").css('height', adjheight);
-            self.localExpose = true; // We can run expose in mithril view
-            self.canReformat = false; // Deactivate reformatting -- is this still necessary? yes but because we are using the same tab classes. Keep it for now.
-            console.log(self.canReformat);
-        };
-        this.endExpose = function(){
-            // Return view to normal
-            self.localExpose = false;
-            self.canReformat = true;
-        };
+            self.modules().map(function(module){
+                var baseWidth = 60+20+20; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding
+                var columnW;
+                module.columns.map(function(column){
+                    columnW = column.width+10; // right padding + right margin + right border
+                    baseWidth += columnW;
+                });
+                var width = (baseWidth)/(modlens);   // The ratio of this module over all modules
+                var adjwidth = width*(windowWidth-(40*self.modules().length)-adjpadding/2); // calculate width, taking into account proper padding
+                module.exposeWidth = adjwidth; // assign the new widths to the model object
+                console.log(baseWidth, modlens, adjwidth);
+                console.log("Expose width", module.exposeWidth);
+            });
+        }
+        this.calculateContentLength = function(){
+            var totalLength = 20; // This is not a good number, why does this work right?
+            self.modules().map(function(module){
+                var thisWidth = 60+20+20; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding
+                module.columns.map(function(column){
+                    var columnW = column.width+10; // right padding + right margin + right border
+                    thisWidth += columnW;
+                });
+                totalLength += thisWidth;
+            });
+            return totalLength;
+        }
 
         // MODULES
         this.moveModule = function(from, to){       // Move module within the expose window. Gets triggered suring sortable in expose.
@@ -375,12 +412,17 @@ app.wiki = require('../components/wiki/wiki');
             m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
         };
         this.addModule = function() {
+
+            
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var randomNumber = Math.floor(Math.random()*clrs.length);
+            
             // This will eventually be selected from lists
             self.modules().push(
-                new build.module("Added Module", 4, "pink", [
+                new build.module("Added Module", Math.floor((Math.random() * 100000) + 1)+3, clrs[randomNumber], [
                     new build.column(620, [
-                        new build.widget(6, "Widget 13"),
-                        new build.widget(7, "Widget 14")
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 13"),
+                        new build.widget(Math.floor((Math.random() * 100000) + 1)+6, "Widget 14")
                     ])
                 ])
             );
@@ -395,7 +437,11 @@ app.wiki = require('../components/wiki/wiki');
         };
         this.toggleModule = function(index, state){
             self.modules()[index].minimize = state;
-            m.redraw();
+//           self.reformat();
+            //m.redraw();
+            self.calculateExposeWidths();
+            console.log(self.modules()[index].exposeWidth)
+
         };
 
         // COLUMNS
@@ -408,10 +454,24 @@ app.wiki = require('../components/wiki/wiki');
                 }
             });
             if(!empty){
-                self.modules()[module_index].columns.push({ width: 400, widgets : [], new : true});
+                self.modules()[module_index].columns.push({ width: 300, widgets : [], new : true});
                 self.eventsOn();
                 self.reformatWidth();
-                self.temp.scrollTo = '.ht-tab[data-index="'+module_index+'"] > .ht-tab-content > .ht-column:last';
+                var offset = $('.ht-tab[data-index="'+module_index+'"] > .ht-tab-content > .ht-add-column').offset().left;
+                var windowW = $(window).width();
+                var selector = '.ht-tab[data-index="'+module_index+'"] > .ht-tab-content > .ht-column:last';
+                if(offset+320 > windowW) {
+                    self.temp.offset = windowW-300;
+                    self.temp.scrollTo = selector;
+
+                } else if (offset < 250) {
+                    self.temp.offset = 300-offset;
+                    self.temp.scrollTo = selector;
+
+                } else {
+                    self.temp.offset  = 0;
+                    self.temp.scrollTo = "";
+                }
             }
         };
         this.removeExtraCols = function(){
@@ -431,11 +491,13 @@ app.wiki = require('../components/wiki/wiki');
         // Creating separate function for each action that can occur
         this.reformatWidth = function () {
             if(self.canReformat){
-                window_width = $(window).width();
-                var totalLength = 20; // Padding of the content tab
-                $('.ht-tab').each(function(){
-                    totalLength += $(this).outerWidth()+24; // 20px padding, 2 pixel borders, + 2 for something I don't know ??
-                });
+//                console.log("reformat ran")
+
+                var window_width = $(window).outerWidth();
+
+                var totalLength = self.calculateContentLength();
+
+
                 var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
@@ -446,10 +508,11 @@ app.wiki = require('../components/wiki/wiki');
 
                 // Adjust slider on changes
 
-                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').width() + 'px') // 
-                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').width()/$('#ht-content').width() + 'px');
+                $('#ht-slider').width( Math.pow(window_width, 2) / $('#ht-content').outerWidth() + 'px') // 
+                    .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
                 
                 // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
+                var remainder = 0;
                 for(var i = 0; i < self.modules().length; i++){
                         var o = self.modules()[i];
                         // +40 = fix for margin space
@@ -457,9 +520,11 @@ app.wiki = require('../components/wiki/wiki');
 
                         var use_width = (window_width > ht_content_width) ? window_width : ht_content_width;
                         // use width is width of the whole page 
+                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()+20))/(use_width-20)*ht_head_width + remainder;
+                        var adjWidth = Math.floor(width);
+                        remainder = width - adjWidth;
                         
-                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()))/(use_width)*100
-                        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : width+'%'});
+                        $('.ht-hdiv[data-hid="'+o.id+'"]').css( { width : adjWidth+'px'});
                         // update column widths in the model
                     }
                 // self.resizeWidgets(); don't need this.
@@ -470,6 +535,7 @@ app.wiki = require('../components/wiki/wiki');
         this.reformatHeight = function(){
             if(self.canReformat){
             var window_height = $(window).height() + 15;
+
                 // heights :
                 var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
                 var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
@@ -492,17 +558,20 @@ app.wiki = require('../components/wiki/wiki');
         };
         this.widgetInit = function() {
             if (self.temp.scrollTo) {
-                $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50});
+//                var offset = self.temp.offset ? self.temp.offset : -50;
+//                console.log(offset);
+                $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
+                console.log("Final offset", self.temp.offset);
                 self.temp.scrollTo = "";
             }
-            console.log("widgetInit ran");
+//            console.log("widgetInit ran");
         }
 
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
                 var o = self.modules()[i];
                 o.columns.map(function(item, index, array){
-                item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).width();
+                item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).outerWidth();
             });
         }
         };
@@ -572,17 +641,17 @@ app.wiki = require('../components/wiki/wiki');
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.minimize){
-                                    return [" ", m(".ht-tab.ht-tab-minimized.ht-light-shadow", { 'data-index' : module_index, 'data-id' : module.id}, [
+                                    return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m(".ht-windowBtn", [
                                                 m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                 m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
                                             ])
                                         ]),
-                                        m(".ht-tab-content", [m("h3.rotate.rotatedText", module.title)])
+                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                     ])];
                                 }else {
-                                    return [" ",  m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
+                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
                                         m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                             m("h3", module.title),
                                             m(".ht-windowBtn", [
@@ -630,11 +699,10 @@ app.wiki = require('../components/wiki/wiki');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    console.log(module.columns[module.columns.length-1]);
-                                                    if(module.columns[module.columns.length-1].new){
-                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [" ",m("i.fa.fa-minus")," "], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
+                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
-                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [" ",m("i.fa.fa-plus")," "], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
                                                     }
                                                 })()
 

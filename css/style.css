@@ -29,20 +29,50 @@ body {
   width: 100%;
   overflow: hidden;
 }
-.bg-blue {
-  background-color: #45b29d;
+.bg-maroon {
+  background-color: #85144b;
+}
+.bg-gray {
+  background-color: #aaaaaa;
+}
+.bg-purple {
+  background-color: #b10dc9;
+}
+.bg-silver {
+  background-color: #dddddd;
+}
+.bg-fuchsia {
+  background-color: #f012be;
+}
+.bg-red {
+  background-color: #ff4136;
 }
 .bg-orange {
-  background-color: #e27a3f;
+  background-color: #ff851b;
 }
 .bg-yellow {
-  background-color: #efc94c;
+  background-color: #ffdc00;
+}
+.bg-aqua {
+  background-color: #7fdbff;
+}
+.bg-olive {
+  background-color: #3d9970;
+}
+.bg-teal {
+  background-color: #39cccc;
+}
+.bg-green {
+  background-color: #2ecc40;
+}
+.bg-lime {
+  background-color: #01ff70;
+}
+.bg-blue {
+  background-color: #0074d9;
 }
 .bg-navy {
-  background-color: #334d5c;
-}
-.bg-pink {
-  background-color: #df4949;
+  background-color: #001f3f;
 }
 .dim-background {
   background: rgba(0, 0, 0, 0.7);
@@ -67,6 +97,7 @@ body {
   color: white;
   background: transparent;
   border: none;
+  border-bottom: 2px dotted rgba(153, 153, 153, 0.19);
 }
 .ht-module-inverted .ht-column {
   border-right: 2px dotted rgba(153, 153, 153, 0.19);
@@ -127,8 +158,6 @@ body {
   padding: 1px 10px;
 }
 .ht-tab-header h3 {
-  font-weight: 100;
-  font-family: Helvetica Neue;
   letter-spacing: 1px;
   margin: 10px 0px;
   font-size: 25px;
@@ -162,8 +191,9 @@ body {
 }
 #ht-head {
   height: 30px;
-  background-color: lightslategrey;
+  /* background-color: lightslategrey; */
   color: white;
+  display: inline-block;
 }
 #ht-content {
   padding: 10px;
@@ -194,9 +224,9 @@ body {
   background: url("images/wavegrid.png");
   padding: 0;
   margin: 0;
+  display: inline-block;
 }
 .ht-column {
-  min-width: 250px;
   display: inline-block;
   margin-right: 10px;
   float: left;
@@ -232,7 +262,7 @@ body {
   box-shadow: 0 0 5px 0 #aaa;
 }
 .ht-dark-shadow {
-  border: 1px solid #222;
+  /*border: 1px solid #222;*/
   box-shadow: 0 0 32px -5px #000000;
 }
 .ht-add-column {
@@ -267,7 +297,6 @@ body {
 }
 .white-text-btn {
   font-weight: 100;
-  font-family: Helvetica Neue;
   color: white;
   letter-spacing: 1px;
   font-size: 35px;
@@ -326,7 +355,7 @@ body {
   margin-left: 6px;
   margin-top: 44px;
   font-size: 17px;
-  height: 195px;
+  height: 182px;
   text-overflow: ellipsis;
 }
 .ui-resizable-e {
@@ -356,7 +385,7 @@ body {
   color: white;
   font-size: 31px;
   font-weight: 100;
-  font-family: Helvetica Neue;
+  font-family: 'Trebuchet MS', sans-serif;
 }
 .expose-button {
   display: inline;
@@ -384,7 +413,8 @@ body {
   background: rgba(255, 255, 255, 0.71);
   padding: 5px 10px;
   float: right;
-  margin-top: -30px;
+  display: inline-bock;
+  /*margin-top: -30px; */
 }
 .appBtn {
   margin: 0 5px;
