@@ -526,7 +526,9 @@ app.wiki = require('../components/wiki/wiki')
                         ctrl.modules().map(function(module, module_index, module_array){
                             return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
                                 m('.ht-mobile-module-inner', [
-                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1},  "Mobile Column Header"),
+                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1},
+                                        "Mobile Column Header"
+                                    ),
                                     module.columns.map(function(column){
                                         return column.widgets.map(function(widget, widget_index, widget_array){
                                             return m('.ht-mobile-widget', { config : function(){ ctrl.mobileWidgetInit(module_index) } , 'style' : 'background:white', "data-id" : widget.id } , [
