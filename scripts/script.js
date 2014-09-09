@@ -417,7 +417,7 @@ app.wiki = require('../components/wiki/wiki');
             
             var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
             var randomNumber = Math.floor(Math.random()*clrs.length);
-            
+ 
             // This will eventually be selected from lists
             var moduleId = Math.floor((Math.random() * 100000) + 1)+3;
             var col1Id = Math.floor((Math.random() * 100000) + 1)+6;
@@ -686,12 +686,33 @@ app.wiki = require('../components/wiki/wiki');
                     ]),
                     m("#ht-mobile-content", [
                         ctrl.modules().map(function(module, module_index, module_array){
+                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+                            
+                           
                             return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
                                 m('.ht-mobile-module-inner', [
-                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1},  "Mobile Column Header"),
+                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1}, [
+                                        m('div', {'class':'ht-mobile-module-title'}, module.title), 
+                                        m('div', {'class':'ht-mobile-module-content'}, "Lorem fake content goes here ipsum"),
+                                        module.columns.map(function(column){
+                                            return column.widgets.map(function(widget, widget_index, widget_array){
+                                                var randomNumber = Math.floor(Math.random()*clrs.length);
+                                                return m('.ht-mobile-widget-list.clearfix', {"class" : 'bg-'+clrs[randomNumber], 
+                                                        onclick : function(){
+                                                            // console.log(widget_index);
+                                                            var element = $('.ht-mobile-widget[data-id='+widget.id+']');
+                                                            $('.ht-mobile-module[data-index='+module_index+']').scrollTo(element, 150, {offset:0});
+                                                        } 
+                                                    },  [
+                                                    m("i.fa.fa-times.pull-right", { onclick : function(){ ctrl.removeModule(module_index); } }, ""),
+                                                    m("", widget.title)
+                                                    ]);
+                                                });
+                                        }) 
+                                    ]),
                                     module.columns.map(function(column){
                                         return column.widgets.map(function(widget, widget_index, widget_array){
-                                            return m('.ht-mobile-widget', { config : function(){ ctrl.mobileWidgetInit(module_index) } , 'style' : 'background:white', "data-id" : widget.id } , [
+                                            return m('.ht-mobile-widget', { config : function(){ ctrl.mobileWidgetInit(module_index)} , 'style' : 'background:white', "data-id" : widget.id } , [
                                                 m('.ht-mobile-widget-title', widget.title),
                                                 (function(){  return app[widget.type].view(ctrl.controllers[widget.id])})()
                                             ])
