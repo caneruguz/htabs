@@ -12,6 +12,7 @@ app.wiki = require('../components/wiki/wiki');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
+    build.layout = m.prop($(window).width());
 
     build.workspace = m.prop("");
     m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
@@ -57,6 +58,7 @@ app.wiki = require('../components/wiki/wiki');
         this.canReformat = true;    // turn reformating on or off, sometimes we want formating to not be triggered.
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
+        this.layout = build.layout;
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -415,7 +417,7 @@ app.wiki = require('../components/wiki/wiki');
             
             var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
             var randomNumber = Math.floor(Math.random()*clrs.length);
-            
+ 
             // This will eventually be selected from lists
             var moduleId = Math.floor((Math.random() * 100000) + 1)+3;
             var col1Id = Math.floor((Math.random() * 100000) + 1)+6;
@@ -509,7 +511,7 @@ app.wiki = require('../components/wiki/wiki');
                 $('#ht-wrapper').css({ width : window_width + 'px' } );
                 $('#ht-content').css('width', ht_content_width + 'px'); 
 
-                // Adjust slider on changes
+                // Adjust s lider on changes
 
 
                 // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
@@ -582,11 +584,149 @@ app.wiki = require('../components/wiki/wiki');
             });
         }
         };
-    };
+    
 
+    // MOBILE
+         this.mobileInit = function(){
+             console.trace();
+             var dist = 150;
 
+             $(".ht-mobile-widget").swipe( {
+                 //Generic swipe handler for all directions
+                 swipe:function(event, direction, distance, duration, fingerCount) {
+                     var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
+                     var element;
+                     switch(direction){
+                        case "up" :
+                            console.log(target_module);
+                            element = $(".ht-mobile-module[data-index="+(parseInt(target_module)+1)+"]")
+                            if(element.length > 0){
+                                $('#ht-mobile-content').scrollTo(element, dist,  {offset:0});
+                            }
+                            break;
+                        case "down":
+                            console.log(target_module);
+                            element = $(".ht-mobile-module[data-index="+(parseInt(target_module)-1)+"]")
+                            if(element.length > 0){
+                                 $('#ht-mobile-content').scrollTo(element, dist,  {offset:0});
+                            }
+                            break;
+                        case "left" :
+                            console.log(target_module);
+                            var element = $(this).next();
+                            if(element.length > 0){
+                                $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, dist,  {offset:0});
+                            }
+                            break;
+                        case "right" :
+                            console.log(target_module);
+                            var element = $(this).prev();
+                            if(element.length > 0){
+                                 $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, dist,  {offset:0});
+                            }
+                            break;
+                    
+                    }
+                        console.log("direction", direction, "fingerCount", fingerCount);
 
+                 }
+             });
+             self.canReformat = false;
+         }
+         this.mobileModuleInit = function (){
+             var mobileContentHeight = $(window).height()-50;
+             var mobileContentWidth = $(window).width();
+             console.log(mobileContentHeight);
+             $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
+             $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
+         }
+         this.mobileExposeInit = function(){
+             var mobileContentHeight = $(window).height();
+             $('#ht-mobile-expose').css({'height': mobileContentHeight + 'px'});
+         }
+         this.mobileWidgetInit = function(module_index){
+             var mobileContentHeight = $(window).height()-40;
+             var mobileContentWidth = $(window).width();
+             $('.ht-mobile-widget').css({ 'height': mobileContentHeight + 'px', width : mobileContentWidth + 'px'})
+            // calculate module width based on total widgets, this needs to refresh every time a widget is loaded.
+             var totalWidgets = 1; // title page is one widget;
+             self.modules()[module_index].columns.map(function(column){
+                 totalWidgets += column.widgets.length;
+             })
+            $('.ht-mobile-module[data-index='+module_index+']').children('.ht-mobile-module-inner').css('width', mobileContentWidth*totalWidgets);
+         }
+         this.mobileExposeToggle = function () {
+                self.mobileExpose = !self.mobileExpose;
+         }
+
+    }    
     build.view = function(ctrl){
+         if(ctrl.layout() < 481){
+            if(ctrl.mobileExpose){
+                return m("#ht-mobile-expose", { config : ctrl.mobileExposeInit}, [
+                    m(".ht-mobile-expose-header.pull-right", [
+                        m('.fa.fa-times.text-white', { onclick : ctrl.mobileExposeToggle })
+                    ]),
+                    m(".ht-mobile-expose-wrap", [
+                        ctrl.modules().map(function(module, module_index, module_array){
+                            return m('.ht-mobile-expose-module.clearfix', {"class" : 'bg-'+module.color } ,  [
+                                m("i.fa.fa-times.pull-right", { onclick : function(){ ctrl.removeModule(module_index); } }, ""),
+                                m("", module.title)
+                            ])
+                        })
+                    ])
+                ])
+            } else {
+                return m("#ht-mobile-wrapper", { config : ctrl.mobileInit}, [
+                    m("#ht-mobile-header", [
+                        m('#ht-mobile-title', "Htabs Mobile Version"),
+                        m('#ht-mobile-menu', [
+                            m('i.fa.fa-bars', { onclick : ctrl.mobileExposeToggle })
+                        ])
+                    ]),
+                    m("#ht-mobile-content", [
+                        ctrl.modules().map(function(module, module_index, module_array){
+                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+                            
+                           
+                            return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
+                                m('.ht-mobile-module-inner', [
+                                    m('.ht-mobile-widget', { "class" : module.css, "data-id" : -1}, [
+                                        m('div', {'class':'ht-mobile-module-title'}, module.title), 
+                                        m('div', {'class':'ht-mobile-module-content'}, "Lorem fake content goes here ipsum"),
+                                        module.columns.map(function(column){
+                                            return column.widgets.map(function(widget, widget_index, widget_array){
+                                                var randomNumber = Math.floor(Math.random()*clrs.length);
+                                                return m('.ht-mobile-widget-list.clearfix', {"class" : 'bg-'+clrs[randomNumber], 
+                                                        onclick : function(){
+                                                            // console.log(widget_index);
+                                                            var element = $('.ht-mobile-widget[data-id='+widget.id+']');
+                                                            $('.ht-mobile-module[data-index='+module_index+']').scrollTo(element, 150, {offset:0});
+                                                        } 
+                                                    },  [
+                                                    m("i.fa.fa-times.pull-right", { onclick : function(){ ctrl.removeModule(module_index); } }, ""),
+                                                    m("", widget.title)
+                                                    ]);
+                                                });
+                                        }) 
+                                    ]),
+                                    module.columns.map(function(column){
+                                        return column.widgets.map(function(widget, widget_index, widget_array){
+                                            return m('.ht-mobile-widget', { config : function(){ ctrl.mobileWidgetInit(module_index)} , 'style' : 'background:white', "data-id" : widget.id } , [
+                                                m('.ht-mobile-widget-title', widget.title),
+                                                (function(){  return app[widget.type].view(ctrl.controllers[widget.id])})()
+                                            ])
+                                        })
+                                    })
+                                ])
+
+                            ])
+                        })
+                    ])
+
+                ])
+            }
+        }else{
 
         if(ctrl.localExpose){
             return [
@@ -730,5 +870,5 @@ app.wiki = require('../components/wiki/wiki');
 
 
     };
-
+};
 
