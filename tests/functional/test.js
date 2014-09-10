@@ -19,7 +19,7 @@ define([
                 .isDisplayed()
                 .then(function (state) {
                     assert.ok(state,
-                        'Expose modules should display');
+                        'Expose modules should display' + state);
                 });
         }
 
