@@ -5,9 +5,7 @@ app.logs = require('../components/logs/logs');
 app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
-
-   // buildnormal
-   // buildmobile
+app.components = require('../components/components/components');
 
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
@@ -114,7 +112,7 @@ app.wiki = require('../components/wiki/wiki');
 
                 }
             } );
-            $('.ht-column').resizable({
+            $('.ht-column:not(.no-resize)').resizable({
                 handles : "e",
                 minWidth : 250,
 //                alsoResize : "#ht-content",
@@ -224,7 +222,6 @@ app.wiki = require('../components/wiki/wiki');
             });
             self.eventsOn();
             self.resizeWidgets();
-
             console.log("app initialized");
         };
 
@@ -285,7 +282,7 @@ app.wiki = require('../components/wiki/wiki');
                     } else {
                         newHeight = (childHeight/(totalHeight+25))*setContentHeight;
                     }
-                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
+                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44}).find('.widget-body-inner').css({ height : newHeight-80});
 
                     // While we are within widgets do other relevant things
                     // resize iframes
@@ -386,7 +383,7 @@ app.wiki = require('../components/wiki/wiki');
         this.calculateContentLength = function(){
             var totalLength = 20; // This is not a good number, why does this work right?
             self.modules().map(function(module){
-                var thisWidth = 60+20+20; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding
+                var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
                 module.columns.map(function(column){
                     var columnW = column.width+10; // right padding + right margin + right border
                     thisWidth += columnW;
@@ -548,7 +545,7 @@ app.wiki = require('../components/wiki/wiki');
                 // heights :
                 var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
                 var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
-                var ht_tab_content_height = ht_tab_height-51;
+                var ht_tab_content_height = ht_tab_height-1;
                 var ht_column_height =  ht_tab_content_height-10;
                 $('.ht-tab').css({ height: ht_tab_height + 'px'}); // tab h
                 $('.ht-tab-content').css({ height: ht_tab_content_height+'px'}); // content h
@@ -566,24 +563,69 @@ app.wiki = require('../components/wiki/wiki');
             self.reformatWidth();
         };
         this.widgetInit = function() {
-            if (self.temp.scrollTo) {
+            if (self.temp.scrollTo && $(self.temp.scrollTo).get(0)) {
 //                var offset = self.temp.offset ? self.temp.offset : -50;
 //                console.log(offset);
                 $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
-                console.log("Final offset", self.temp.offset);
                 self.temp.scrollTo = "";
             }
-//            console.log("widgetInit ran");
+            console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
+
         }
 
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
                 var o = self.modules()[i];
                 o.columns.map(function(item, index, array){
-                item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).outerWidth();
-            });
-        }
+                    item.width = ($('.ht-tab[data-id="'+o.id+'"]').find('.ht-column[data-index='+index+']')).outerWidth();
+                });
+            }
         };
+         this.loadLink = function(e){
+             var event = e || window.event;
+             var link = $(event.target);
+             var type = link.attr('data-type');
+             var title = link.text();
+             var index = link.closest('.ht-tab').attr('data-index');
+             console.log("type : " , type);
+             // is this module type already open?
+             var open = false;
+             self.modules()[index].columns.map(function(col, c_index, c_array){
+                 col.widgets.map(function(w, w_index, w_array){
+                     if(w.type == type){
+                         open = true;
+                     }
+                     // if this is the last widget of the last column
+                     if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
+                         // and widget is still not found
+                         if(!open){
+                             var randomNumber = Math.floor(Math.random()*10000);
+                             var widget = {
+                                 "id" : randomNumber,
+                                 "title" : title,
+                                 "type" : type,
+                                 "data" : "",
+                                 "closable" : true,
+                                 "expandable" : true,
+                                 "height" : 300,
+                                 "display" : true,
+                                 "hideHeader" : false,
+                                 "content" : "",
+                                 "css" : ""
+                             }
+                             c_array.push( new build.column(620, [ widget ]));
+                             self.applyModules();
+                             var selector = $('.ht-widget[data-id='+randomNumber+']');
+                             console.log("Selector", selector)
+                             self.temp.scrollTo = selector;
+                             console.log(c_array);
+                         }
+                     }
+                 })
+                 console.log(open);
+
+             })
+         }
     
 
     // MOBILE
@@ -798,15 +840,31 @@ app.wiki = require('../components/wiki/wiki');
                                         m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                     ])];
                                 }else {
-                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css, 'data-index' : module_index,  'data-id' : module.id} , [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m("h3", module.title),
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}}),
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
-                                            ])
-                                        ]),
-                                        m(".ht-tab-content", [
+                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
+//                                        m(".ht-tab-header", {  "data-bg" : module.color }, [
+//                                            m("h3", module.title),
+//                                            m(".ht-windowBtn", [
+//                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}}),
+//                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
+//                                            ])
+//                                        ]),
+                                        m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
+                                            m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
+                                                m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                    m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                        m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
+                                                        m('h3.skinnyFont.m-b-lg', module.about),
+                                                        m('p', module.lastUpdated ),
+                                                        m('p', module.dateCreated ),
+                                                        m('ul.dashboardList.list-unstyled.m-t-lg', [
+                                                            module.links.map(function(link){
+                                                                return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                            })
+                                                        ])
+                                                        ]
+                                                    ) ])
+                                                ])
+                                            ]),
                                             module.columns.map(function(column, column_index, column_array){
                                                 if(column.widgets.length > 0 || column.new){
                                                     // If the view is not narrow in height show full.
@@ -815,7 +873,7 @@ app.wiki = require('../components/wiki/wiki');
                                                             if (column.widgets.length > 0) {
                                                                 return column.widgets.map(function(widget, widget_index, widget_array){
                                                                     if(widget.display){
-                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-widget-content ui-helper-clearfix " +widget.css}, [
+                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
                                                                             (function(){
                                                                                 if(!widget.hideHeader){
                                                                                     return m(".ht-widget-header", [
@@ -834,7 +892,7 @@ app.wiki = require('../components/wiki/wiki');
 
                                                                             m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
                                                                                 (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
-                                                                     ) ])
+                                                                            ) ])
                                                                         ]);
                                                                     }
                                                                 });

@@ -1,33 +1,29 @@
 [
     {
         "id" : 0,
-        "title" : "Dashboard",
+        "title" : "Open Science FrameWork",
         "color" : "navy",
         "minimize" : false,
         "exposeWidth" : 300,
         "exposeHeight" : 300,
-        "css" : "dashboard ht-module-inverted",
-        "columns" :[
+        "css" : "",
+        "about" : "Welcome to the Open Science Framework. Use your dashboard to store your frequently used sections. You can drag or load any part of OSF as a widget into the dashboard. ",
+        "dateCreated" : "",
+        "lastUpdated" : "",
+        "citation" : "",
+        "links" : [
             {
-                "width": 400,
-                "new" : false,
-                "widgets" : [
-                    {
-                        "id" : 1,
-                        "title" : "Welcome to Dashboard",
-                        "type" : "dashboard",
-                        "data" : "",
-                        "closable" : true,
-                        "expandable" : true,
-                        "height" : 300,
-                        "display" : true,
-                        "hideHeader" : true,
-                        "content" : "",
-                        "css" : "ht-inverted"
-
-                    }
-                ]
+                "title": "Learn More About OSF ",
+                "action" : "",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
             },
+            {
+                "title": "Documentation",
+                "action" : "",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+            }
+        ],
+        "columns" :[
             {
                 "width" : 260,
                 "new" : true,
@@ -37,12 +33,54 @@
     },
     {
         "id" : 1,
-        "title" : "Reproducibility Project: Psychology",
-        "color" : "blue",
+        "title" : "Reproducibility Project: Cancer Biology",
+        "color" : "dark-turquaz",
         "minimize" : false,
         "exposeWidth" : 300,
         "exposeHeight" : 300,
         "css" : "",
+        "about" : "We are conducting a study to investigate the replicability of cancer biology studies. The top 50 most impactful cancer biology studies published between 2010-2012 are being replicated by the Science Exchange network.",
+        "dateCreated" : "2013-10-08 07:31 PM",
+        "lastUpdated" : "2014-09-09 04:41 PM",
+        "citation" : "osf.io/ezcuj ",
+        "links" : [
+            {
+                "title": "Components ",
+                "action" : "components",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
+            },
+            {
+                "title": "Wiki ",
+                "action" : "wiki",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+            },
+            {
+                "title": "Files",
+                "action" : "files",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
+            },
+            {
+                "title": "Statistics",
+                "action" : "statistics",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-danger"
+            },
+            {
+                "title": "Registrations",
+                "action" : "registrations",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-success"
+            },
+            {
+                "title": "Forks",
+                "action" : "forks",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
+            },
+            {
+                "title": "Activity",
+                "action" : "activity",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+            }
+
+        ],
         "columns" :[
             {
                 "width": 620,
@@ -52,51 +90,6 @@
                         "id" : 2,
                         "title" : "Wiki",
                         "type" : "wiki",
-                        "data" : "../components/wiki/wiki.json",
-                        "closable" : true,
-                        "expandable" : true,
-                        "height" : 300,
-                        "display" : true,
-                        "hideHeader" : true,
-                        "content" : "",
-                        "css" : ""
-                    },
-                    {
-                        "id" : 12,
-                        "title" : "Wiki",
-                        "type" : "wiki",
-                        "data" : "../components/wiki/wiki.json",
-                        "closable" : true,
-                        "expandable" : true,
-                        "height" : 300,
-                        "display" : true,
-                        "hideHeader" : true,
-                        "content" : "",
-                        "css" : ""
-                    }
-                ]
-            },
-            {
-                "width" : 400,
-                "new" : false,
-                "widgets" : [
-                    {
-                        "id" : 3,
-                        "title" : "Comments",
-                        "type" : "comments",
-                        "data" : "",
-                        "closable" : true,
-                        "expandable" : true,
-                        "height" : 300,
-                        "display" : true,
-                        "hideHeader" : false,
-                        "content" : "",
-                        "css" : ""
-                    },
-                    {
-                        "id" : 13,
-                        "title" : "Comments",
-                        "type" : "comments",
                         "data" : "",
                         "closable" : true,
                         "expandable" : true,
