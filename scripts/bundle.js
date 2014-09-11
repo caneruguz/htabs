@@ -7,14 +7,16 @@ app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
+app.files = require('../components/files/files');
 
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
     build.layout = m.prop($(window).width());
 
+
     build.workspace = m.prop("");
-    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
+    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){ m.module(document.body, build);    });
 
     //  Models
     // Module Model
@@ -28,6 +30,11 @@ app.components = require('../components/components/components');
         this.exposeWidth = 300;
         this.exposeHeight = 300;
         this.css = css || "";
+        this.about = "";
+        this.dateCreated = "";
+        this.lastUpdated = "";
+        this.citation  = "";
+        this.links = [];
     };
     // Column Model
     build.column = function(width, widgets){
@@ -905,7 +912,7 @@ app.components = require('../components/components/components');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
+                                                    if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
                                                         return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
                                                         return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
@@ -932,7 +939,7 @@ app.components = require('../components/components/components');
 };
 
 
-},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/logs/logs":5,"../components/wiki/wiki":6}],2:[function(require,module,exports){
+},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/wiki/wiki":7}],2:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -1051,7 +1058,7 @@ comments.view = function(ctrl){
 }
 
 module.exports = comments;
-},{"../logs/logs":5}],3:[function(require,module,exports){
+},{"../logs/logs":6}],3:[function(require,module,exports){
 var components = {};
 
 components.html= m.prop("");
@@ -1082,6 +1089,21 @@ dashboard.view = function(ctrl){
 
 module.exports = dashboard;
 },{}],5:[function(require,module,exports){
+var files = {};
+
+files.html= m.prop("");
+m.request({method: "GET", url: "../components/files/files.html", deserialize: function(value){ return value;  }}).then(files.html);
+
+files.controller = function(){
+    this.html = files.html;
+}
+
+files.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = files;
+},{}],6:[function(require,module,exports){
 
 var logs = {};
 
@@ -1139,7 +1161,7 @@ logs.view = function(controller){
 }
 
 module.exports = logs;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

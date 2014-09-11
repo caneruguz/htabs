@@ -6,14 +6,16 @@ app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
+app.files = require('../components/files/files');
 
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
     build.layout = m.prop($(window).width());
 
+
     build.workspace = m.prop("");
-    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
+    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){ m.module(document.body, build);    });
 
     //  Models
     // Module Model
@@ -27,6 +29,11 @@ app.components = require('../components/components/components');
         this.exposeWidth = 300;
         this.exposeHeight = 300;
         this.css = css || "";
+        this.about = "";
+        this.dateCreated = "";
+        this.lastUpdated = "";
+        this.citation  = "";
+        this.links = [];
     };
     // Column Model
     build.column = function(width, widgets){
@@ -904,7 +911,7 @@ app.components = require('../components/components/components');
                                             }),
                                             m(".ht-add-column", [
                                                 (function(){
-                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
+                                                    if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
                                                         return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
                                                     } else {
                                                         return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));

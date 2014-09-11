@@ -23,13 +23,7 @@
                 "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             }
         ],
-        "columns" :[
-            {
-                "width" : 260,
-                "new" : true,
-                "widgets" : []
-            }
-        ]
+        "columns" :[]
     },
     {
         "id" : 1,
