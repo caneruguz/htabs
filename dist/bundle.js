@@ -24,7 +24,181 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
  * @version 1.4.13
  */
 ;(function(k){'use strict';k(['jquery'],function($){var j=$.scrollTo=function(a,b,c){return $(window).scrollTo(a,b,c)};j.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:!0};j.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(f,g,h){if(typeof g=='object'){h=g;g=0}if(typeof h=='function')h={onAfter:h};if(f=='max')f=9e9;h=$.extend({},j.defaults,h);g=g||h.duration;h.queue=h.queue&&h.axis.length>1;if(h.queue)g/=2;h.offset=both(h.offset);h.over=both(h.over);return this._scrollable().each(function(){if(f==null)return;var d=this,$elem=$(d),targ=f,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=win?$(targ):$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}var e=$.isFunction(h.offset)&&h.offset(d,targ)||h.offset;$.each(h.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=j.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(h.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=e[pos]||0;if(h.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*h.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(h.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&h.queue){if(old!=attr[key])animate(h.onAfterFirst);delete attr[key]}});animate(h.onAfter);function animate(a){$elem.animate(attr,g,h.easing,a&&function(){a.call(this,targ,h)})}}).end()};j.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return $.isFunction(a)||typeof a=='object'?a:{top:a,left:a}}return j})}(typeof define==='function'&&define.amd?define:function(a,b){if(typeof module!=='undefined'&&module.exports){module.exports=b(require('jquery'))}else{b(jQuery)}}));
-!function(i){i.fn.rescon=function(s){var t=this;this.settings=i.extend({complete:null,container:"#pageWrap",action:"run"},s);var e=this;this.sizes=["xs","sm","md","lg"];var n=e.width();return t.currentMode="md",768>n&&(t.currentMode="xs"),n>=768&&992>n&&(t.currentMode="sm"),n>=992&&1200>n&&(t.currentMode="md"),n>=1200&&(t.currentMode="lg"),this.runRescon=function(s,e){i(e).find('div[class^="col-"]').each(function(s,e){for(var n="",a=i(e).attr("class"),r=a.split(" "),c="",s=0;s<r.length;s++){var l=r[s];-1!==l.indexOf("col-")&&(n+=" "+l,-1!==l.indexOf(t.currentMode)&&(c+=" "+l))}i(e).attr("data-rescon",n.trim());var o=a.replace(/^col.*/g,""),d=t.sizes.indexOf(t.currentMode),h=n.split(" ");if(""==c)for(var v=t.recurseDown(d-1,n),s=0;s<h.length;s++){var l=h[s];-1!==l.indexOf(t.sizes[v])&&(c+=" "+l)}if(""==c)var c="col-"+t.currentMode+"-12";var f;f=o.length>0?o+" ":"",i(e).attr("class",f+c.trim())})},this.visibility=function(){i("body").find("*[class^=visible]").each(function(){var s=i(this);t.visibilityToggle(s,"visible")}),e.find("[class^=hidden]").each(function(){var s=i(this);t.visibilityToggle(s,"hidden")})},this.visibilityToggle=function(i,s){var e=i.attr("class");i.attr("class","");for(var n=e.split(" "),a=[],r="",c=0;c<n.length;c++){var l=n[c];if(-1!==l.indexOf(s)){var o=l.split("-"),d=o[1];if(a.push(c),console.log("classview",d),d==t.currentMode){if("visible"===s)if(console.log(o),o.length>2){var h=o[3]?o[2]+"-"+o[3]:o[2];console.log("classDisplay",h),i.css("display",h)}else i.addClass("show");"hidden"===s&&i.addClass("hidden")}else"visible"===s&&i.addClass("hidden"),"hidden"===s&&i.addClass("show")}}a.map(function(i){r+=n[i],n[i]=""});var v=n.join(" ").trim();i.addClass(v),i.attr("data-visibility",r)},this.visibilityReset=function(){i("body").find("*[data-visibility^=visible]").each(function(){i(this).addClass(i(this).attr("data-visibility"))}),e.find("[data-visibility^=hidden]").each(function(){i(this).addClass(i(this).attr("data-visibility"))})},this.recurseDown=function a(i,s){return i>=0?s.indexOf(t.sizes[i])?i:void a(i-1,s):-1},this.reset=function(s,t){i(t).find('div[data-rescon^="col-"]').each(function(s,t){var e=i(t).attr("data-rescon"),n=i(t).attr("class"),a=n.replace(/^col.*/g,"");i(t).attr("class",a+" "+e)})},"run"===this.settings.action&&(e.each(t.runRescon),t.visibility()),"reset"===this.settings.action&&(e.each(t.reset),t.visibilityReset()),i(this.settings.container).resize(function(){e.each(t.runRescon),t.visibility()}),i.isFunction(t.settings.complete)&&t.settings.complete.call(this),this}}(jQuery);
+/*
+ *   Jquery Rescon : responsive containers
+ *   Provides responsiveness to Bootstrap grid elements by applying media sizing when these elements are within responsive containers.
+ */
+(function($) {
+    $.fn.rescon = function(options) {
+        var self = this;
+        // Default options
+        this.settings = $.extend({
+            complete : null,
+            action : "run"
+        }, options);
+
+
+        var el = this; // The elements this was called on.
+        this.sizes = ["xs", "sm", "md", "lg"];
+
+        this.runRescon = function (index, element){
+            var currentMode = "md";
+
+            console.log("----------------------");
+            // get container width and set the current mode. Change these sizes to your own threshold.
+            var width = $(element).width();
+            console.log("width", width);
+            if(width < 300 ){
+                currentMode = "xs"
+            }
+            if(width >= 300 && width < 600 ){
+                currentMode = "sm"
+            }
+            if(width >= 600 && width < 1000 ){
+                currentMode = "md"
+            }
+            if(width >= 1000 ){
+                currentMode = "lg"
+            }
+            $(element).find('div').each(function(i, e){                 // Find child elements that may have these classes
+                var classString = $(e).attr('class');                   // Get existing classes
+                if(classString){                                        // If there is no class attribute don't bother
+                    var rescon_exists = $(e).attr('data-rescon');       // Check if there is already data-rescon attribute
+                    var visible_exists = $(e).attr('data-visible');     // Check if there is already data-visible attribute
+                    if(!rescon_exists || !visible_exists) {             // If either one of them is missing continue
+                        var rescon_string = "";                         // Set variable for collecting rescon classes
+                        var visible_string = "";                        // Set variable for collecting visible classes
+                        var classList = classString.split(' ');         // split classes into array
+                        for (var i = 0; i < classList.length; i++) {    // loop through classes
+                            var o = classList[i];
+                            if (!rescon_exists) {                       // if data-rescon attribute does not exist, generate it
+                                if (o.indexOf('col-') !== -1) {         // if this class includes 'col-' add it to rescon
+                                    rescon_string += " " + o;
+                                }
+                            }
+                            if (!visible_exists) {                      // check if data-visible attribute does not exits, generate it
+                                if (o.indexOf('visible-') !== -1 || o.indexOf('hidden-') !== -1) {
+                                    visible_string += " " + o;          // if this class includes visible att it to visible attribute
+                                }
+                            }
+                        }
+                        console.log("Rescon string: ", rescon_string);
+                        if(rescon_string){ $(e).attr('data-rescon', rescon_string.trim()) } ;     // set data-rescon attribute with classes we collected
+                        if( visible_string) { $(e).attr('data-visible', visible_string.trim()) } ; // set visible attribute with classes we collected
+                    }
+                    var newclass = classString.replace(/\bcol-\S*/g, "").replace(/\bvisible-\S*/g, "").replace(/\hidden-\S*/g, "");      // Remove all classes related to column resizing so we are left with original classes
+                    $(e).attr('class', newclass);                       // set visible attribute with classes we collected
+                }
+
+            })
+
+                      
+            $(element).find('[data-rescon*="col-"]').each(function(i, e){  // Look at each column element within this div. You can change .find() to other selectors for more refined control.
+                var dataString = $(e).attr('data-rescon');              // existing column related classes
+                var newCols = "";                                       // the column classes we wil assign to this element
+                var currentSize = self.sizes.indexOf(currentMode); // Index for the current size in the sizes table, returns 0, 1 etc.
+                var dataList = dataString.split(" ");                   // split colum related classes into class names
+                var before = self.recurseDown(currentSize, dataString); // If there are no column identifiers at this level move down, because bootstrap cascades upwards.
+                if(before !== -1){                                      // before shouldn't be -1, this is to avoid errors.
+                    for(var i = 0; i < dataList.length; i++) {          // Loop through colum relevant classes
+                        var o = dataList[i];
+                        if(o.indexOf(self.sizes[before])  !== -1 ){     // if this class is pertinent to current size add it to the new column related classes
+                            newCols += " "+o;
+                        }
+                    }
+                }
+                if(newCols == ""){                                      // If we still don't have anything set default of 12 width
+                    var newCols = "col-"+currentMode+"-"+"12";
+                }
+                console.log("New Cols", newCols, "dataString", dataString)
+                $(e).addClass(newCols.trim());               // Rewrite the classes for the element
+            })
+
+            // Visibility
+            $(element).find('[data-visible*="visible"],[data-visible*="hidden"]:not(".hidden-print")').each(function(i, e) {
+                console.log("Ran");
+                var dataString = $(e).attr('data-visible');
+                var dataArray = dataString.split(" ");
+                console.log("data visible", dataArray)
+                for(var i = 0; i < dataArray.length; i++) {
+                    var c = dataArray[i];
+                    var classArray = c.split('-')
+                    var classView =  classArray[1]; // what size is this class showing
+                    if (c.indexOf("visible-") !== -1) {
+                        console.log("classArray", classArray[1])
+                        if(classView == currentMode) {
+                            if(classArray.length > 2){
+                                var classDisplay =  classArray[3] ? classArray[2]+"-"+classArray[3] : classArray[2];
+                                $(e).css("display", classDisplay);
+                            } else {
+                                $(e).css("display", "block");
+                            }
+                        }
+                        else {
+                            $(e).css("display", "none");
+                        }
+                    }
+                    if (c.indexOf("hidden-") !== -1) {
+                        console.log("classArray", classArray[1])
+                        if(classView == currentMode) {
+                            if(classArray[0] === 'hidden'){
+                                $(e).css("display", "none");
+                            }
+                        } else {
+                            if(classArray[0] === 'hidden'){
+                                $(e).css("display", "block");
+                            }
+                        }
+                    }
+
+                }
+            });
+        }
+
+        this.recurseDown = function recur (index, dataString){
+            // does data string have smaller size ?
+            if(index >= 0){
+                if(dataString.indexOf(self.sizes[index])){
+                    return index;
+                } else {
+                    recur(index-1, dataString)
+                }
+            } else {
+                return -1;
+            }
+        }
+
+        this.reset = function (index, element){
+            $(element).find('div[data-rescon*="col-"]').each(function(i, e){
+                var dataString = $(e).attr('data-rescon');
+                var classString = $(e).attr('class');
+                var newclass = classString.replace(/^col.*/g, "");
+                $(e).attr('class', newclass+" "+dataString);
+            })
+            el.find('[class*=visible],[class*=hidden]:not(".hidden-print")').each(function(i, e){
+                $(this).addClass($(this).attr('data-visible'))
+            })
+        }
+
+        if(this.settings.action === "run"){
+            el.each(self.runRescon);
+        }
+        if(this.settings.action === "reset"){
+            el.each(self.reset);
+        }
+
+        // Run the complete function if there is one
+        if ( $.isFunction( self.settings.complete ) ) {
+            self.settings.complete.call( this );
+        }
+
+        // Return the element so jquery can chain it
+        return this;
+
+    }
+
+}(jQuery));
+
 /*!
  * Bootstrap v3.2.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -948,7 +1122,7 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
-
+app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
@@ -1070,6 +1244,8 @@ app.files = require('../components/files/files');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
+                    $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
                 },
                 create : function(){
                     console.log("Resizable created");
@@ -1151,6 +1327,7 @@ app.files = require('../components/files/files');
             });
             // Scroller is its own jquery plugin now.
             $('#ht-slider').scroller({ scrollWrapper: "#ht-wrapper", complete : function(){ console.log("Scroller Completed!");} });
+
 
             // Key listeners
             $(document).keyup(function(e) {
@@ -1255,6 +1432,8 @@ app.files = require('../components/files/files');
                 });
 
             });
+            $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
         };
         this.expandWidget = function(module, column, widget){
             // create a column after this column
@@ -1879,7 +2058,7 @@ app.files = require('../components/files/files');
 };
 
 
-},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/wiki/wiki":7}],2:[function(require,module,exports){
+},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/rescon/rescon":7,"../components/wiki/wiki":8}],2:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -2102,6 +2281,21 @@ logs.view = function(controller){
 
 module.exports = logs;
 },{}],7:[function(require,module,exports){
+var rescon = {};
+
+rescon.html= m.prop("");
+m.request({method: "GET", url: "../components/rescon/rescon.html", deserialize: function(value){ return value;  }}).then(rescon.html);
+
+rescon.controller = function(){
+    this.html = rescon.html;
+}
+
+rescon.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = rescon;
+},{}],8:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

@@ -73,7 +73,12 @@
                 "action" : "activity",
                 "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             }
-
+            ,
+            {
+                "title": "Responsive Container",
+                "action" : "rescon",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
+            }
         ],
         "columns" :[
             {

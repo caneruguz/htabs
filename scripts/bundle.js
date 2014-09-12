@@ -8,7 +8,7 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
-
+app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
@@ -130,6 +130,8 @@ app.files = require('../components/files/files');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
+                    $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
                 },
                 create : function(){
                     console.log("Resizable created");
@@ -211,6 +213,7 @@ app.files = require('../components/files/files');
             });
             // Scroller is its own jquery plugin now.
             $('#ht-slider').scroller({ scrollWrapper: "#ht-wrapper", complete : function(){ console.log("Scroller Completed!");} });
+
 
             // Key listeners
             $(document).keyup(function(e) {
@@ -315,6 +318,8 @@ app.files = require('../components/files/files');
                 });
 
             });
+            $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
         };
         this.expandWidget = function(module, column, widget){
             // create a column after this column
@@ -939,7 +944,7 @@ app.files = require('../components/files/files');
 };
 
 
-},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/wiki/wiki":7}],2:[function(require,module,exports){
+},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/rescon/rescon":7,"../components/wiki/wiki":8}],2:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -1162,6 +1167,21 @@ logs.view = function(controller){
 
 module.exports = logs;
 },{}],7:[function(require,module,exports){
+var rescon = {};
+
+rescon.html= m.prop("");
+m.request({method: "GET", url: "../components/rescon/rescon.html", deserialize: function(value){ return value;  }}).then(rescon.html);
+
+rescon.controller = function(){
+    this.html = rescon.html;
+}
+
+rescon.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = rescon;
+},{}],8:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

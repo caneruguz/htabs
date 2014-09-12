@@ -7,7 +7,7 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
-
+app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
@@ -129,6 +129,8 @@ app.files = require('../components/files/files');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
+                    $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
                 },
                 create : function(){
                     console.log("Resizable created");
@@ -210,6 +212,7 @@ app.files = require('../components/files/files');
             });
             // Scroller is its own jquery plugin now.
             $('#ht-slider').scroller({ scrollWrapper: "#ht-wrapper", complete : function(){ console.log("Scroller Completed!");} });
+
 
             // Key listeners
             $(document).keyup(function(e) {
@@ -314,6 +317,8 @@ app.files = require('../components/files/files');
                 });
 
             });
+            $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+
         };
         this.expandWidget = function(module, column, widget){
             // create a column after this column

@@ -1,0 +1,175 @@
+<style >
+    /*Format Basic page*/
+    div[class^="col-"]
+    {
+        border: 2px solid #222;
+    }
+    div[data-rescon^="col-"]
+    {
+        border: 1px solid #75FF47;
+    }
+    .row {
+        border: 1px solid red;
+    }
+
+    .container-fluid{
+        width : 100%;
+    }
+
+    .container{
+        width: 80%;
+        margin-left: 10%
+    }
+    /*Changes to the first jumbotron*/
+    .jumbotron{
+        margin-top: 5%;
+        width:90%;
+        margin-left:5%;
+        margin-bottom: 10%;
+    }
+
+    /*Changes to the second jumbotron's content*/
+    .jumbotron div[class^="col-"] {
+        border:none;
+    }
+
+    .jumbotron .row{
+        border: none;
+    }
+
+    .jumbotron h1 {
+        font-size: x-large;
+    }
+
+    .jumbotron h2{
+        font-size: large;
+    }
+
+    .jumbotron p{
+        font-size: small;
+    }
+
+    /*Hidden and Visible Classes*/
+
+
+    /*Third set of grids*/
+    .grid-container{
+        width:80%;
+        margin-left:10% ;
+        margin-bottom:5%;
+        padding:2%;
+    }
+
+    .grid-container div[class^="col-"] {
+        border:none;
+        margin-top:1%;
+    }
+
+    .grid-container .row{
+        border: none;
+        margin-top:3%;
+    }
+
+    .grid-container h1 {
+        font-size: x-large;
+    }
+
+    .grid-container h2{
+        font-size: large;
+    }
+
+    .grid-container p{
+        font-size: small;
+    }
+</style>
+<div class = "container-fluid">
+    <div class="jumbotron">
+        <h1>Basic Columns and Rows</h1>
+        <p>This page shows basic columns and rows. They make placing elements much easier! Each part outlined in red is a row while the ones outlined in black are the columns within the rows.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+    </div>
+    <div class = "container">
+        <div class="row">
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+            <div class="col-md-1">.col-md-1</div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">.col-md-8</div>
+            <div class="col-md-4">.col-md-4</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">.col-md-4</div>
+            <div class="col-md-4">.col-md-4</div>
+            <div class="col-md-4">.col-md-4</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-6">.col-md-6</div>
+        </div>
+    </div>
+    <div class = "jumbotron">
+        <h1>Jumbotron grid</h1>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+
+            </div>
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+
+            </div>
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+
+            </div>
+            <div class="col-sm-6">
+                <h2>Subheading</h2>
+                <p>Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)</p>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="grid-container">
+        <div class="row>">
+            <div class="col-md-12">
+                <p>Different columns can be different widths and heights within the same row. The more text there is, the easier it is to see. It is also easier to see when the screen is smaller. This text takes up all 12 columns in the row.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <p>This column will look very different from the one next to it in this row. Especially with more text. Columns and rows are very useful for designing and implementing pages within your site.</p>
+            </div>
+            <div class="col-md-3">
+                <a class ="btn btn-primary" href = "#" role="button">View Details </a>
+            </div>
+        </div>
+    </div>
