@@ -25,41 +25,42 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
  */
 ;(function(k){'use strict';k(['jquery'],function($){var j=$.scrollTo=function(a,b,c){return $(window).scrollTo(a,b,c)};j.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:!0};j.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(f,g,h){if(typeof g=='object'){h=g;g=0}if(typeof h=='function')h={onAfter:h};if(f=='max')f=9e9;h=$.extend({},j.defaults,h);g=g||h.duration;h.queue=h.queue&&h.axis.length>1;if(h.queue)g/=2;h.offset=both(h.offset);h.over=both(h.over);return this._scrollable().each(function(){if(f==null)return;var d=this,$elem=$(d),targ=f,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=win?$(targ):$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}var e=$.isFunction(h.offset)&&h.offset(d,targ)||h.offset;$.each(h.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=j.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(h.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=e[pos]||0;if(h.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*h.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(h.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&h.queue){if(old!=attr[key])animate(h.onAfterFirst);delete attr[key]}});animate(h.onAfter);function animate(a){$elem.animate(attr,g,h.easing,a&&function(){a.call(this,targ,h)})}}).end()};j.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return $.isFunction(a)||typeof a=='object'?a:{top:a,left:a}}return j})}(typeof define==='function'&&define.amd?define:function(a,b){if(typeof module!=='undefined'&&module.exports){module.exports=b(require('jquery'))}else{b(jQuery)}}));
 /*
- *   Jquery Rescon : responsive containers
+ *   Jquery Rescon : responsive containers for Bootstrap
  *   Provides responsiveness to Bootstrap grid elements by applying media sizing when these elements are within responsive containers.
  */
 (function($) {
     $.fn.rescon = function(options) {
         var self = this;
-        // Default options
-        this.settings = $.extend({
-            complete : null,
-            action : "run"
+        this.settings = $.extend({                                      // Default options
+            complete : null,                                            // Function to run at the end.
+            sizes : { "xs" : 0, "sm" : 768, "md" : 992, "lg" : 1200 },  // Default Bootstrap sizes.
+            action : "run"                                              // Action: "run" to apply or "reset" to reset.
         }, options);
 
-
-        var el = this; // The elements this was called on.
-        this.sizes = ["xs", "sm", "md", "lg"];
+        var el = this;                                                  // The elements this was called on. This is a list.
+        this.sizes = ["xs", "sm", "md", "lg"];                          // Pre-existing sizes. Do not delete those, you can change them with the settings.
 
         this.runRescon = function (index, element){
-            var currentMode = "md";
 
-            console.log("----------------------");
-            // get container width and set the current mode. Change these sizes to your own threshold.
-            var width = $(element).width();
-            console.log("width", width);
-            if(width < 300 ){
+            /* SET MODE BASED ON WIDTH  */
+            var currentMode = "md";
+            var size = self.settings.sizes;
+            var width = $(element).width();                             // get container width and set the current mode. Change these sizes to your own threshold.
+            if(width >= size.xs && width < size.sm ){
                 currentMode = "xs"
             }
-            if(width >= 300 && width < 600 ){
+            if(width >= size.sm && width < size.md ){
                 currentMode = "sm"
             }
-            if(width >= 600 && width < 1000 ){
+            if(width >= size.md && width < size.lg ){
                 currentMode = "md"
             }
-            if(width >= 1000 ){
+            if(width >= size.lg ){
                 currentMode = "lg"
             }
+
+
+            /* CREATE DATA ATTRIBUTES  */
             $(element).find('div').each(function(i, e){                 // Find child elements that may have these classes
                 var classString = $(e).attr('class');                   // Get existing classes
                 if(classString){                                        // If there is no class attribute don't bother
@@ -92,7 +93,8 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
 
             })
 
-                      
+
+            /* SET WIDTHS  */
             $(element).find('[data-rescon*="col-"]').each(function(i, e){  // Look at each column element within this div. You can change .find() to other selectors for more refined control.
                 var dataString = $(e).attr('data-rescon');              // existing column related classes
                 var newCols = "";                                       // the column classes we wil assign to this element
@@ -110,23 +112,22 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
                 if(newCols == ""){                                      // If we still don't have anything set default of 12 width
                     var newCols = "col-"+currentMode+"-"+"12";
                 }
-                console.log("New Cols", newCols, "dataString", dataString)
-                $(e).addClass(newCols.trim());               // Rewrite the classes for the element
+                $(e).addClass(newCols.trim());                          // Rewrite the classes for the element
             })
 
-            // Visibility
+
+            /* SET VISIBILITY */
             $(element).find('[data-visible*="visible"],[data-visible*="hidden"]:not(".hidden-print")').each(function(i, e) {
-                console.log("Ran");
-                var dataString = $(e).attr('data-visible');
+                var dataString = $(e).attr('data-visible');             // Get existing visibility. This data attribute should have been generated already.
                 var dataArray = dataString.split(" ");
-                console.log("data visible", dataArray)
-                for(var i = 0; i < dataArray.length; i++) {
+//                console.log("data visible", dataArray)
+                for(var i = 0; i < dataArray.length; i++) {             // Loop through visibility options to apply classes. In cases of conflict the last class applies.
                     var c = dataArray[i];
                     var classArray = c.split('-')
-                    var classView =  classArray[1]; // what size is this class showing
+                    var classView =  classArray[1];                     // Get the size of the class i.e. xs, sm etc.
                     if (c.indexOf("visible-") !== -1) {
-                        console.log("classArray", classArray[1])
-                        if(classView == currentMode) {
+//                        console.log("classArray", classArray[1])
+                        if(classView == currentMode) {                  // If the class applies to the current more show display option
                             if(classArray.length > 2){
                                 var classDisplay =  classArray[3] ? classArray[2]+"-"+classArray[3] : classArray[2];
                                 $(e).css("display", classDisplay);
@@ -135,11 +136,11 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
                             }
                         }
                         else {
-                            $(e).css("display", "none");
+                            $(e).css("display", "none");                // If class doesn't apply to the current hide.
                         }
                     }
-                    if (c.indexOf("hidden-") !== -1) {
-                        console.log("classArray", classArray[1])
+                    if (c.indexOf("hidden-") !== -1) {                  // If class is hidden do opposite.
+//                        console.log("classArray", classArray[1])
                         if(classView == currentMode) {
                             if(classArray[0] === 'hidden'){
                                 $(e).css("display", "none");
@@ -155,7 +156,8 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
             });
         }
 
-        this.recurseDown = function recur (index, dataString){
+
+        this.recurseDown = function recur (index, dataString){          // Helper function to recursively check if lower widhts are set, for instance for mode md, check if sm or xs is set.
             // does data string have smaller size ?
             if(index >= 0){
                 if(dataString.indexOf(self.sizes[index])){
@@ -168,7 +170,7 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
             }
         }
 
-        this.reset = function (index, element){
+        this.reset = function (index, element){                         // Clear the effects of the plugin by restoring to original classes.
             $(element).find('div[data-rescon*="col-"]').each(function(i, e){
                 var dataString = $(e).attr('data-rescon');
                 var classString = $(e).attr('class');
@@ -1244,7 +1246,12 @@ app.rescon = require('../components/rescon/rescon');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
-                    $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+                    $(".widget-body-inner").rescon(
+                        {
+                            complete : function(){ console.log('Rescon complete. ');  },
+                            sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
+                        }
+                    );
 
                 },
                 create : function(){

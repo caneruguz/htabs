@@ -130,7 +130,12 @@ app.rescon = require('../components/rescon/rescon');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
-                    $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+                    $(".widget-body-inner").rescon(
+                        {
+                            complete : function(){ console.log('Rescon complete. ');  },
+                            sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
+                        }
+                    );
 
                 },
                 create : function(){
