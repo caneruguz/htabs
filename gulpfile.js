@@ -20,9 +20,6 @@ var onError = function (err) {
 
 gulp.task("less", function(){
     gulp.src(paths.less)
-        .pipe(plumber({
-            errorHandler: onError
-        }))
         .pipe(less())
         .pipe(gulp.dest('./css'));
 })

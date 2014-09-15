@@ -20,6 +20,10 @@ body {
   overflow: hidden;
 }
 
+.opaque {
+  background: rgba(255, 255, 255, 0.47);
+}
+
 .bg-maroon{ background-color: @maroon;}
 .bg-gray{ background-color: @gray;}
 .bg-purple{ background-color: @purple;}
@@ -45,7 +49,7 @@ body {
 .bg-dark-green{ background-color: @dark-green;}
 .bg-dark-turquaz{ background-color: @dark-turquaz;}
 .bg-dark-red{ background-color: @dark-red;}
-
+.bg-opaque-white {  background: rgba(255, 255, 255, 0.25); }
 
 @dark-navy : #112E40;
 @dark-blue : #034647;
@@ -110,6 +114,7 @@ body {
 }
 .ht-expose-tab {
   .ht-tab;
+  background : white;
 }
 .ht-tab-minimized {
   width: 60px;
@@ -134,6 +139,29 @@ body {
   width:300px;
   background:grey;
   opacity: 0.4;
+}
+
+.ht-module-menu {
+  position: absolute;
+  margin-top: -40px;
+  margin-left: -30px;
+  margin-bottom: 20px;
+  text-align: center;
+  .fa {
+  padding: 10px 10px;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  width: 38px;
+  }
+  .fa:hover {
+    .opaque;
+  }
+  .fa:last-of-type {
+    border-bottom-right-radius: 5px;
+  }
+  .ht-opaque-active {
+    .opaque;
+  }
 }
 
 
@@ -179,10 +207,10 @@ body {
 }
 
 #ht-head{
-    height: 30px;
-    /* background-color: lightslategrey; */
+    height: 26px;
     color: white;
     display:inline-block;
+    margin-top: 4px;
 }
 
 #ht-content{
@@ -205,10 +233,14 @@ body {
 
 }
 #ht-slider{
-  background-color:@dark-silver;
   width:50px;
-  height:15px;
-  position:absolute;
+  background-color: rgba(136, 136, 136, 0.13);
+  height: 35px;
+  position: absolute;
+  border-top: 5px solid #414141;
+  border-bottom: 5px solid #414141;
+  border-radius: 7px;
+
 }
 #ht-wrapper {
     overflow-x: auto;
@@ -416,9 +448,11 @@ body {
   cursor: pointer;
 }
 .ht-slider-wrap {
-  position: relative;
+  position: absolute;
   height: 15px;
   background-color:lightslategrey;
+  top: 0;
+  left: 0;
 }
 .ht-w-s {
   background : #ccc;
@@ -440,6 +474,15 @@ body {
 .ht-comment-box {
   .small-textarea;
 }
+
+.ht-bookmark {
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+
 
 /* Scrollbars */
 ::-webkit-scrollbar {
@@ -463,7 +506,7 @@ body {
 } /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
 
 ::-webkit-scrollbar-corner {
-  background-color: black;
-  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.71);
+  border-radius: 0px;
 
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */

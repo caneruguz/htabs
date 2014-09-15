@@ -2827,6 +2827,7 @@ h1.skinnyFont{line-height:50px}
 .large-textarea{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .small-textarea{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
 body{font-family:Helvetica;width:100%;overflow:hidden}
+.opaque{background:rgba(255,255,255,.47)}
 .bg-maroon{background-color:#85144b}
 .bg-gray{background-color:#aaa}
 .bg-purple{background-color:#b10dc9}
@@ -2852,6 +2853,7 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .bg-dark-green{background-color:#37573f}
 .bg-dark-turquaz{background-color:#3d6c79}
 .bg-dark-red{background-color:#632419}
+.bg-opaque-white{background:rgba(255,255,255,.25)}
 .dim-background{background:rgba(0,0,0,.7);height:100%}
 .ht-w-xs{width:160px}
 .ht-w-sm{width:320px}
@@ -2865,11 +2867,17 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .tall{width:300px}
 .grande{width:600px}
 .venti{width:800px}
-.ht-expose-tab,.ht-tab{margin:0 10px;padding:0;display:inline-block;vertical-align:top}
+.ht-tab{margin:0 10px;padding:0;display:inline-block;vertical-align:top}
+.ht-expose-tab{margin:0 10px;padding:0;display:inline-block;vertical-align:top;background:#fff}
 .ht-tab-minimized{width:60px;min-width:60px}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
 .ghost-element{height:300px;width:300px;background:grey;opacity:.4}
+.ht-module-menu{position:absolute;margin-top:-40px;margin-left:-30px;margin-bottom:20px;text-align:center}
+.ht-module-menu .fa{padding:10px;font-size:20px;background:rgba(255,255,255,.16);width:38px}
+.ht-module-menu .fa:hover{background:rgba(255,255,255,.47)}
+.ht-module-menu .fa:last-of-type{border-bottom-right-radius:5px}
+.ht-module-menu .ht-opaque-active{background:rgba(255,255,255,.47)}
 .ht-tab-header{color:#fff;padding:1px 10px}
 .ht-tab-header h3{font-family:Helvetica Neue,Helvetica,sans-serif;font-weight:100;letter-spacing:1px;margin:10px 0;font-size:25px}
 .ht-tab-header .fa{font-size:20px;font-weight:200;margin:0 5px}
@@ -2877,11 +2885,11 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-tab-content{color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
-#ht-head{height:30px;color:#fff;display:inline-block}
+#ht-head{height:26px;color:#fff;display:inline-block;margin-top:4px}
 #ht-content{padding:10px}
 .ht-hdiv{display:inline-block;padding:5px 3px;text-align:center;height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 .ht-hdiv:hover{cursor:pointer;cursor:hand}
-#ht-slider{background-color:#646464;width:50px;height:15px;position:absolute}
+#ht-slider{width:50px;background-color:rgba(136,136,136,.13);height:35px;position:absolute;border-top:5px solid #414141;border-bottom:5px solid #414141;border-radius:7px}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:url(images/wavegrid.png);padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
@@ -2913,16 +2921,17 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .expose-button{display:inline;margin:10px 20px;border:1px solid #aaa;padding:17px 25px}
 .expose-button span{margin-left:20px}
 .expose-button:hover{background:#eee;color:#333;cursor:pointer}
-.ht-slider-wrap{position:relative;height:15px;background-color:lightslategrey}
+.ht-slider-wrap{position:absolute;height:15px;background-color:lightslategrey;top:0;left:0}
 .ht-w-s{background:#ccc}
 .appBtnDiv{background:rgba(255,255,255,.71);padding:5px 10px;float:right;display:inline-bock}
 .appBtn{margin:0 5px}
 .ht-wiki-edit{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .ht-comment-box{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
+.ht-bookmark{padding:20px;margin:10px;border:1px solid #666;cursor:pointer}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background-color:rgba(195,195,195,.64);border-radius:5px}
 ::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2);border-radius:5px}
 ::-webkit-scrollbar-button{background-color:#595959;border-radius:5px}
-::-webkit-scrollbar-corner{background-color:#000;border-radius:5px}
+::-webkit-scrollbar-corner{background-color:rgba(0,0,0,.71);border-radius:0}
 .dashboard{background:#334d5c;box-shadow:none}
 .dashboard .ht-tab-content{background:0 0}

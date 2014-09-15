@@ -1151,6 +1151,9 @@ app.rescon = require('../components/rescon/rescon');
         this.lastUpdated = "";
         this.citation  = "";
         this.links = [];
+        this.show = true;
+        this.bookmarks = [];
+        this.bookmarked = false;
     };
     // Column Model
     build.column = function(width, widgets){
@@ -1181,6 +1184,7 @@ app.rescon = require('../components/rescon/rescon');
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
         this.layout = build.layout;
+         m.redraw.strategy("all");
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -1298,7 +1302,11 @@ app.rescon = require('../components/rescon/rescon');
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
                     $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
-
+                    console.log("-----");
+                    console.log(self.modules());
+                    console.log("-----");
+                    self.localExpose = false;
+                    m.redraw();
                 },
                   cursorAt: {left:100, top:25}
             });
@@ -1517,12 +1525,17 @@ app.rescon = require('../components/rescon/rescon');
         this.calculateContentLength = function(){
             var totalLength = 20; // This is not a good number, why does this work right?
             self.modules().map(function(module){
-                var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
-                module.columns.map(function(column){
-                    var columnW = column.width+10; // right padding + right margin + right border
-                    thisWidth += columnW;
-                });
-                totalLength += thisWidth;
+                if(module.show){
+                    var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
+                    if(module.bookmarks.length > 0){
+                        thisWidth += 270;
+                    }
+                    module.columns.map(function(column){
+                        var columnW = column.width+10; // right padding + right margin + right border
+                        thisWidth += columnW;
+                    });
+                    totalLength += thisWidth;
+                }
             });
             return totalLength;
         }
@@ -1568,7 +1581,19 @@ app.rescon = require('../components/rescon/rescon');
         };
         this.removeModule = function(module_index){
             // unload, turn events off etc.
-            self.modules().splice(module_index, 1);
+            if(self.modules()[module_index].bookmarked){
+                // hide module
+                self.modules()[module_index].show = false;
+
+                self.modules()[0].bookmarks.map(function(b){
+                    if(b.id == self.modules()[module_index].id ){
+                        b.open = false;
+                    }
+                })
+
+            } else {
+                self.modules().splice(module_index, 1);
+            }
             self.reformatWidth();
         };
         this.toggleModule = function(index, state){
@@ -1706,7 +1731,6 @@ app.rescon = require('../components/rescon/rescon');
             console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
 
         }
-
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
                 var o = self.modules()[i];
@@ -1760,7 +1784,40 @@ app.rescon = require('../components/rescon/rescon');
 
              })
          }
-    
+         this.moduleViewToggle = function(event){
+             var event = event || window.event;
+             var module = $(event.target).parent();
+             var moduleID = module.attr('data-mid');
+             console.log("ModulID", moduleID);
+             // Toggle view
+             self.modules().map(function(mod){
+                 console.log(mod.id)
+                 if(mod.id == moduleID ){
+                     mod.show = !mod.show;
+                 }
+             })
+             // toggle bookmark view
+             self.modules()[0].bookmarks.map(function(b){
+                 if(b.id == moduleID ){
+                     b.open = !b.open;
+                 }
+             })
+         }
+
+         this.bookmarkToggle = function(event) {
+             var event = event || window.event;
+             var el = $(event.target);
+             var mindex = el.attr('data-mindex');
+             var module = self.modules()[mindex];
+             var bookmark =             {
+                 "id" :  module.id,
+                 "title" : module.title,
+                 "open": true,
+                 "color" : module.color
+             }
+             self.modules()[0].bookmarks.push(bookmark);
+             module.bookmarked = true;
+         }
 
     // MOBILE
          this.mobileInit = function(){
@@ -1911,28 +1968,30 @@ app.rescon = require('../components/rescon/rescon');
                     m(".expose-content", { config : ctrl.exposeInit } , [
                         m(".expose-modules", [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
-                                    ])];
-                                }else {
-                                    return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m("h3", module.title),
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [ m("") ])
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
+                                        ])];
+                                    } else {
+                                        return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m("h3", module.title),
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [ m("") ])
 
-                                    ])];
+                                        ])];
+                                    }
                                 }
                             })
                         ]),
@@ -1949,8 +2008,9 @@ app.rescon = require('../components/rescon/rescon');
                m(".ht-head-wrapper", [
                    m("[id='ht-head']", [
                        ctrl.modules().map(function(module, module_index, module_array){
-                           return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
-
+                           if(module.show){
+                               return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                           }
                        })
                    ]),
                    m("div.appBtnDiv", [
@@ -1963,18 +2023,19 @@ app.rescon = require('../components/rescon/rescon');
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
-                                            ])
-                                        ]),
-                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
-                                    ])];
-                                }else {
-                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
+                                                ])
+                                            ]),
+                                            m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
+                                        ])];
+                                    }else {
+                                        return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
 //                                        m(".ht-tab-header", {  "data-bg" : module.color }, [
 //                                            m("h3", module.title),
 //                                            m(".ht-windowBtn", [
@@ -1982,75 +2043,109 @@ app.rescon = require('../components/rescon/rescon');
 //                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
 //                                            ])
 //                                        ]),
-                                        m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
-                                            m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
-                                                m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
-                                                    m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
-                                                        m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                        m('h3.skinnyFont.m-b-lg', module.about),
-                                                        m('p', module.lastUpdated ),
-                                                        m('p', module.dateCreated ),
-                                                        m('ul.dashboardList.list-unstyled.m-t-lg', [
-                                                            module.links.map(function(link){
-                                                                return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
-                                                            })
-                                                        ])
-                                                        ]
-                                                    ) ])
-                                                ])
-                                            ]),
-                                            module.columns.map(function(column, column_index, column_array){
-                                                if(column.widgets.length > 0 || column.new){
-                                                    // If the view is not narrow in height show full.
-                                                    return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
-                                                        ( function(){
-                                                            if (column.widgets.length > 0) {
-                                                                return column.widgets.map(function(widget, widget_index, widget_array){
-                                                                    if(widget.display){
-                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
-                                                                            (function(){
-                                                                                if(!widget.hideHeader){
-                                                                                    return m(".ht-widget-header", [
-                                                                                        widget.title,
-                                                                                        m(".ht-widget-actions", [
-                                                                                            m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
-                                                                                            (function(){
-                                                                                                if(widget.closable){
-                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
-                                                                                                }
-                                                                                            })()
-                                                                                        ])
-                                                                                    ]);
-                                                                                }
-                                                                            })(),
-
-                                                                            m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
-                                                                                (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
-                                                                            ) ])
-                                                                        ]);
+                                            m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
+                                                m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
+                                                    m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                        m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                (function(){
+                                                                    var marked = "";
+                                                                    if(module.bookmarked){ marked = "ht-opaque-active"; }
+                                                                    if(module.id > 0) {
+                                                                        return m('.ht-module-menu', [
+                                                                            m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                                            m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
+                                                                            m('i.fa.fa-edit'),
+                                                                            m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
+                                                                        ])
                                                                     }
-                                                                });
-                                                            }
-                                                        })()
-                                                    ]);
-                                                }
-                                                // module_array[0].columns[0].widgets.splice(0,1);
-                                            }),
-                                            m(".ht-add-column", [
-                                                (function(){
-                                                    if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
-                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
-                                                    } else {
-                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
-                                                    }
-                                                })()
+                                                                }()),
 
+                                                                m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
+                                                                m('h3.skinnyFont.m-b-lg', module.about),
+                                                                m('p', module.lastUpdated ),
+                                                                m('p', module.dateCreated ),
+                                                                m('ul.dashboardList.list-unstyled.m-t-lg', [
+                                                                    module.links.map(function(link){
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                    })
+                                                                ])
+                                                            ]
+                                                        ) ])
+                                                    ])
+                                                ]),
+                                                (function(){
+                                                    if(module.bookmarks.length > 0){
+                                                        return m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:260px"},  [
+                                                            m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                                m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                        module.bookmarks.map(function(b){
+                                                                            var status = "bg-opaque-white";
+                                                                            if (b.open){ var status = "bg-"+b.color }
+                                                                            return m(".ht-bookmark", { "class" : status , "data-mid" : b.id, onclick : ctrl.moduleViewToggle}, [
+                                                                                m(".ht-bookmark-content", b.title)
+                                                                            ])
+                                                                        }),
+                                                                        m(".ht-bookmark",{ style : "text-align: center;"}, m("i.fa.fa-plus"))
+                                                                    ]
+                                                                ) ])
+                                                            ])
+                                                        ])
+                                                    }
+                                                }()),
+                                                module.columns.map(function(column, column_index, column_array){
+                                                    if(column.widgets.length > 0 || column.new){
+                                                        // If the view is not narrow in height show full.
+                                                        return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
+                                                            ( function(){
+                                                                if (column.widgets.length > 0) {
+                                                                    return column.widgets.map(function(widget, widget_index, widget_array){
+                                                                        if(widget.display){
+                                                                            return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
+                                                                                (function(){
+                                                                                    if(!widget.hideHeader){
+                                                                                        return m(".ht-widget-header", [
+                                                                                            widget.title,
+                                                                                            m(".ht-widget-actions", [
+                                                                                                m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
+                                                                                                (function(){
+                                                                                                    if(widget.closable){
+                                                                                                        return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
+                                                                                                    }
+                                                                                                })()
+                                                                                            ])
+                                                                                        ]);
+                                                                                    }
+                                                                                })(),
+
+                                                                                m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
+                                                                                    (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
+                                                                                ) ])
+                                                                            ]);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            })()
+                                                        ]);
+                                                    }
+                                                    // module_array[0].columns[0].widgets.splice(0,1);
+                                                }),
+                                                m(".ht-add-column", [
+                                                    (function(){
+                                                        if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
+                                                            return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                        } else {
+                                                            return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                        }
+                                                    })()
+
+
+                                                ])
 
                                             ])
-
-                                        ])
-                                    ])];
+                                        ])];
+                                    }
                                 }
+
 
                             })
                     ])
