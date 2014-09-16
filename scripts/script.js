@@ -67,7 +67,8 @@ app.rescon = require('../components/rescon/rescon');
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
         this.layout = build.layout;
-         m.redraw.strategy("all");
+        this.virtualModel = [];
+        m.redraw.strategy("all");
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -93,34 +94,11 @@ app.rescon = require('../components/rescon/rescon');
                 minHeight: 100,
                 containment : "parent",
                 resize : function (event, ui){
-                    var oldH = ui.originalSize.height;
-                    var newH = ui.size.height;
-                    if(newH !== oldH){
-                        console.log("widget is resizing")
-                        console.log(oldH, newH);
-                        console.log($(event.target).parent());
-                        var column = $(event.target).parent();
-                        var setContentHeight = column.outerHeight(); // Height of the column
-                        var contentHeight = column[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
-                        // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
-                        var totalHeight = 0;
-                        column.children('.ht-widget').each(function(){
-                            totalHeight = totalHeight+$(this).outerHeight();
-                        });
-
-                        // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
-                        column.children('.ht-widget').each(function(){
-                            var childHeight = $(this).height();
-                            var newHeight;
-                            if(setContentHeight < contentHeight){
-                                newHeight = (childHeight/contentHeight)*setContentHeight;
-                            } else {
-                                newHeight = (childHeight/(totalHeight+25))*setContentHeight;
-                            }
-                            $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
-                        });
-                    }
-
+                    var column = $(event.target).parent();
+                    self.resizeWidgets(column)
+                },
+                stop : function(){
+                    self.resizeWidgets();
                 }
             } );
             $('.ht-column:not(.no-resize)').resizable({
@@ -135,7 +113,6 @@ app.rescon = require('../components/rescon/rescon');
 //                    self.saveColumnSize();
                     $(".widget-body-inner").rescon(
                         {
-                            complete : function(){ console.log('Rescon complete. ');  },
                             sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
                         }
                     );
@@ -146,7 +123,7 @@ app.rescon = require('../components/rescon/rescon');
                 }
             } );
 
-            $(".ht-column" ).sortable({
+            $(".ht-column").not('.ht-column[data-index=-1]').sortable({
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
 //                containment: "#ht-content",
@@ -158,7 +135,6 @@ app.rescon = require('../components/rescon/rescon');
                 forceHelperSize : true,
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
-
                     ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
@@ -183,15 +159,30 @@ app.rescon = require('../components/rescon/rescon');
                         widget : ui.item.index()
                     };
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
-                    $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
+                    $('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
                     console.log("-----");
                     console.log(self.modules());
                     console.log("-----");
                     self.localExpose = false;
                     m.redraw();
+                    self.cleanDOM();
                 },
-                  cursorAt: {left:100, top:25}
+                over : function(event, ui){
+                        console.log(event, ui);
+                        var widgets = $(event.target).children('.ht-widget');
+                        var totalWidgets  = widgets.length;
+                        $(event.target).children('.ht-widget').each(function(){
+                            var height = $(this).outerHeight;
+                            var adjustAmount = 50/totalWidgets;
+                            var adjustedHeight = height-adjustAmount;
+                            $(this).css({ height : adjustedHeight + "px"})
+                        })
+                },
+                out : function (){
+                  self.resizeWidgets();
+                },
+                cursorAt: {left:100, top:25}
             });
         };
         this.init = function(element, isInitialized){
@@ -216,7 +207,7 @@ app.rescon = require('../components/rescon/rescon');
 
             self.reformatWidth();
             self.reformatHeight();
-            self.resizeWidgets();
+            self.createVirtual();
 
             // ScrollTo take you to the module when clicked on the header
             $(document).on('click', '.ht-hdiv', function(){
@@ -225,7 +216,6 @@ app.rescon = require('../components/rescon/rescon');
             });
             // Scroller is its own jquery plugin now.
             $('#ht-slider').scroller({ scrollWrapper: "#ht-wrapper", complete : function(){ console.log("Scroller Completed!");} });
-
 
             // Key listeners
             $(document).keyup(function(e) {
@@ -244,7 +234,6 @@ app.rescon = require('../components/rescon/rescon');
                 }
             });
             self.eventsOn();
-            self.resizeWidgets();
             console.log("app initialized");
         };
 
@@ -280,57 +269,45 @@ app.rescon = require('../components/rescon/rescon');
             // console.log("widget moved", from, to);
             // console.log(self.modules());
             self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
+            self.createVirtual();
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
-            m.redraw(true);
 
         };
         this.resizeWidgets = function() {
-                // console.log("resize running");
+            console.log("resize running");
+            var args = arguments;
+            var selector = $('.ht-column');
+            if(args[0]){
+                selector = args[0];
+            }
 
-            $('.ht-column').each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
+            selector.each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
                 var setContentHeight = $(this).outerHeight(); // Height of the column
                 var contentHeight = $(this)[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
                 // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
                 var totalHeight = 0;
                 $(this).children('.ht-widget').each(function(){
-                    totalHeight = totalHeight+$(this).outerHeight();
+                    totalHeight = totalHeight+$(this).outerHeight()+10; // 10 is for bottom margin
                 });
 
                 // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
                 $(this).children('.ht-widget').each(function(){
-                    var childHeight = $(this).height();
+                    var childHeight = $(this).outerHeight();
+                    var headerHeight = $(this).children('.ht-widget-header').outerHeight();
+                    console.log("headerHeight", headerHeight)
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                     } else {
-                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                        newHeight = (childHeight/(totalHeight))*setContentHeight;
                     }
-                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44}).find('.widget-body-inner').css({ height : newHeight-80});
-
-                    // While we are within widgets do other relevant things
-                    // resize iframes
-                    $(this).find('iframe').css({height : newHeight-60} );
-
-                    // show hide based on element width -- TODO: move this to higher level
-                    var width =  $(this).width();
-                    $(this).find('.ht-w-s').hide();
-                    $(this).find('.ht-w-m').hide();
-                    $(this).find('.ht-w-l').hide();
-                    if(width > 600){
-                        $(this).find('.ht-w-l').show();
+                    if(newHeight > 150){
+                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : (newHeight-headerHeight)+"px"})//.find('.widget-body-inner').css({ height : newHeight-40});
                     }
-                    if(width > 300 && width <= 600){
-                        $(this).find('.ht-w-m').show();
-                    }
-                    if(width <= 300 ){
-                        $(this).find('.ht-w-s').show();
-                    }
-
-
                 });
 
             });
-            $(".widget-body-inner").rescon({complete : function(){ console.log('rescon')}});
+            $(".widget-body-inner").rescon();
 
         };
         this.expandWidget = function(module, column, widget){
@@ -442,7 +419,7 @@ app.rescon = require('../components/rescon/rescon');
         this.addModule = function() {
 
             
-            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
             var randomNumber = Math.floor(Math.random()*clrs.length);
  
             // This will eventually be selected from lists
@@ -612,6 +589,7 @@ app.rescon = require('../components/rescon/rescon');
                 self.temp.scrollTo = "";
             }
             console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
+            self.resizeWidgets();
 
         }
         self.saveColumnSize = function(){
@@ -666,6 +644,53 @@ app.rescon = require('../components/rescon/rescon');
                  console.log(open);
 
              })
+         }
+         this.createVirtual = function(){
+             // Repopulate the virtual model array
+             self.virtualModel = [];
+             self.modules().map( function(m, m_index ){
+                 var module = { index : m_index, id : m.id, columns : []};
+                 if(m.columns.length > 0 ){
+                     m.columns.map(function(c, c_index){
+                         var column = { index :  c_index, widgets : [] };
+                         if(c.widgets.length > 0){
+                             c.widgets.map(function(w, w_index){
+                                 var widget = { index : w_index, id : w.id , checks : {}}
+                                 column.widgets.push(widget);
+                             })
+                         }
+                         module.columns.push(column);
+                     })
+                 }
+                self.virtualModel.push(module);
+             })
+             console.log("Virtual Model", self.virtualModel);
+         }
+         this.cleanDOM = function(){
+             // Clean up the DOM so that widgets that are viewed correspond to the view. If widget not shown throw error, if extra widget is shown remove it.
+             $('.ht-tab').each(function(){
+                 var m_index = $(this).attr('data-index');
+                 $(this).find('.ht-column').each(function(){
+                     var c_index = $(this).attr('data-index');
+                     if(c_index > -1){
+                         $(this).children('.ht-widget').each(function(){
+                             var w_index = $(this).attr('data-index');
+                             var w_id = $(this).attr('data-id');
+                              if ( w_index > -1 ) {
+                                  if(!self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build){
+                                      self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build = true;
+                                      console.log("self.virtualModel["+m_index+"].columns["+c_index+"].widgets["+w_index+"].checks.build ",self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build                                      )
+                                  } else {
+                                      // remove this node
+                                      $(this).remove();
+                                  }
+                              }
+                         })
+                     }
+                 })
+             })
+             // IF we removed widgets we need to adjust sizes
+             self.resizeWidgets();
          }
          this.moduleViewToggle = function(event){
              var event = event || window.event;

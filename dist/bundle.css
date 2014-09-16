@@ -2674,19 +2674,6 @@ Copyright (c) 2014 Daniel Eden
 .fa-share-alt:before{content:"\f1e0"}
 .fa-share-alt-square:before{content:"\f1e1"}
 .fa-bomb:before{content:"\f1e2"}
-#ht-mobile-header{height:50px;padding:10px;background:#222;color:#EEE;position:fixed;top:0;left:0;width:100%;z-index:999}
-#ht-mobile-content{overflow-x:hidden;overflow-y:auto;margin-top:50px}
-#ht-mobile-title{width:90%;display:inline-block;font-size:20px;font-weight:100;font-family:Helvetica Neue;letter-spacing:1px}
-#ht-mobile-menu{width:10%;display:inline-block;text-align:center;font-size:22px}
-.ht-mobile-module{display:block;overflow-x:auto}
-.ht-mobile-widget{display:inline-block;float:left;padding:10px;overflow-x:hidden;overflow-y:auto}
-#ht-mobile-expose{background:#222;color:#FFF;padding:20px}
-#ht-mobile-expose .ht-mobile-expose-header{font-size:20px}
-#ht-mobile-expose .ht-mobile-expose-wrap{margin-top:45px}
-#ht-mobile-expose .ht-mobile-expose-wrap .ht-mobile-expose-module{padding:20px;border-radius:3px;margin-bottom:20px}
-.ht-mobile-module-title{width:100%;display:inline-block;font-size:20px;font-weight:100;color:#fff;font-family:Helvetica Neue;letter-spacing:1px}
-.ht-mobile-module-content{width:100%;display:inline-block;font-size:20px;color:#fff;font-weight:100;font-family:Helvetica Neue;letter-spacing:1px}
-.ht-mobile-widget-list{padding:20px;border-radius:3px;margin-bottom:20px;color:#fff}
 .m-l-xs{margin-left:5px}
 .m-l-sm{margin-left:10px}
 .m-l-md{margin-left:20px}
@@ -2823,6 +2810,19 @@ Copyright (c) 2014 Daniel Eden
 *,:after,:before{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 .skinnyFont{font-family:Helvetica Neue,Helvetica,sans-serif;font-weight:100;letter-spacing:1px}
 h1.skinnyFont{line-height:50px}
+#ht-mobile-header{height:50px;padding:10px;background:#222;color:#EEE;position:fixed;top:0;left:0;width:100%;z-index:999}
+#ht-mobile-content{overflow-x:hidden;overflow-y:auto;margin-top:50px}
+#ht-mobile-title{width:90%;display:inline-block;font-size:20px;font-weight:100;font-family:Helvetica Neue;letter-spacing:1px}
+#ht-mobile-menu{width:10%;display:inline-block;text-align:center;font-size:22px}
+.ht-mobile-module{display:block;overflow-x:auto}
+.ht-mobile-widget{display:inline-block;float:left;padding:10px;overflow-x:hidden;overflow-y:auto}
+#ht-mobile-expose{background:#222;color:#FFF;padding:20px}
+#ht-mobile-expose .ht-mobile-expose-header{font-size:20px}
+#ht-mobile-expose .ht-mobile-expose-wrap{margin-top:45px}
+#ht-mobile-expose .ht-mobile-expose-wrap .ht-mobile-expose-module{padding:20px;border-radius:3px;margin-bottom:20px}
+.ht-mobile-module-title{width:100%;display:inline-block;font-size:20px;font-weight:100;color:#fff;font-family:Helvetica Neue;letter-spacing:1px}
+.ht-mobile-module-content{width:100%;display:inline-block;font-size:20px;color:#fff;font-weight:100;font-family:Helvetica Neue;letter-spacing:1px}
+.ht-mobile-widget-list{padding:20px;border-radius:3px;margin-bottom:20px;color:#fff}
 .ht-textarea{width:100%;border:1px dotted #ccc;padding:10px}
 .large-textarea{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .small-textarea{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
@@ -2892,11 +2892,10 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 #ht-slider{width:50px;background-color:rgba(136,136,136,.13);height:35px;position:absolute;border-top:5px solid #414141;border-bottom:5px solid #414141;border-radius:7px}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:url(images/wavegrid.png);padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
-.ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
+.ht-column .ht-widget{overflow:hidden;margin-bottom:10px;border-radius:5px}
 .ht-column .ht-widget .ht-widget-header{padding:15px 20px;background:#A1D6E5;font-size:16px;font-weight:200;border-bottom:1px solid rgba(70,184,218,.57);border-top-left-radius:5px;border-top-right-radius:5px}
-.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;height:85%;padding:15px 5px}
-.ht-column .ht-widget .ht-widget-body iframe{width:100%}
-.ht-column .ht-widget .ht-widget-body .widget-body-inner{overflow-x:hidden;overflow-y:auto}
+.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:15px 5px}
+.ht-column .ht-widget .ht-widget-body .widget-body-inner{height:100%;overflow-x:hidden;overflow-y:auto}
 .ht-column .ht-widget-placeholder{border:1px dotted #000;margin:0 1em 1em 0;height:50px}
 .ht-widget:not(.ht-inverted){background:#fff;box-shadow:0 0 10px -5px #333}
 .ht-column:hover{border-right:2px dotted #ccc}

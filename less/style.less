@@ -1,4 +1,4 @@
-@import 'base.less';
+@import 'mobile.less';
 
 .ht-textarea {
   width: 100%;
@@ -258,6 +258,7 @@ body {
   padding-right: 5px;
   border-right: 2px solid rgba(204, 204, 204, 0);
   .ht-widget {
+    overflow : hidden;
     margin-bottom: 10px;
     border-radius: 5px;
     .ht-widget-header {
@@ -272,12 +273,9 @@ body {
     .ht-widget-body {
       overflow-y: hidden;
       overflow-x: hidden;
-      height: 85%;
       padding: 15px 5px;
-      iframe  {
-        width : 100%;
-      }
       .widget-body-inner {
+        height: 100%;
         overflow-x: hidden;
         overflow-y : auto;
       }
