@@ -1,4 +1,6 @@
 bower_components/
 node_modules/
-.idea/
-.idea/workspace.xml
+.idea
+dist/bundle.css
+dist/bundle.js
+scripts/bundle.js
