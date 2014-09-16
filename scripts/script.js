@@ -519,7 +519,7 @@ app.rescon = require('../components/rescon/rescon');
                 var totalLength = self.calculateContentLength();
 
 
-                var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
+                var ht_head_width = window_width -88; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
             
@@ -922,6 +922,7 @@ app.rescon = require('../components/rescon/rescon');
                        })
                    ]),
                    m("div.appBtnDiv", [
+                       m("span.appBtn",  {onclick : function(){alert('these are not the droids you are looking for');} }, [m('.i.fa.fa-rebel')]),
                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
 
