@@ -7,6 +7,12 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
+
+app.registrations = require('../components/registrations/registrations');
+app.forks = require('../components/forks/forks');
+app.activity = require('../components/activity/activity');
+app.statistics = require('../components/statistics/statistics');
+
 app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
