@@ -975,7 +975,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                 m('p', module.dateCreated ),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), " " + link.title]);
                                                                     })
                                                                 ])
                                                             ]
