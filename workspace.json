@@ -56,54 +56,46 @@
         "bookmarks" : [],
         "bookmarked" : true,
         "links" : [
-                        {
-                "title": "Components",
+            {
+                "title": "Components ",
                 "action" : "components",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-puzzle-piece"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
             },
             {
-                "title": "Wiki",
+                "title": "Wiki ",
                 "action" : "wiki",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-pencil"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             },
             {
                 "title": "Files",
                 "action" : "files",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-files-o"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
             },
             {
                 "title": "Statistics",
                 "action" : "statistics",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-bar-chart-o"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-danger"
             },
             {
                 "title": "Registrations",
                 "action" : "registrations",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-clipboard"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-success"
             },
             {
                 "title": "Forks",
                 "action" : "forks",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-code-fork"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
             },
             {
                 "title": "Activity",
                 "action" : "activity",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-rss"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             }
             ,
             {
-                "title": "Responsive",
+                "title": "Responsive Container",
                 "action" : "rescon",
-                "css" : "ht-widget-btn",
-                "icon" : "fa-smile-o"
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
             }
         ],
         "columns" :[
