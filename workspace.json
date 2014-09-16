@@ -11,6 +11,21 @@
         "dateCreated" : "",
         "lastUpdated" : "",
         "citation" : "",
+        "show" : true,
+        "bookmarks" : [
+            {
+                "id" :  1,
+                "title" : "Reproducibility Project : Cancer Biology ",
+                "open": true,
+                "color" : "dark-turquaz"
+            },
+            {
+                "id" :  2,
+                "title" : "Example Project ",
+                "open": false,
+                "color" : "maroon"
+            }
+        ],
         "links" : [
             {
                 "title": "Learn More About OSF ",
@@ -23,13 +38,7 @@
                 "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             }
         ],
-        "columns" :[
-            {
-                "width" : 260,
-                "new" : true,
-                "widgets" : []
-            }
-        ]
+        "columns" :[]
     },
     {
         "id" : 1,
@@ -43,6 +52,9 @@
         "dateCreated" : "2013-10-08 07:31 PM",
         "lastUpdated" : "2014-09-09 04:41 PM",
         "citation" : "osf.io/ezcuj ",
+        "show" : true,
+        "bookmarks" : [],
+        "bookmarked" : true,
         "links" : [
             {
                 "title": "Components ",
@@ -79,7 +91,12 @@
                 "action" : "activity",
                 "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
             }
-
+            ,
+            {
+                "title": "Responsive Container",
+                "action" : "rescon",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
+            }
         ],
         "columns" :[
             {
@@ -135,5 +152,93 @@
                 ]
             }
         ]
+    },
+    {
+        "id" : 2,
+        "title" : "Example Project ",
+        "color" : "maroon",
+        "minimize" : false,
+        "exposeWidth" : 300,
+        "exposeHeight" : 300,
+        "css" : "",
+        "about" : "We are conducting a study to investigate the replicability of cancer biology studies. The top 50 most impactful cancer biology studies published between 2010-2012 are being replicated by the Science Exchange network.",
+        "dateCreated" : "2013-10-08 07:31 PM",
+        "lastUpdated" : "2014-09-09 04:41 PM",
+        "citation" : "osf.io/ezcuj ",
+        "show" : false,
+        "bookmarks" : [],
+        "bookmarked" : true,
+        "links" : [
+            {
+                "title": "Components ",
+                "action" : "components",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
+            },
+            {
+                "title": "Wiki ",
+                "action" : "wiki",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+            },
+            {
+                "title": "Files",
+                "action" : "files",
+                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
+            }
+        ],
+        "columns" :[
+            {
+                "width": 620,
+                "new" : false,
+                "widgets" : [
+                    {
+                        "id" : 6,
+                        "title" : "Wiki",
+                        "type" : "wiki",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : false,
+                        "content" : "",
+                        "css" : ""
+                    }
+                ]
+            },
+            {
+                "width" : 260,
+                "new" : false,
+                "widgets" : [
+                    {
+                        "id" : 7,
+                        "title" : "Activity Log",
+                        "type" : "logs",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : false,
+                        "content" : "",
+                        "css" : ""
+
+                    },
+                    {
+                        "id" : 8,
+                        "title" : "Comments",
+                        "type" : "comments",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : true,
+                        "content" : "",
+                        "css" : ""
+                    }
+                ]
+            }
+        ]
     }
+
 ]

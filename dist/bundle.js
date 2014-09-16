@@ -24,7 +24,182 @@ return e.ui.ddmanager&&(e.ui.ddmanager.current=this),e.ui.ddmanager&&!o.dropBeha
  * @version 1.4.13
  */
 ;(function(k){'use strict';k(['jquery'],function($){var j=$.scrollTo=function(a,b,c){return $(window).scrollTo(a,b,c)};j.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:!0};j.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(f,g,h){if(typeof g=='object'){h=g;g=0}if(typeof h=='function')h={onAfter:h};if(f=='max')f=9e9;h=$.extend({},j.defaults,h);g=g||h.duration;h.queue=h.queue&&h.axis.length>1;if(h.queue)g/=2;h.offset=both(h.offset);h.over=both(h.over);return this._scrollable().each(function(){if(f==null)return;var d=this,$elem=$(d),targ=f,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=win?$(targ):$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}var e=$.isFunction(h.offset)&&h.offset(d,targ)||h.offset;$.each(h.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=j.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(h.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=e[pos]||0;if(h.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*h.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(h.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&h.queue){if(old!=attr[key])animate(h.onAfterFirst);delete attr[key]}});animate(h.onAfter);function animate(a){$elem.animate(attr,g,h.easing,a&&function(){a.call(this,targ,h)})}}).end()};j.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return $.isFunction(a)||typeof a=='object'?a:{top:a,left:a}}return j})}(typeof define==='function'&&define.amd?define:function(a,b){if(typeof module!=='undefined'&&module.exports){module.exports=b(require('jquery'))}else{b(jQuery)}}));
-!function(i){i.fn.rescon=function(s){var t=this;this.settings=i.extend({complete:null,container:"#pageWrap",action:"run"},s);var e=this;this.sizes=["xs","sm","md","lg"];var n=e.width();return t.currentMode="md",768>n&&(t.currentMode="xs"),n>=768&&992>n&&(t.currentMode="sm"),n>=992&&1200>n&&(t.currentMode="md"),n>=1200&&(t.currentMode="lg"),this.runRescon=function(s,e){i(e).find('div[class^="col-"]').each(function(s,e){for(var n="",a=i(e).attr("class"),r=a.split(" "),c="",s=0;s<r.length;s++){var l=r[s];-1!==l.indexOf("col-")&&(n+=" "+l,-1!==l.indexOf(t.currentMode)&&(c+=" "+l))}i(e).attr("data-rescon",n.trim());var o=a.replace(/^col.*/g,""),d=t.sizes.indexOf(t.currentMode),h=n.split(" ");if(""==c)for(var v=t.recurseDown(d-1,n),s=0;s<h.length;s++){var l=h[s];-1!==l.indexOf(t.sizes[v])&&(c+=" "+l)}if(""==c)var c="col-"+t.currentMode+"-12";var f;f=o.length>0?o+" ":"",i(e).attr("class",f+c.trim())})},this.visibility=function(){i("body").find("*[class^=visible]").each(function(){var s=i(this);t.visibilityToggle(s,"visible")}),e.find("[class^=hidden]").each(function(){var s=i(this);t.visibilityToggle(s,"hidden")})},this.visibilityToggle=function(i,s){var e=i.attr("class");i.attr("class","");for(var n=e.split(" "),a=[],r="",c=0;c<n.length;c++){var l=n[c];if(-1!==l.indexOf(s)){var o=l.split("-"),d=o[1];if(a.push(c),console.log("classview",d),d==t.currentMode){if("visible"===s)if(console.log(o),o.length>2){var h=o[3]?o[2]+"-"+o[3]:o[2];console.log("classDisplay",h),i.css("display",h)}else i.addClass("show");"hidden"===s&&i.addClass("hidden")}else"visible"===s&&i.addClass("hidden"),"hidden"===s&&i.addClass("show")}}a.map(function(i){r+=n[i],n[i]=""});var v=n.join(" ").trim();i.addClass(v),i.attr("data-visibility",r)},this.visibilityReset=function(){i("body").find("*[data-visibility^=visible]").each(function(){i(this).addClass(i(this).attr("data-visibility"))}),e.find("[data-visibility^=hidden]").each(function(){i(this).addClass(i(this).attr("data-visibility"))})},this.recurseDown=function a(i,s){return i>=0?s.indexOf(t.sizes[i])?i:void a(i-1,s):-1},this.reset=function(s,t){i(t).find('div[data-rescon^="col-"]').each(function(s,t){var e=i(t).attr("data-rescon"),n=i(t).attr("class"),a=n.replace(/^col.*/g,"");i(t).attr("class",a+" "+e)})},"run"===this.settings.action&&(e.each(t.runRescon),t.visibility()),"reset"===this.settings.action&&(e.each(t.reset),t.visibilityReset()),i(this.settings.container).resize(function(){e.each(t.runRescon),t.visibility()}),i.isFunction(t.settings.complete)&&t.settings.complete.call(this),this}}(jQuery);
+/*
+ *   Jquery Rescon : responsive containers for Bootstrap
+ *   Provides responsiveness to Bootstrap grid elements by applying media sizing when these elements are within responsive containers.
+ */
+(function($) {
+    $.fn.rescon = function(options) {
+        var self = this;
+        this.settings = $.extend({                                      // Default options
+            complete : null,                                            // Function to run at the end.
+            sizes : { "xs" : 0, "sm" : 768, "md" : 992, "lg" : 1200 },  // Default Bootstrap sizes.
+            action : "run"                                              // Action: "run" to apply or "reset" to reset.
+        }, options);
+
+        var el = this;                                                  // The elements this was called on. This is a list.
+        this.sizes = ["xs", "sm", "md", "lg"];                          // Pre-existing sizes. Do not delete those, you can change them with the settings.
+
+        this.runRescon = function (index, element){
+
+            /* SET MODE BASED ON WIDTH  */
+            var currentMode = "md";
+            var size = self.settings.sizes;
+            var width = $(element).width();                             // get container width and set the current mode. Change these sizes to your own threshold.
+            if(width >= size.xs && width < size.sm ){
+                currentMode = "xs"
+            }
+            if(width >= size.sm && width < size.md ){
+                currentMode = "sm"
+            }
+            if(width >= size.md && width < size.lg ){
+                currentMode = "md"
+            }
+            if(width >= size.lg ){
+                currentMode = "lg"
+            }
+
+
+            /* CREATE DATA ATTRIBUTES  */
+            $(element).find('div').each(function(i, e){                 // Find child elements that may have these classes
+                var classString = $(e).attr('class');                   // Get existing classes
+                if(classString){                                        // If there is no class attribute don't bother
+                    var rescon_exists = $(e).attr('data-rescon');       // Check if there is already data-rescon attribute
+                    var visible_exists = $(e).attr('data-visible');     // Check if there is already data-visible attribute
+                    if(!rescon_exists || !visible_exists) {             // If either one of them is missing continue
+                        var rescon_string = "";                         // Set variable for collecting rescon classes
+                        var visible_string = "";                        // Set variable for collecting visible classes
+                        var classList = classString.split(' ');         // split classes into array
+                        for (var i = 0; i < classList.length; i++) {    // loop through classes
+                            var o = classList[i];
+                            if (!rescon_exists) {                       // if data-rescon attribute does not exist, generate it
+                                if (o.indexOf('col-') !== -1) {         // if this class includes 'col-' add it to rescon
+                                    rescon_string += " " + o;
+                                }
+                            }
+                            if (!visible_exists) {                      // check if data-visible attribute does not exits, generate it
+                                if (o.indexOf('visible-') !== -1 || o.indexOf('hidden-') !== -1) {
+                                    visible_string += " " + o;          // if this class includes visible att it to visible attribute
+                                }
+                            }
+                        }
+                        if(rescon_string){ $(e).attr('data-rescon', rescon_string.trim()) } ;     // set data-rescon attribute with classes we collected
+                        if( visible_string) { $(e).attr('data-visible', visible_string.trim()) } ; // set visible attribute with classes we collected
+                    }
+                    var newclass = classString.replace(/\bcol-\S*/g, "").replace(/\bvisible-\S*/g, "").replace(/\hidden-\S*/g, "");      // Remove all classes related to column resizing so we are left with original classes
+                    $(e).attr('class', newclass);                       // set visible attribute with classes we collected
+                }
+
+            })
+
+
+            /* SET WIDTHS  */
+            $(element).find('[data-rescon*="col-"]').each(function(i, e){  // Look at each column element within this div. You can change .find() to other selectors for more refined control.
+                var dataString = $(e).attr('data-rescon');              // existing column related classes
+                var newCols = "";                                       // the column classes we wil assign to this element
+                var currentSize = self.sizes.indexOf(currentMode); // Index for the current size in the sizes table, returns 0, 1 etc.
+                var dataList = dataString.split(" ");                   // split colum related classes into class names
+                var before = self.recurseDown(currentSize, dataString); // If there are no column identifiers at this level move down, because bootstrap cascades upwards.
+                if(before !== -1){                                      // before shouldn't be -1, this is to avoid errors.
+                    for(var i = 0; i < dataList.length; i++) {          // Loop through colum relevant classes
+                        var o = dataList[i];
+                        if(o.indexOf(self.sizes[before])  !== -1 ){     // if this class is pertinent to current size add it to the new column related classes
+                            newCols += " "+o;
+                        }
+                    }
+                }
+                if(newCols == ""){                                      // If we still don't have anything set default of 12 width
+                    var newCols = "col-"+currentMode+"-"+"12";
+                }
+                $(e).addClass(newCols.trim());                          // Rewrite the classes for the element
+            })
+
+
+            /* SET VISIBILITY */
+            $(element).find('[data-visible*="visible"],[data-visible*="hidden"]:not(".hidden-print")').each(function(i, e) {
+                var dataString = $(e).attr('data-visible');             // Get existing visibility. This data attribute should have been generated already.
+                var dataArray = dataString.split(" ");
+//                console.log("data visible", dataArray)
+                for(var i = 0; i < dataArray.length; i++) {             // Loop through visibility options to apply classes. In cases of conflict the last class applies.
+                    var c = dataArray[i];
+                    var classArray = c.split('-')
+                    var classView =  classArray[1];                     // Get the size of the class i.e. xs, sm etc.
+                    if (c.indexOf("visible-") !== -1) {
+//                        console.log("classArray", classArray[1])
+                        if(classView == currentMode) {                  // If the class applies to the current more show display option
+                            if(classArray.length > 2){
+                                var classDisplay =  classArray[3] ? classArray[2]+"-"+classArray[3] : classArray[2];
+                                $(e).css("display", classDisplay);
+                            } else {
+                                $(e).css("display", "block");
+                            }
+                        }
+                        else {
+                            $(e).css("display", "none");                // If class doesn't apply to the current hide.
+                        }
+                    }
+                    if (c.indexOf("hidden-") !== -1) {                  // If class is hidden do opposite.
+//                        console.log("classArray", classArray[1])
+                        if(classView == currentMode) {
+                            if(classArray[0] === 'hidden'){
+                                $(e).css("display", "none");
+                            }
+                        } else {
+                            if(classArray[0] === 'hidden'){
+                                $(e).css("display", "block");
+                            }
+                        }
+                    }
+
+                }
+            });
+        }
+
+
+        this.recurseDown = function recur (index, dataString){          // Helper function to recursively check if lower widhts are set, for instance for mode md, check if sm or xs is set.
+            // does data string have smaller size ?
+            if(index >= 0){
+                if(dataString.indexOf(self.sizes[index])){
+                    return index;
+                } else {
+                    recur(index-1, dataString)
+                }
+            } else {
+                return -1;
+            }
+        }
+
+        this.reset = function (index, element){                         // Clear the effects of the plugin by restoring to original classes.
+            $(element).find('div[data-rescon*="col-"]').each(function(i, e){
+                var dataString = $(e).attr('data-rescon');
+                var classString = $(e).attr('class');
+                var newclass = classString.replace(/^col.*/g, "");
+                $(e).attr('class', newclass+" "+dataString);
+            })
+            el.find('[class*=visible],[class*=hidden]:not(".hidden-print")').each(function(i, e){
+                $(this).addClass($(this).attr('data-visible'))
+            })
+        }
+
+        if(this.settings.action === "run"){
+            el.each(self.runRescon);
+        }
+        if(this.settings.action === "reset"){
+            el.each(self.reset);
+        }
+
+        // Run the complete function if there is one
+        if ( $.isFunction( self.settings.complete ) ) {
+            self.settings.complete.call( this );
+        }
+
+        // Return the element so jquery can chain it
+        return this;
+
+    }
+
+}(jQuery));
+
 /*!
  * Bootstrap v3.2.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -947,14 +1122,16 @@ app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
-
+app.files = require('../components/files/files');
+app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
     build.layout = m.prop($(window).width());
 
+
     build.workspace = m.prop("");
-    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
+    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){ m.module(document.body, build);    });
 
     //  Models
     // Module Model
@@ -968,6 +1145,14 @@ app.components = require('../components/components/components');
         this.exposeWidth = 300;
         this.exposeHeight = 300;
         this.css = css || "";
+        this.about = "";
+        this.dateCreated = "";
+        this.lastUpdated = "";
+        this.citation  = "";
+        this.links = [];
+        this.show = true;
+        this.bookmarks = [];
+        this.bookmarked = false;
     };
     // Column Model
     build.column = function(width, widgets){
@@ -998,6 +1183,8 @@ app.components = require('../components/components/components');
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
         this.layout = build.layout;
+        this.virtualModel = [];
+        m.redraw.strategy("all");
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -1023,34 +1210,11 @@ app.components = require('../components/components/components');
                 minHeight: 100,
                 containment : "parent",
                 resize : function (event, ui){
-                    var oldH = ui.originalSize.height;
-                    var newH = ui.size.height;
-                    if(newH !== oldH){
-                        console.log("widget is resizing")
-                        console.log(oldH, newH);
-                        console.log($(event.target).parent());
-                        var column = $(event.target).parent();
-                        var setContentHeight = column.outerHeight(); // Height of the column
-                        var contentHeight = column[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
-                        // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
-                        var totalHeight = 0;
-                        column.children('.ht-widget').each(function(){
-                            totalHeight = totalHeight+$(this).outerHeight();
-                        });
-
-                        // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
-                        column.children('.ht-widget').each(function(){
-                            var childHeight = $(this).height();
-                            var newHeight;
-                            if(setContentHeight < contentHeight){
-                                newHeight = (childHeight/contentHeight)*setContentHeight;
-                            } else {
-                                newHeight = (childHeight/(totalHeight+25))*setContentHeight;
-                            }
-                            $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
-                        });
-                    }
-
+                    var column = $(event.target).parent();
+                    self.resizeWidgets(column)
+                },
+                stop : function(){
+                    self.resizeWidgets();
                 }
             } );
             $('.ht-column:not(.no-resize)').resizable({
@@ -1063,13 +1227,19 @@ app.components = require('../components/components/components');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
+                    $(".widget-body-inner").rescon(
+                        {
+                            sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
+                        }
+                    );
+
                 },
                 create : function(){
                     console.log("Resizable created");
                 }
             } );
 
-            $(".ht-column" ).sortable({
+            $(".ht-column").not('.ht-column[data-index=-1]').sortable({
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
 //                containment: "#ht-content",
@@ -1081,7 +1251,6 @@ app.components = require('../components/components/components');
                 forceHelperSize : true,
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
-
                     ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
@@ -1106,11 +1275,30 @@ app.components = require('../components/components/components');
                         widget : ui.item.index()
                     };
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
-                    $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
+                    $('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
-
+                    console.log("-----");
+                    console.log(self.modules());
+                    console.log("-----");
+                    self.localExpose = false;
+                    m.redraw();
+                    self.cleanDOM();
                 },
-                  cursorAt: {left:100, top:25}
+                over : function(event, ui){
+                        console.log(event, ui);
+                        var widgets = $(event.target).children('.ht-widget');
+                        var totalWidgets  = widgets.length;
+                        $(event.target).children('.ht-widget').each(function(){
+                            var height = $(this).outerHeight;
+                            var adjustAmount = 50/totalWidgets;
+                            var adjustedHeight = height-adjustAmount;
+                            $(this).css({ height : adjustedHeight + "px"})
+                        })
+                },
+                out : function (){
+                  self.resizeWidgets();
+                },
+                cursorAt: {left:100, top:25}
             });
         };
         this.init = function(element, isInitialized){
@@ -1135,7 +1323,7 @@ app.components = require('../components/components/components');
 
             self.reformatWidth();
             self.reformatHeight();
-            self.resizeWidgets();
+            self.createVirtual();
 
             // ScrollTo take you to the module when clicked on the header
             $(document).on('click', '.ht-hdiv', function(){
@@ -1162,7 +1350,6 @@ app.components = require('../components/components/components');
                 }
             });
             self.eventsOn();
-            self.resizeWidgets();
             console.log("app initialized");
         };
 
@@ -1198,56 +1385,46 @@ app.components = require('../components/components/components');
             // console.log("widget moved", from, to);
             // console.log(self.modules());
             self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
+            self.createVirtual();
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
-            m.redraw(true);
 
         };
         this.resizeWidgets = function() {
-                // console.log("resize running");
+            console.log("resize running");
+            var args = arguments;
+            var selector = $('.ht-column');
+            if(args[0]){
+                selector = args[0];
+            }
 
-            $('.ht-column').each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
+            selector.each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
                 var setContentHeight = $(this).outerHeight(); // Height of the column
                 var contentHeight = $(this)[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
                 // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
                 var totalHeight = 0;
                 $(this).children('.ht-widget').each(function(){
-                    totalHeight = totalHeight+$(this).outerHeight();
+                    totalHeight = totalHeight+$(this).outerHeight()+10; // 10 is for bottom margin
                 });
 
                 // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
                 $(this).children('.ht-widget').each(function(){
-                    var childHeight = $(this).height();
+                    var childHeight = $(this).outerHeight();
+                    var headerHeight = $(this).children('.ht-widget-header').outerHeight();
+                    console.log("headerHeight", headerHeight)
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                     } else {
-                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                        newHeight = (childHeight/(totalHeight))*setContentHeight;
                     }
-                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44}).find('.widget-body-inner').css({ height : newHeight-80});
-
-                    // While we are within widgets do other relevant things
-                    // resize iframes
-                    $(this).find('iframe').css({height : newHeight-60} );
-
-                    // show hide based on element width -- TODO: move this to higher level
-                    var width =  $(this).width();
-                    $(this).find('.ht-w-s').hide();
-                    $(this).find('.ht-w-m').hide();
-                    $(this).find('.ht-w-l').hide();
-                    if(width > 600){
-                        $(this).find('.ht-w-l').show();
+                    if(newHeight > 150){
+                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : (newHeight-headerHeight)+"px"})//.find('.widget-body-inner').css({ height : newHeight-40});
                     }
-                    if(width > 300 && width <= 600){
-                        $(this).find('.ht-w-m').show();
-                    }
-                    if(width <= 300 ){
-                        $(this).find('.ht-w-s').show();
-                    }
-
-
                 });
 
             });
+            $(".widget-body-inner").rescon();
+
         };
         this.expandWidget = function(module, column, widget){
             // create a column after this column
@@ -1324,12 +1501,17 @@ app.components = require('../components/components/components');
         this.calculateContentLength = function(){
             var totalLength = 20; // This is not a good number, why does this work right?
             self.modules().map(function(module){
-                var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
-                module.columns.map(function(column){
-                    var columnW = column.width+10; // right padding + right margin + right border
-                    thisWidth += columnW;
-                });
-                totalLength += thisWidth;
+                if(module.show){
+                    var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
+                    if(module.bookmarks.length > 0){
+                        thisWidth += 270;
+                    }
+                    module.columns.map(function(column){
+                        var columnW = column.width+10; // right padding + right margin + right border
+                        thisWidth += columnW;
+                    });
+                    totalLength += thisWidth;
+                }
             });
             return totalLength;
         }
@@ -1353,7 +1535,7 @@ app.components = require('../components/components/components');
         this.addModule = function() {
 
             
-            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
             var randomNumber = Math.floor(Math.random()*clrs.length);
  
             // This will eventually be selected from lists
@@ -1375,7 +1557,19 @@ app.components = require('../components/components/components');
         };
         this.removeModule = function(module_index){
             // unload, turn events off etc.
-            self.modules().splice(module_index, 1);
+            if(self.modules()[module_index].bookmarked){
+                // hide module
+                self.modules()[module_index].show = false;
+
+                self.modules()[0].bookmarks.map(function(b){
+                    if(b.id == self.modules()[module_index].id ){
+                        b.open = false;
+                    }
+                })
+
+            } else {
+                self.modules().splice(module_index, 1);
+            }
             self.reformatWidth();
         };
         this.toggleModule = function(index, state){
@@ -1511,9 +1705,9 @@ app.components = require('../components/components/components');
                 self.temp.scrollTo = "";
             }
             console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
+            self.resizeWidgets();
 
         }
-
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
                 var o = self.modules()[i];
@@ -1567,7 +1761,87 @@ app.components = require('../components/components/components');
 
              })
          }
-    
+         this.createVirtual = function(){
+             // Repopulate the virtual model array
+             self.virtualModel = [];
+             self.modules().map( function(m, m_index ){
+                 var module = { index : m_index, id : m.id, columns : []};
+                 if(m.columns.length > 0 ){
+                     m.columns.map(function(c, c_index){
+                         var column = { index :  c_index, widgets : [] };
+                         if(c.widgets.length > 0){
+                             c.widgets.map(function(w, w_index){
+                                 var widget = { index : w_index, id : w.id , checks : {}}
+                                 column.widgets.push(widget);
+                             })
+                         }
+                         module.columns.push(column);
+                     })
+                 }
+                self.virtualModel.push(module);
+             })
+             console.log("Virtual Model", self.virtualModel);
+         }
+         this.cleanDOM = function(){
+             // Clean up the DOM so that widgets that are viewed correspond to the view. If widget not shown throw error, if extra widget is shown remove it.
+             $('.ht-tab').each(function(){
+                 var m_index = $(this).attr('data-index');
+                 $(this).find('.ht-column').each(function(){
+                     var c_index = $(this).attr('data-index');
+                     if(c_index > -1){
+                         $(this).children('.ht-widget').each(function(){
+                             var w_index = $(this).attr('data-index');
+                             var w_id = $(this).attr('data-id');
+                              if ( w_index > -1 ) {
+                                  if(!self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build){
+                                      self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build = true;
+                                      console.log("self.virtualModel["+m_index+"].columns["+c_index+"].widgets["+w_index+"].checks.build ",self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build                                      )
+                                  } else {
+                                      // remove this node
+                                      $(this).remove();
+                                  }
+                              }
+                         })
+                     }
+                 })
+             })
+             // IF we removed widgets we need to adjust sizes
+             self.resizeWidgets();
+         }
+         this.moduleViewToggle = function(event){
+             var event = event || window.event;
+             var module = $(event.target).parent();
+             var moduleID = module.attr('data-mid');
+             console.log("ModulID", moduleID);
+             // Toggle view
+             self.modules().map(function(mod){
+                 console.log(mod.id)
+                 if(mod.id == moduleID ){
+                     mod.show = !mod.show;
+                 }
+             })
+             // toggle bookmark view
+             self.modules()[0].bookmarks.map(function(b){
+                 if(b.id == moduleID ){
+                     b.open = !b.open;
+                 }
+             })
+         }
+
+         this.bookmarkToggle = function(event) {
+             var event = event || window.event;
+             var el = $(event.target);
+             var mindex = el.attr('data-mindex');
+             var module = self.modules()[mindex];
+             var bookmark =             {
+                 "id" :  module.id,
+                 "title" : module.title,
+                 "open": true,
+                 "color" : module.color
+             }
+             self.modules()[0].bookmarks.push(bookmark);
+             module.bookmarked = true;
+         }
 
     // MOBILE
          this.mobileInit = function(){
@@ -1718,28 +1992,30 @@ app.components = require('../components/components/components');
                     m(".expose-content", { config : ctrl.exposeInit } , [
                         m(".expose-modules", [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
-                                    ])];
-                                }else {
-                                    return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m("h3", module.title),
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [ m("") ])
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
+                                        ])];
+                                    } else {
+                                        return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m("h3", module.title),
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [ m("") ])
 
-                                    ])];
+                                        ])];
+                                    }
                                 }
                             })
                         ]),
@@ -1756,8 +2032,9 @@ app.components = require('../components/components/components');
                m(".ht-head-wrapper", [
                    m("[id='ht-head']", [
                        ctrl.modules().map(function(module, module_index, module_array){
-                           return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
-
+                           if(module.show){
+                               return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                           }
                        })
                    ]),
                    m("div.appBtnDiv", [
@@ -1770,18 +2047,19 @@ app.components = require('../components/components/components');
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
-                                            ])
-                                        ]),
-                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
-                                    ])];
-                                }else {
-                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
+                                                ])
+                                            ]),
+                                            m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
+                                        ])];
+                                    }else {
+                                        return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
 //                                        m(".ht-tab-header", {  "data-bg" : module.color }, [
 //                                            m("h3", module.title),
 //                                            m(".ht-windowBtn", [
@@ -1789,75 +2067,109 @@ app.components = require('../components/components/components');
 //                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
 //                                            ])
 //                                        ]),
-                                        m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
-                                            m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
-                                                m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
-                                                    m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
-                                                        m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                        m('h3.skinnyFont.m-b-lg', module.about),
-                                                        m('p', module.lastUpdated ),
-                                                        m('p', module.dateCreated ),
-                                                        m('ul.dashboardList.list-unstyled.m-t-lg', [
-                                                            module.links.map(function(link){
-                                                                return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
-                                                            })
-                                                        ])
-                                                        ]
-                                                    ) ])
-                                                ])
-                                            ]),
-                                            module.columns.map(function(column, column_index, column_array){
-                                                if(column.widgets.length > 0 || column.new){
-                                                    // If the view is not narrow in height show full.
-                                                    return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
-                                                        ( function(){
-                                                            if (column.widgets.length > 0) {
-                                                                return column.widgets.map(function(widget, widget_index, widget_array){
-                                                                    if(widget.display){
-                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
-                                                                            (function(){
-                                                                                if(!widget.hideHeader){
-                                                                                    return m(".ht-widget-header", [
-                                                                                        widget.title,
-                                                                                        m(".ht-widget-actions", [
-                                                                                            m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
-                                                                                            (function(){
-                                                                                                if(widget.closable){
-                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
-                                                                                                }
-                                                                                            })()
-                                                                                        ])
-                                                                                    ]);
-                                                                                }
-                                                                            })(),
-
-                                                                            m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
-                                                                                (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
-                                                                            ) ])
-                                                                        ]);
+                                            m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
+                                                m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
+                                                    m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                        m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                (function(){
+                                                                    var marked = "";
+                                                                    if(module.bookmarked){ marked = "ht-opaque-active"; }
+                                                                    if(module.id > 0) {
+                                                                        return m('.ht-module-menu', [
+                                                                            m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                                            m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
+                                                                            m('i.fa.fa-edit'),
+                                                                            m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
+                                                                        ])
                                                                     }
-                                                                });
-                                                            }
-                                                        })()
-                                                    ]);
-                                                }
-                                                // module_array[0].columns[0].widgets.splice(0,1);
-                                            }),
-                                            m(".ht-add-column", [
-                                                (function(){
-                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
-                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
-                                                    } else {
-                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
-                                                    }
-                                                })()
+                                                                }()),
 
+                                                                m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
+                                                                m('h3.skinnyFont.m-b-lg', module.about),
+                                                                m('p', module.lastUpdated ),
+                                                                m('p', module.dateCreated ),
+                                                                m('ul.dashboardList.list-unstyled.m-t-lg', [
+                                                                    module.links.map(function(link){
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                    })
+                                                                ])
+                                                            ]
+                                                        ) ])
+                                                    ])
+                                                ]),
+                                                (function(){
+                                                    if(module.bookmarks.length > 0){
+                                                        return m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:260px"},  [
+                                                            m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                                m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                        module.bookmarks.map(function(b){
+                                                                            var status = "bg-opaque-white";
+                                                                            if (b.open){ var status = "bg-"+b.color }
+                                                                            return m(".ht-bookmark", { "class" : status , "data-mid" : b.id, onclick : ctrl.moduleViewToggle}, [
+                                                                                m(".ht-bookmark-content", b.title)
+                                                                            ])
+                                                                        }),
+                                                                        m(".ht-bookmark",{ style : "text-align: center;"}, m("i.fa.fa-plus"))
+                                                                    ]
+                                                                ) ])
+                                                            ])
+                                                        ])
+                                                    }
+                                                }()),
+                                                module.columns.map(function(column, column_index, column_array){
+                                                    if(column.widgets.length > 0 || column.new){
+                                                        // If the view is not narrow in height show full.
+                                                        return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
+                                                            ( function(){
+                                                                if (column.widgets.length > 0) {
+                                                                    return column.widgets.map(function(widget, widget_index, widget_array){
+                                                                        if(widget.display){
+                                                                            return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
+                                                                                (function(){
+                                                                                    if(!widget.hideHeader){
+                                                                                        return m(".ht-widget-header", [
+                                                                                            widget.title,
+                                                                                            m(".ht-widget-actions", [
+                                                                                                m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
+                                                                                                (function(){
+                                                                                                    if(widget.closable){
+                                                                                                        return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
+                                                                                                    }
+                                                                                                })()
+                                                                                            ])
+                                                                                        ]);
+                                                                                    }
+                                                                                })(),
+
+                                                                                m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
+                                                                                    (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
+                                                                                ) ])
+                                                                            ]);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            })()
+                                                        ]);
+                                                    }
+                                                    // module_array[0].columns[0].widgets.splice(0,1);
+                                                }),
+                                                m(".ht-add-column", [
+                                                    (function(){
+                                                        if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
+                                                            return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                        } else {
+                                                            return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                        }
+                                                    })()
+
+
+                                                ])
 
                                             ])
-
-                                        ])
-                                    ])];
+                                        ])];
+                                    }
                                 }
+
 
                             })
                     ])
@@ -1872,7 +2184,7 @@ app.components = require('../components/components/components');
 };
 
 
-},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/logs/logs":5,"../components/wiki/wiki":6}],2:[function(require,module,exports){
+},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/rescon/rescon":7,"../components/wiki/wiki":8}],2:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -1991,7 +2303,7 @@ comments.view = function(ctrl){
 }
 
 module.exports = comments;
-},{"../logs/logs":5}],3:[function(require,module,exports){
+},{"../logs/logs":6}],3:[function(require,module,exports){
 var components = {};
 
 components.html= m.prop("");
@@ -2022,6 +2334,21 @@ dashboard.view = function(ctrl){
 
 module.exports = dashboard;
 },{}],5:[function(require,module,exports){
+var files = {};
+
+files.html= m.prop("");
+m.request({method: "GET", url: "../components/files/files.html", deserialize: function(value){ return value;  }}).then(files.html);
+
+files.controller = function(){
+    this.html = files.html;
+}
+
+files.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = files;
+},{}],6:[function(require,module,exports){
 
 var logs = {};
 
@@ -2079,7 +2406,22 @@ logs.view = function(controller){
 }
 
 module.exports = logs;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+var rescon = {};
+
+rescon.html= m.prop("");
+m.request({method: "GET", url: "../components/rescon/rescon.html", deserialize: function(value){ return value;  }}).then(rescon.html);
+
+rescon.controller = function(){
+    this.html = rescon.html;
+}
+
+rescon.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = rescon;
+},{}],8:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

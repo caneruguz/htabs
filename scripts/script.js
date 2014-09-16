@@ -6,14 +6,16 @@ app.dashboard = require('../components/dashboard/dashboard');
 app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
-
+app.files = require('../components/files/files');
+app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
     var build = {};
     build.layout = m.prop($(window).width());
 
+
     build.workspace = m.prop("");
-    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){     m.module(document.body, build);    });
+    m.request({method: "GET", url: "../workspace.json"}).then(build.workspace).then(function(){ m.module(document.body, build);    });
 
     //  Models
     // Module Model
@@ -27,6 +29,14 @@ app.components = require('../components/components/components');
         this.exposeWidth = 300;
         this.exposeHeight = 300;
         this.css = css || "";
+        this.about = "";
+        this.dateCreated = "";
+        this.lastUpdated = "";
+        this.citation  = "";
+        this.links = [];
+        this.show = true;
+        this.bookmarks = [];
+        this.bookmarked = false;
     };
     // Column Model
     build.column = function(width, widgets){
@@ -57,6 +67,8 @@ app.components = require('../components/components/components');
         this.localExpose = false;   // turn expose mode on or off, helps rending expose mode as pure mithril view.
         this.temp = { startIndex : 0, stopIndex : 0 , fromObj : {}, toObj : {}, scrollTo : ""}; // Temporary variables so that jquery ui functions can send variables to each other. Is there a better way for this?
         this.layout = build.layout;
+        this.virtualModel = [];
+        m.redraw.strategy("all");
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -82,34 +94,11 @@ app.components = require('../components/components/components');
                 minHeight: 100,
                 containment : "parent",
                 resize : function (event, ui){
-                    var oldH = ui.originalSize.height;
-                    var newH = ui.size.height;
-                    if(newH !== oldH){
-                        console.log("widget is resizing")
-                        console.log(oldH, newH);
-                        console.log($(event.target).parent());
-                        var column = $(event.target).parent();
-                        var setContentHeight = column.outerHeight(); // Height of the column
-                        var contentHeight = column[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
-                        // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
-                        var totalHeight = 0;
-                        column.children('.ht-widget').each(function(){
-                            totalHeight = totalHeight+$(this).outerHeight();
-                        });
-
-                        // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
-                        column.children('.ht-widget').each(function(){
-                            var childHeight = $(this).height();
-                            var newHeight;
-                            if(setContentHeight < contentHeight){
-                                newHeight = (childHeight/contentHeight)*setContentHeight;
-                            } else {
-                                newHeight = (childHeight/(totalHeight+25))*setContentHeight;
-                            }
-                            $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44});
-                        });
-                    }
-
+                    var column = $(event.target).parent();
+                    self.resizeWidgets(column)
+                },
+                stop : function(){
+                    self.resizeWidgets();
                 }
             } );
             $('.ht-column:not(.no-resize)').resizable({
@@ -122,13 +111,19 @@ app.components = require('../components/components/components');
                 },
                 stop : function (){
 //                    self.saveColumnSize();
+                    $(".widget-body-inner").rescon(
+                        {
+                            sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
+                        }
+                    );
+
                 },
                 create : function(){
                     console.log("Resizable created");
                 }
             } );
 
-            $(".ht-column" ).sortable({
+            $(".ht-column").not('.ht-column[data-index=-1]').sortable({
                 connectWith: ".ht-column",      // So that we can move widgets between other columns.
                 handle: ".ht-widget-header",    // Grab from the header div only.
 //                containment: "#ht-content",
@@ -140,7 +135,6 @@ app.components = require('../components/components/components');
                 forceHelperSize : true,
                 placeholder: "ht-widget-placeholder",
                 start : function (event, ui){   // The only outcome of this is to get the widget that is being moved i.e. from
-
                     ui.placeholder.width("98%");
                     ui.helper.css({
                         width: 200,
@@ -165,11 +159,30 @@ app.components = require('../components/components/components');
                         widget : ui.item.index()
                     };
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
-                    $('.ht-column').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
+                    $('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
-
+                    console.log("-----");
+                    console.log(self.modules());
+                    console.log("-----");
+                    self.localExpose = false;
+                    m.redraw();
+                    self.cleanDOM();
                 },
-                  cursorAt: {left:100, top:25}
+                over : function(event, ui){
+                        console.log(event, ui);
+                        var widgets = $(event.target).children('.ht-widget');
+                        var totalWidgets  = widgets.length;
+                        $(event.target).children('.ht-widget').each(function(){
+                            var height = $(this).outerHeight;
+                            var adjustAmount = 50/totalWidgets;
+                            var adjustedHeight = height-adjustAmount;
+                            $(this).css({ height : adjustedHeight + "px"})
+                        })
+                },
+                out : function (){
+                  self.resizeWidgets();
+                },
+                cursorAt: {left:100, top:25}
             });
         };
         this.init = function(element, isInitialized){
@@ -194,7 +207,7 @@ app.components = require('../components/components/components');
 
             self.reformatWidth();
             self.reformatHeight();
-            self.resizeWidgets();
+            self.createVirtual();
 
             // ScrollTo take you to the module when clicked on the header
             $(document).on('click', '.ht-hdiv', function(){
@@ -221,7 +234,6 @@ app.components = require('../components/components/components');
                 }
             });
             self.eventsOn();
-            self.resizeWidgets();
             console.log("app initialized");
         };
 
@@ -257,56 +269,46 @@ app.components = require('../components/components/components');
             // console.log("widget moved", from, to);
             // console.log(self.modules());
             self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
+            self.createVirtual();
             self.resizeWidgets(); // After moving we will need to readjust the heights of the widgets
-            m.redraw(true);
 
         };
         this.resizeWidgets = function() {
-                // console.log("resize running");
+            console.log("resize running");
+            var args = arguments;
+            var selector = $('.ht-column');
+            if(args[0]){
+                selector = args[0];
+            }
 
-            $('.ht-column').each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
+            selector.each(function(){   // Iterate over colummns, we don't need to use jquery to iterate but doesn't harm.
                 var setContentHeight = $(this).outerHeight(); // Height of the column
                 var contentHeight = $(this)[0].scrollHeight; // Get content height, if item is not scrolling this will be same as setContentHeight, otherwise it will be bigger.
                 // Calculate Total widgets height -- this is in case widgets end up not covering the entire height of the column.
                 var totalHeight = 0;
                 $(this).children('.ht-widget').each(function(){
-                    totalHeight = totalHeight+$(this).outerHeight();
+                    totalHeight = totalHeight+$(this).outerHeight()+10; // 10 is for bottom margin
                 });
 
                 // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
                 $(this).children('.ht-widget').each(function(){
-                    var childHeight = $(this).height();
+                    var childHeight = $(this).outerHeight();
+                    var headerHeight = $(this).children('.ht-widget-header').outerHeight();
+                    console.log("headerHeight", headerHeight)
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                     } else {
-                        newHeight = (childHeight/(totalHeight+25))*setContentHeight;
+                        newHeight = (childHeight/(totalHeight))*setContentHeight;
                     }
-                    $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : newHeight-44}).find('.widget-body-inner').css({ height : newHeight-80});
-
-                    // While we are within widgets do other relevant things
-                    // resize iframes
-                    $(this).find('iframe').css({height : newHeight-60} );
-
-                    // show hide based on element width -- TODO: move this to higher level
-                    var width =  $(this).width();
-                    $(this).find('.ht-w-s').hide();
-                    $(this).find('.ht-w-m').hide();
-                    $(this).find('.ht-w-l').hide();
-                    if(width > 600){
-                        $(this).find('.ht-w-l').show();
+                    if(newHeight > 150){
+                        $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : (newHeight-headerHeight)+"px"})//.find('.widget-body-inner').css({ height : newHeight-40});
                     }
-                    if(width > 300 && width <= 600){
-                        $(this).find('.ht-w-m').show();
-                    }
-                    if(width <= 300 ){
-                        $(this).find('.ht-w-s').show();
-                    }
-
-
                 });
 
             });
+            $(".widget-body-inner").rescon();
+
         };
         this.expandWidget = function(module, column, widget){
             // create a column after this column
@@ -383,12 +385,17 @@ app.components = require('../components/components/components');
         this.calculateContentLength = function(){
             var totalLength = 20; // This is not a good number, why does this work right?
             self.modules().map(function(module){
-                var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
-                module.columns.map(function(column){
-                    var columnW = column.width+10; // right padding + right margin + right border
-                    thisWidth += columnW;
-                });
-                totalLength += thisWidth;
+                if(module.show){
+                    var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
+                    if(module.bookmarks.length > 0){
+                        thisWidth += 270;
+                    }
+                    module.columns.map(function(column){
+                        var columnW = column.width+10; // right padding + right margin + right border
+                        thisWidth += columnW;
+                    });
+                    totalLength += thisWidth;
+                }
             });
             return totalLength;
         }
@@ -412,7 +419,7 @@ app.components = require('../components/components/components');
         this.addModule = function() {
 
             
-            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
             var randomNumber = Math.floor(Math.random()*clrs.length);
  
             // This will eventually be selected from lists
@@ -434,7 +441,19 @@ app.components = require('../components/components/components');
         };
         this.removeModule = function(module_index){
             // unload, turn events off etc.
-            self.modules().splice(module_index, 1);
+            if(self.modules()[module_index].bookmarked){
+                // hide module
+                self.modules()[module_index].show = false;
+
+                self.modules()[0].bookmarks.map(function(b){
+                    if(b.id == self.modules()[module_index].id ){
+                        b.open = false;
+                    }
+                })
+
+            } else {
+                self.modules().splice(module_index, 1);
+            }
             self.reformatWidth();
         };
         this.toggleModule = function(index, state){
@@ -500,7 +519,7 @@ app.components = require('../components/components/components');
                 var totalLength = self.calculateContentLength();
 
 
-                var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
+                var ht_head_width = window_width -88; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
             
@@ -570,9 +589,9 @@ app.components = require('../components/components/components');
                 self.temp.scrollTo = "";
             }
             console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
+            self.resizeWidgets();
 
         }
-
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
                 var o = self.modules()[i];
@@ -626,7 +645,87 @@ app.components = require('../components/components/components');
 
              })
          }
-    
+         this.createVirtual = function(){
+             // Repopulate the virtual model array
+             self.virtualModel = [];
+             self.modules().map( function(m, m_index ){
+                 var module = { index : m_index, id : m.id, columns : []};
+                 if(m.columns.length > 0 ){
+                     m.columns.map(function(c, c_index){
+                         var column = { index :  c_index, widgets : [] };
+                         if(c.widgets.length > 0){
+                             c.widgets.map(function(w, w_index){
+                                 var widget = { index : w_index, id : w.id , checks : {}}
+                                 column.widgets.push(widget);
+                             })
+                         }
+                         module.columns.push(column);
+                     })
+                 }
+                self.virtualModel.push(module);
+             })
+             console.log("Virtual Model", self.virtualModel);
+         }
+         this.cleanDOM = function(){
+             // Clean up the DOM so that widgets that are viewed correspond to the view. If widget not shown throw error, if extra widget is shown remove it.
+             $('.ht-tab').each(function(){
+                 var m_index = $(this).attr('data-index');
+                 $(this).find('.ht-column').each(function(){
+                     var c_index = $(this).attr('data-index');
+                     if(c_index > -1){
+                         $(this).children('.ht-widget').each(function(){
+                             var w_index = $(this).attr('data-index');
+                             var w_id = $(this).attr('data-id');
+                              if ( w_index > -1 ) {
+                                  if(!self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build){
+                                      self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build = true;
+                                      console.log("self.virtualModel["+m_index+"].columns["+c_index+"].widgets["+w_index+"].checks.build ",self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build                                      )
+                                  } else {
+                                      // remove this node
+                                      $(this).remove();
+                                  }
+                              }
+                         })
+                     }
+                 })
+             })
+             // IF we removed widgets we need to adjust sizes
+             self.resizeWidgets();
+         }
+         this.moduleViewToggle = function(event){
+             var event = event || window.event;
+             var module = $(event.target).parent();
+             var moduleID = module.attr('data-mid');
+             console.log("ModulID", moduleID);
+             // Toggle view
+             self.modules().map(function(mod){
+                 console.log(mod.id)
+                 if(mod.id == moduleID ){
+                     mod.show = !mod.show;
+                 }
+             })
+             // toggle bookmark view
+             self.modules()[0].bookmarks.map(function(b){
+                 if(b.id == moduleID ){
+                     b.open = !b.open;
+                 }
+             })
+         }
+
+         this.bookmarkToggle = function(event) {
+             var event = event || window.event;
+             var el = $(event.target);
+             var mindex = el.attr('data-mindex');
+             var module = self.modules()[mindex];
+             var bookmark =             {
+                 "id" :  module.id,
+                 "title" : module.title,
+                 "open": true,
+                 "color" : module.color
+             }
+             self.modules()[0].bookmarks.push(bookmark);
+             module.bookmarked = true;
+         }
 
     // MOBILE
          this.mobileInit = function(){
@@ -777,28 +876,30 @@ app.components = require('../components/components/components');
                     m(".expose-content", { config : ctrl.exposeInit } , [
                         m(".expose-modules", [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
-                                    ])];
-                                }else {
-                                    return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m("h3", module.title),
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
-                                            ])
-                                        ]),
-                                        m(".ht-expose-tab-content", [ m("") ])
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [" ", m(".ht-expose-tab.ht-tab-minimized.ht-dark-shadow", {'data-index' : module_index, 'data-id' : module.id, style : "height : " + module.exposeHeight}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [m("h3.rotate.rotatedText-expose", module.title)])
+                                        ])];
+                                    } else {
+                                        return [" ", m(".ht-expose-tab.ht-dark-shadow", {'data-index' : module_index,  'data-id' : module.id, style : "min-width: 0; width: "+module.exposeWidth+"px; height : "+module.exposeHeight   +"px; " }, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m("h3", module.title),
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}})
+                                                ])
+                                            ]),
+                                            m(".ht-expose-tab-content", [ m("") ])
 
-                                    ])];
+                                        ])];
+                                    }
                                 }
                             })
                         ]),
@@ -815,11 +916,13 @@ app.components = require('../components/components/components');
                m(".ht-head-wrapper", [
                    m("[id='ht-head']", [
                        ctrl.modules().map(function(module, module_index, module_array){
-                           return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
-
+                           if(module.show){
+                               return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                           }
                        })
                    ]),
                    m("div.appBtnDiv", [
+                       m("span.appBtn",  {onclick : function(){alert('these are not the droids you are looking for');} }, [m('.i.fa.fa-rebel')]),
                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
 
@@ -829,18 +932,19 @@ app.components = require('../components/components/components');
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
-                                if(module.minimize){
-                                    return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
-                                        m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
-                                            m(".ht-windowBtn", [
-                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
-                                            ])
-                                        ]),
-                                        m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
-                                    ])];
-                                }else {
-                                    return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
+                                if(module.show){
+                                    if(module.minimize){
+                                        return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
+                                            m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
+                                                m(".ht-windowBtn", [
+                                                    m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                    m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
+                                                ])
+                                            ]),
+                                            m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
+                                        ])];
+                                    }else {
+                                        return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
 //                                        m(".ht-tab-header", {  "data-bg" : module.color }, [
 //                                            m("h3", module.title),
 //                                            m(".ht-windowBtn", [
@@ -848,75 +952,109 @@ app.components = require('../components/components/components');
 //                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
 //                                            ])
 //                                        ]),
-                                        m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
-                                            m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
-                                                m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
-                                                    m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
-                                                        m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                        m('h3.skinnyFont.m-b-lg', module.about),
-                                                        m('p', module.lastUpdated ),
-                                                        m('p', module.dateCreated ),
-                                                        m('ul.dashboardList.list-unstyled.m-t-lg', [
-                                                            module.links.map(function(link){
-                                                                return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
-                                                            })
-                                                        ])
-                                                        ]
-                                                    ) ])
-                                                ])
-                                            ]),
-                                            module.columns.map(function(column, column_index, column_array){
-                                                if(column.widgets.length > 0 || column.new){
-                                                    // If the view is not narrow in height show full.
-                                                    return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
-                                                        ( function(){
-                                                            if (column.widgets.length > 0) {
-                                                                return column.widgets.map(function(widget, widget_index, widget_array){
-                                                                    if(widget.display){
-                                                                        return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
-                                                                            (function(){
-                                                                                if(!widget.hideHeader){
-                                                                                    return m(".ht-widget-header", [
-                                                                                        widget.title,
-                                                                                        m(".ht-widget-actions", [
-                                                                                            m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
-                                                                                            (function(){
-                                                                                                if(widget.closable){
-                                                                                                    return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
-                                                                                                }
-                                                                                            })()
-                                                                                        ])
-                                                                                    ]);
-                                                                                }
-                                                                            })(),
-
-                                                                            m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
-                                                                                (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
-                                                                            ) ])
-                                                                        ]);
+                                            m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
+                                                m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
+                                                    m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                        m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                (function(){
+                                                                    var marked = "";
+                                                                    if(module.bookmarked){ marked = "ht-opaque-active"; }
+                                                                    if(module.id > 0) {
+                                                                        return m('.ht-module-menu', [
+                                                                            m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                                            m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
+                                                                            m('i.fa.fa-edit'),
+                                                                            m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
+                                                                        ])
                                                                     }
-                                                                });
-                                                            }
-                                                        })()
-                                                    ]);
-                                                }
-                                                // module_array[0].columns[0].widgets.splice(0,1);
-                                            }),
-                                            m(".ht-add-column", [
-                                                (function(){
-                                                    if(module.columns[module.columns.length-1].widgets.length  < 1){
-                                                        return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
-                                                    } else {
-                                                        return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
-                                                    }
-                                                })()
+                                                                }()),
 
+                                                                m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
+                                                                m('h3.skinnyFont.m-b-lg', module.about),
+                                                                m('p', module.lastUpdated ),
+                                                                m('p', module.dateCreated ),
+                                                                m('ul.dashboardList.list-unstyled.m-t-lg', [
+                                                                    module.links.map(function(link){
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                    })
+                                                                ])
+                                                            ]
+                                                        ) ])
+                                                    ])
+                                                ]),
+                                                (function(){
+                                                    if(module.bookmarks.length > 0){
+                                                        return m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:260px"},  [
+                                                            m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
+                                                                m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                        module.bookmarks.map(function(b){
+                                                                            var status = "bg-opaque-white";
+                                                                            if (b.open){ var status = "bg-"+b.color }
+                                                                            return m(".ht-bookmark", { "class" : status , "data-mid" : b.id, onclick : ctrl.moduleViewToggle}, [
+                                                                                m(".ht-bookmark-content", b.title)
+                                                                            ])
+                                                                        }),
+                                                                        m(".ht-bookmark",{ style : "text-align: center;"}, m("i.fa.fa-plus"))
+                                                                    ]
+                                                                ) ])
+                                                            ])
+                                                        ])
+                                                    }
+                                                }()),
+                                                module.columns.map(function(column, column_index, column_array){
+                                                    if(column.widgets.length > 0 || column.new){
+                                                        // If the view is not narrow in height show full.
+                                                        return m(".ht-column", {'data-index' : column_index, 'style' : "width:"+column.width+"px"},  [
+                                                            ( function(){
+                                                                if (column.widgets.length > 0) {
+                                                                    return column.widgets.map(function(widget, widget_index, widget_array){
+                                                                        if(widget.display){
+                                                                            return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
+                                                                                (function(){
+                                                                                    if(!widget.hideHeader){
+                                                                                        return m(".ht-widget-header", [
+                                                                                            widget.title,
+                                                                                            m(".ht-widget-actions", [
+                                                                                                m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
+                                                                                                (function(){
+                                                                                                    if(widget.closable){
+                                                                                                        return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
+                                                                                                    }
+                                                                                                })()
+                                                                                            ])
+                                                                                        ]);
+                                                                                    }
+                                                                                })(),
+
+                                                                                m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
+                                                                                    (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
+                                                                                ) ])
+                                                                            ]);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            })()
+                                                        ]);
+                                                    }
+                                                    // module_array[0].columns[0].widgets.splice(0,1);
+                                                }),
+                                                m(".ht-add-column", [
+                                                    (function(){
+                                                        if(module.columns.length > 0 && module.columns[module.columns.length-1].widgets.length  < 1){
+                                                            return m(".add-column", { onclick : function(){ module.columns.pop() } }, [m("i.fa.fa-minus")], m("[id='ht-content']", { config : ctrl.reformat }));
+                                                        } else {
+                                                            return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
+                                                        }
+                                                    })()
+
+
+                                                ])
 
                                             ])
-
-                                        ])
-                                    ])];
+                                        ])];
+                                    }
                                 }
+
 
                             })
                     ])
