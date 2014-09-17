@@ -65,6 +65,79 @@ app.rescon = require('../components/rescon/rescon');
         this.data = "";
     };
 
+    // Notifications
+    var notify = {}
+    notify.model = function(controller, text, actions, type ){
+        var self = this;
+        this.id = Math.floor((Math.random() * 100000) + 1)+3,
+        this.text = text;
+        this.actions = actions || [];
+        this.type = type || "default";
+        actions.push({
+            title : "Dismiss",
+            todo : { name : "dismissNotify", parameters : self.id },
+            css : 'btn btn-default'
+        });
+    }
+
+    notify.list= [
+        {
+            id : 1,
+            text: "This notification is here to tell you that you should be opening a new module.",
+            type : "info",
+            actions : [
+                {
+                    title : "Open Project",
+                    todo : { name : "openProject", parameters : [2, 1] },
+                    css : 'btn btn-success'
+                },
+                {
+                    title : "Dismiss",
+                    todo : { name : "dismissNotify", parameters : 1 },
+                    css : 'btn btn-default'
+                }
+            ]
+        },
+        {
+            id : 2,
+            text: "Go to an existing project and do something there",
+            type : "info",
+            actions : [
+                {
+                    title : "Go to Project",
+                    todo : { name : "gotoProject", parameters : 1 },
+                    css : 'btn btn-primary'
+                },
+                {
+                    title : "Dismiss",
+                    todo : { name : "dismissNotify", parameters : 2 },
+                    css : 'btn btn-default'
+                }
+            ]
+        }
+    ];
+
+    notify.view = function(ctrl){
+        console.log("Notify List:", notify.list);
+        return m('ul.no-bullets', [
+            notify.list.map(function(item){
+                return m('li.ht-panel', [
+                    m('.ht-panel-body', item.text),
+                    m('.ht-panel-footer', [
+                         m('ul.no-bullets', [
+                             item.actions.map(function(action){
+
+                                 return m('li.ht-panel-action', { "class" : action.css , onclick : function(){ ctrl.notifyDo(action.todo);  } } ,  action.title)
+                             })
+                        ])
+                    ])
+                ])
+            })
+
+        ])
+    }
+
+
      // Controller
      build.controller = function(){
         var self = this;  // use self for binding inner scopes:
@@ -75,6 +148,7 @@ app.rescon = require('../components/rescon/rescon');
         this.layout = build.layout;
         this.virtualModel = [];
         m.redraw.strategy("all");
+        this.asideOpen = false;
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -521,12 +595,16 @@ app.rescon = require('../components/rescon/rescon');
                 var totalLength = self.calculateContentLength();
 
 
-                var ht_head_width = window_width -88; // allowing room for expose buttons, element width is px
+                var ht_head_width = window_width -105; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
-            
+
+                var wrapper_width = window_width;
+                if(self.asideOpen){
+                    wrapper_width  = window_width-400;
+                }
                 $('#ht-head').css({ width : ht_head_width + 'px' } );
-                $('#ht-wrapper').css({ width : window_width + 'px' } );
+                $('#ht-wrapper').css({ width : wrapper_width + 'px' } );
                 $('#ht-content').css('width', ht_content_width + 'px'); 
 
                 // Adjust s lider on changes
@@ -551,7 +629,7 @@ app.rescon = require('../components/rescon/rescon');
                         // update column widths in the model
                     }
 
-                $('#ht-slider').width(Math.floor(window_width*actual_ht_head/($('#ht-content').outerWidth()+10)) + 'px') // as usual, I have no idea why this number works
+                $('#ht-slider').width(Math.floor(wrapper_width*actual_ht_head/($('#ht-content').outerWidth()+10)) + 'px') // as usual, I have no idea why this number works
                     .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
                     
                 // self.resizeWidgets(); don't need this.
@@ -573,7 +651,7 @@ app.rescon = require('../components/rescon/rescon');
                 $('.ht-column').css({height: ht_column_height});  // widget column heigh
                 $('.ht-add-column').css({height: ht_column_height}); // new col button height
                 $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
-
+                $('.ht-aside').css({ height : ht_wrapper_height + 'px' })
                 self.resizeWidgets();
                 self.eventsOn();
             }
@@ -734,7 +812,49 @@ app.rescon = require('../components/rescon/rescon');
              module.bookmarked = true;
          }
 
-    // MOBILE
+         // ASIDE TAB
+         this.asideInit = function(){
+             console.log("Init ran");
+             self.reformatWidth();
+         }
+         this.asideClick = function(){
+             self.asideOpen = !self.asideOpen;
+         }
+
+
+         // NOTIFICATIONS
+         this.notifyDo = function(todo){
+            self[todo.name](todo.parameters);
+         }
+         this.dismissNotify = function(id){
+            notify.list.map(function(item, index, array) {
+                if(item.id === id){
+                    array.splice(index, 1);
+                }
+            })
+         }
+         this.openProject = function(args){
+             self.modules().map(function(module){
+                 if(module.id === args[0]){
+                     module.show = true;
+                     self.temp.scrollTo = '.ht-tab[data-id="'+ module.id + '"]';
+                 }
+                 self.dismissNotify(args[1]);
+                 self.asideOpen = false;
+             })
+         }
+         this.gotoProject = function(id){
+             self.modules().map(function(module){
+                 if(module.id === id){
+                     self.temp.scrollTo = '.ht-tab[data-id="'+ module.id + '"]';
+                 }
+             })
+         }
+
+
+
+
+         // MOBILE
          this.mobileInit = function(){
              console.trace();
              var dist = 150;
@@ -834,7 +954,7 @@ app.rescon = require('../components/rescon/rescon');
                     ]),
                     m("#ht-mobile-content", [
                         ctrl.modules().map(function(module, module_index, module_array){
-                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
                             
                            
                             return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
@@ -929,12 +1049,19 @@ app.rescon = require('../components/rescon/rescon');
                        })
                    ]),
                    m("div.appBtnDiv", [
-                       m("span.appBtn",  {onclick : function(){alert('these are not the droids you are looking for');} }, [m('.i.fa.fa-rebel')]),
                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
+                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] ),
+                       m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('.i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
 
                    ])
                ]),
+                (function(){
+                    if(ctrl.asideOpen){
+                        return m('.ht-aside', {config : ctrl.asideInit }, [
+                                notify.view(ctrl)
+                        ])
+                    }
+                }()),
                 m(".ht-slider-wrap", [m("[id='ht-slider']")]),
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", {config : ctrl.reformat },    [

@@ -8,6 +8,12 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
+
+app.registrations = require('../components/registrations/registrations');
+app.forks = require('../components/forks/forks');
+app.activity = require('../components/activity/activity');
+app.statistics = require('../components/statistics/statistics');
+
 app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
@@ -60,6 +66,79 @@ app.rescon = require('../components/rescon/rescon');
         this.data = "";
     };
 
+    // Notifications
+    var notify = {}
+    notify.model = function(controller, text, actions, type ){
+        var self = this;
+        this.id = Math.floor((Math.random() * 100000) + 1)+3,
+        this.text = text;
+        this.actions = actions || [];
+        this.type = type || "default";
+        actions.push({
+            title : "Dismiss",
+            todo : { name : "dismissNotify", parameters : self.id },
+            css : 'btn btn-default'
+        });
+    }
+
+    notify.list= [
+        {
+            id : 1,
+            text: "This notification is here to tell you that you should be opening a new module.",
+            type : "info",
+            actions : [
+                {
+                    title : "Open Project",
+                    todo : { name : "openProject", parameters : [2, 1] },
+                    css : 'btn btn-success'
+                },
+                {
+                    title : "Dismiss",
+                    todo : { name : "dismissNotify", parameters : 1 },
+                    css : 'btn btn-default'
+                }
+            ]
+        },
+        {
+            id : 2,
+            text: "Go to an existing project and do something there",
+            type : "info",
+            actions : [
+                {
+                    title : "Go to Project",
+                    todo : { name : "gotoProject", parameters : 1 },
+                    css : 'btn btn-primary'
+                },
+                {
+                    title : "Dismiss",
+                    todo : { name : "dismissNotify", parameters : 2 },
+                    css : 'btn btn-default'
+                }
+            ]
+        }
+    ];
+
+    notify.view = function(ctrl){
+        console.log("Notify List:", notify.list);
+        return m('ul.no-bullets', [
+            notify.list.map(function(item){
+                return m('li.ht-panel', [
+                    m('.ht-panel-body', item.text),
+                    m('.ht-panel-footer', [
+                         m('ul.no-bullets', [
+                             item.actions.map(function(action){
+
+                                 return m('li.ht-panel-action', { "class" : action.css , onclick : function(){ ctrl.notifyDo(action.todo);  } } ,  action.title)
+                             })
+                        ])
+                    ])
+                ])
+            })
+
+        ])
+    }
+
+
      // Controller
      build.controller = function(){
         var self = this;  // use self for binding inner scopes:
@@ -70,6 +149,7 @@ app.rescon = require('../components/rescon/rescon');
         this.layout = build.layout;
         this.virtualModel = [];
         m.redraw.strategy("all");
+        this.asideOpen = false;
         var controllers = this.controllers = {};
 
          self.applyModules = function(){
@@ -516,12 +596,16 @@ app.rescon = require('../components/rescon/rescon');
                 var totalLength = self.calculateContentLength();
 
 
-                var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
+                var ht_head_width = window_width -105; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
-            
+
+                var wrapper_width = window_width;
+                if(self.asideOpen){
+                    wrapper_width  = window_width-400;
+                }
                 $('#ht-head').css({ width : ht_head_width + 'px' } );
-                $('#ht-wrapper').css({ width : window_width + 'px' } );
+                $('#ht-wrapper').css({ width : wrapper_width + 'px' } );
                 $('#ht-content').css('width', ht_content_width + 'px'); 
 
                 // Adjust s lider on changes
@@ -546,7 +630,7 @@ app.rescon = require('../components/rescon/rescon');
                         // update column widths in the model
                     }
 
-                $('#ht-slider').width(Math.floor(window_width*actual_ht_head/($('#ht-content').outerWidth()+10)) + 'px') // as usual, I have no idea why this number works
+                $('#ht-slider').width(Math.floor(wrapper_width*actual_ht_head/($('#ht-content').outerWidth()+10)) + 'px') // as usual, I have no idea why this number works
                     .css('left', $('#ht-wrapper').scrollLeft() * $('#ht-head').outerWidth()/$('#ht-content').outerWidth() + 'px');
                     
                 // self.resizeWidgets(); don't need this.
@@ -568,7 +652,7 @@ app.rescon = require('../components/rescon/rescon');
                 $('.ht-column').css({height: ht_column_height});  // widget column heigh
                 $('.ht-add-column').css({height: ht_column_height}); // new col button height
                 $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
-
+                $('.ht-aside').css({ height : ht_wrapper_height + 'px' })
                 self.resizeWidgets();
                 self.eventsOn();
             }
@@ -729,7 +813,49 @@ app.rescon = require('../components/rescon/rescon');
              module.bookmarked = true;
          }
 
-    // MOBILE
+         // ASIDE TAB
+         this.asideInit = function(){
+             console.log("Init ran");
+             self.reformatWidth();
+         }
+         this.asideClick = function(){
+             self.asideOpen = !self.asideOpen;
+         }
+
+
+         // NOTIFICATIONS
+         this.notifyDo = function(todo){
+            self[todo.name](todo.parameters);
+         }
+         this.dismissNotify = function(id){
+            notify.list.map(function(item, index, array) {
+                if(item.id === id){
+                    array.splice(index, 1);
+                }
+            })
+         }
+         this.openProject = function(args){
+             self.modules().map(function(module){
+                 if(module.id === args[0]){
+                     module.show = true;
+                     self.temp.scrollTo = '.ht-tab[data-id="'+ module.id + '"]';
+                 }
+                 self.dismissNotify(args[1]);
+                 self.asideOpen = false;
+             })
+         }
+         this.gotoProject = function(id){
+             self.modules().map(function(module){
+                 if(module.id === id){
+                     self.temp.scrollTo = '.ht-tab[data-id="'+ module.id + '"]';
+                 }
+             })
+         }
+
+
+
+
+         // MOBILE
          this.mobileInit = function(){
              console.trace();
              var dist = 150;
@@ -829,7 +955,7 @@ app.rescon = require('../components/rescon/rescon');
                     ]),
                     m("#ht-mobile-content", [
                         ctrl.modules().map(function(module, module_index, module_array){
-                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy",];
+                            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
                             
                            
                             return m('.ht-mobile-module', { config : ctrl.mobileModuleInit, "class" : 'bg-'+module.color,  "data-index":module_index}, [
@@ -925,10 +1051,18 @@ app.rescon = require('../components/rescon/rescon');
                    ]),
                    m("div.appBtnDiv", [
                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
+                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] ),
+                       m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('.i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
 
                    ])
                ]),
+                (function(){
+                    if(ctrl.asideOpen){
+                        return m('.ht-aside', {config : ctrl.asideInit }, [
+                                notify.view(ctrl)
+                        ])
+                    }
+                }()),
                 m(".ht-slider-wrap", [m("[id='ht-slider']")]),
                 m("[id='ht-wrapper']", { config : ctrl.init }, [
                     m("[id='ht-content']", {config : ctrl.reformat },    [
@@ -976,7 +1110,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                 m('p', module.dateCreated ),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), " " + link.title]);
                                                                     })
                                                                 ])
                                                             ]
@@ -1070,7 +1204,22 @@ app.rescon = require('../components/rescon/rescon');
 };
 
 
-},{"../components/comments/comments":2,"../components/components/components":3,"../components/dashboard/dashboard":4,"../components/files/files":5,"../components/logs/logs":6,"../components/rescon/rescon":7,"../components/wiki/wiki":8}],2:[function(require,module,exports){
+},{"../components/activity/activity":2,"../components/comments/comments":3,"../components/components/components":4,"../components/dashboard/dashboard":5,"../components/files/files":6,"../components/forks/forks":7,"../components/logs/logs":8,"../components/registrations/registrations":9,"../components/rescon/rescon":10,"../components/statistics/statistics":11,"../components/wiki/wiki":12}],2:[function(require,module,exports){
+var activity = {};
+
+activity.html= m.prop("");
+m.request({method: "GET", url: "../components/activity/activity.html", deserialize: function(value){ return value;  }}).then(activity.html);
+
+activity.controller = function(){
+    this.html = activity.html;
+}
+
+activity.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = activity;
+},{}],3:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -1189,7 +1338,7 @@ comments.view = function(ctrl){
 }
 
 module.exports = comments;
-},{"../logs/logs":6}],3:[function(require,module,exports){
+},{"../logs/logs":8}],4:[function(require,module,exports){
 var components = {};
 
 components.html= m.prop("");
@@ -1204,7 +1353,7 @@ components.view = function(ctrl){
 }
 
 module.exports = components;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var dashboard = {};
 
 dashboard.html= m.prop("");
@@ -1219,7 +1368,7 @@ dashboard.view = function(ctrl){
 }
 
 module.exports = dashboard;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var files = {};
 
 files.html= m.prop("");
@@ -1234,7 +1383,22 @@ files.view = function(ctrl){
 }
 
 module.exports = files;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+var forks = {};
+
+forks.html= m.prop("");
+m.request({method: "GET", url: "../components/forks/forks.html", deserialize: function(value){ return value;  }}).then(forks.html);
+
+forks.controller = function(){
+    this.html = forks.html;
+}
+
+forks.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = forks;
+},{}],8:[function(require,module,exports){
 
 var logs = {};
 
@@ -1292,7 +1456,22 @@ logs.view = function(controller){
 }
 
 module.exports = logs;
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+var registrations = {};
+
+registrations.html= m.prop("");
+m.request({method: "GET", url: "../components/registrations/registrations.html", deserialize: function(value){ return value;  }}).then(registrations.html);
+
+registrations.controller = function(){
+    this.html = registrations.html;
+}
+
+registrations.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = registrations;
+},{}],10:[function(require,module,exports){
 var rescon = {};
 
 rescon.html= m.prop("");
@@ -1307,7 +1486,22 @@ rescon.view = function(ctrl){
 }
 
 module.exports = rescon;
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
+var statistics = {};
+
+statistics.html= m.prop("");
+m.request({method: "GET", url: "../components/statistics/statistics.html", deserialize: function(value){ return value;  }}).then(statistics.html);
+
+statistics.controller = function(){
+    this.html = statistics.html;
+}
+
+statistics.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = statistics;
+},{}],12:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

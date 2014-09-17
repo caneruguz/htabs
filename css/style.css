@@ -472,6 +472,7 @@
 /*Removing Bullets in Lists*/
 .no-bullets {
   list-style: none;
+  padding-left: 0px;
 }
 /*Line Height*/
 .l-h-xs {
@@ -831,6 +832,10 @@ body {
   margin-top: -49px;
   margin-right: -11px;
 }
+.ht-head-wrapper {
+  height: 38px;
+  border-bottom: 1px solid #ccc;
+}
 .ht-tab-content {
   color: #333;
   padding: 10px;
@@ -850,17 +855,17 @@ body {
   height: 26px;
   color: white;
   display: inline-block;
-  margin-top: 4px;
+  margin-top: 0;
 }
 #ht-content {
   padding: 10px;
 }
 .ht-hdiv {
   display: inline-block;
-  padding: 5px 3px;
+  padding: 9px 3px;
   text-align: center;
-  height: 30px;
-  overflow: hidden;
+  height: 37px
+  overflow:hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
@@ -871,17 +876,19 @@ body {
 }
 #ht-slider {
   width: 50px;
-  background-color: rgba(136, 136, 136, 0.13);
-  height: 35px;
+  background-color: rgba(255, 255, 255, 0.33);
+  height: 37px;
   position: absolute;
-  border-top: 5px solid #414141;
-  border-bottom: 5px solid #414141;
-  border-radius: 7px;
+  border-radius: 5px;
+  border: 3px solid rgba(99, 99, 99, 0.57);
+  border-right-width: 1px;
+  border-left-width: 1px;
 }
 #ht-wrapper {
   overflow-x: auto;
   overflow-y: hidden;
-  background: url("images/wavegrid.png");
+  background: #EEE;
+  /*  url("images/wavegrid.png"); */
   padding: 0;
   margin: 0;
   display: inline-block;
@@ -894,7 +901,6 @@ body {
   border-right: 2px solid rgba(204, 204, 204, 0);
 }
 .ht-column .ht-widget {
-  overflow-x: hidden;
   margin-bottom: 10px;
   border-radius: 5px;
 }
@@ -1085,13 +1091,16 @@ body {
 }
 .appBtnDiv {
   background: rgba(255, 255, 255, 0.71);
-  padding: 5px 10px;
+  padding: 5px 0;
   float: right;
   display: inline-bock;
-  /*margin-top: -30px; */
 }
 .appBtn {
-  margin: 0 5px;
+  font-size: 20px;
+  padding: 7px 8px;
+}
+.appBtn:hover {
+  background: #7cc8cc;
 }
 .ht-wiki-edit {
   width: 100%;
@@ -1111,6 +1120,61 @@ body {
   margin: 10px;
   border: 1px solid #666;
   cursor: pointer;
+}
+.ht-widget-btn {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 1%;
+  margin-right: 1%;
+  display: inline-block;
+  width: 48%;
+  height: 40px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+  text-align: center;
+  font-weight: 400;
+  opacity: .8;
+}
+.ht-widget-btn:hover {
+  background-color: #269abc;
+  cursor: pointer;
+}
+.ht-aside {
+  position: absolute;
+  width: 400px;
+  height: 978px;
+  background: #FFF;
+  right: 0;
+  top: 37px;
+  z-index: 999;
+  box-shadow: 0 10px 7px #999;
+  border-left: 1px solid #BBB;
+  padding: 15px;
+}
+.ht-panel {
+  background: #F8F8F8;
+  margin: 10px 0;
+  box-shadow: 0 0 2px 0px #CCC;
+}
+.ht-panel-head {
+  font-weight: bold;
+  background: #E2E2E2;
+  padding: 10px;
+  border-bottom: 1px solid #CCC;
+}
+.ht-panel-body {
+  padding: 8px 10px;
+}
+.ht-panel-footer {
+  padding: 7px 10px;
+  text-align: right;
+}
+.ht-panel-action {
+  margin: 0px 5px;
 }
 /* Scrollbars */
 ::-webkit-scrollbar {

@@ -2796,7 +2796,7 @@ Copyright (c) 2014 Daniel Eden
 .pull{float:right}
 .underline{text-decoration:underline}
 .no-decoration{text-decoration:none!important}
-.no-bullets{list-style:none}
+.no-bullets{list-style:none;padding-left:0}
 .l-h-xs{line-height:12px}
 .l-h-sm{line-height:14px}
 .l-h-md{line-height:16px}
@@ -2882,15 +2882,16 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-tab-header h3{font-family:Helvetica Neue,Helvetica,sans-serif;font-weight:100;letter-spacing:1px;margin:10px 0;font-size:25px}
 .ht-tab-header .fa{font-size:20px;font-weight:200;margin:0 5px}
 .ht-tab-header .ht-windowBtn{float:right;padding:8px 3px;margin-top:-49px;margin-right:-11px}
+.ht-head-wrapper{height:38px;border-bottom:1px solid #ccc}
 .ht-tab-content{color:#333;padding:10px}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
-#ht-head{height:26px;color:#fff;display:inline-block;margin-top:4px}
+#ht-head{height:26px;color:#fff;display:inline-block;margin-top:0}
 #ht-content{padding:10px}
-.ht-hdiv{display:inline-block;padding:5px 3px;text-align:center;height:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.ht-hdiv{display:inline-block;padding:9px 3px;text-align:center;height:37px overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 .ht-hdiv:hover{cursor:pointer;cursor:hand}
-#ht-slider{width:50px;background-color:rgba(136,136,136,.13);height:35px;position:absolute;border-top:5px solid #414141;border-bottom:5px solid #414141;border-radius:7px}
-#ht-wrapper{overflow-x:auto;overflow-y:hidden;background:url(images/wavegrid.png);padding:0;margin:0;display:inline-block}
+#ht-slider{width:50px;background-color:rgba(255,255,255,.33);height:37px;position:absolute;border-radius:5px;border:3px solid rgba(99,99,99,.57);border-right-width:1px;border-left-width:1px}
+#ht-wrapper{overflow-x:auto;overflow-y:hidden;background:#EEE;padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
 .ht-column .ht-widget .ht-widget-header{padding:15px 20px;background:#A1D6E5;font-size:16px;font-weight:200;border-bottom:1px solid rgba(70,184,218,.57);border-top-left-radius:5px;border-top-right-radius:5px}
@@ -2922,11 +2923,20 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .expose-button:hover{background:#eee;color:#333;cursor:pointer}
 .ht-slider-wrap{position:absolute;height:15px;background-color:lightslategrey;top:0;left:0}
 .ht-w-s{background:#ccc}
-.appBtnDiv{background:rgba(255,255,255,.71);padding:5px 10px;float:right;display:inline-bock}
-.appBtn{margin:0 5px}
+.appBtnDiv{background:rgba(255,255,255,.71);padding:5px 0;float:right;display:inline-bock}
+.appBtn{font-size:20px;padding:7px 8px}
+.appBtn:hover{background:#7cc8cc}
 .ht-wiki-edit{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .ht-comment-box{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
 .ht-bookmark{padding:20px;margin:10px;border:1px solid #666;cursor:pointer}
+.ht-widget-btn{margin:5px 1%;display:inline-block;width:48%;height:40px;padding:10px 16px;font-size:18px;line-height:1.33;color:#fff;background-color:#5bc0de;border-color:#46b8da;text-align:center;font-weight:400;opacity:.8}
+.ht-widget-btn:hover{background-color:#269abc;cursor:pointer}
+.ht-aside{position:absolute;width:400px;height:978px;background:#FFF;right:0;top:37px;z-index:999;box-shadow:0 10px 7px #999;border-left:1px solid #BBB;padding:15px}
+.ht-panel{background:#F8F8F8;margin:10px 0;box-shadow:0 0 2px 0 #CCC}
+.ht-panel-head{font-weight:700;background:#E2E2E2;padding:10px;border-bottom:1px solid #CCC}
+.ht-panel-body{padding:8px 10px}
+.ht-panel-footer{padding:7px 10px;text-align:right}
+.ht-panel-action{margin:0 5px}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background-color:rgba(195,195,195,.64);border-radius:5px}
 ::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2);border-radius:5px}

@@ -472,6 +472,7 @@
 /*Removing Bullets in Lists*/
 .no-bullets {
   list-style: none;
+  padding-left: 0px;
 }
 /*Line Height*/
 .l-h-xs {
