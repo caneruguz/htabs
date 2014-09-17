@@ -122,7 +122,13 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : true,
+                        "modal" : {
+                            "header" : "Modal Example",
+                            "body" : " This is a modal, which requires an action before the user can continue working on other aspects of this widget. You can dismiss it or choose and action from below",
+                            "footer" : "Footer"
+                        }
                     }
                 ]
             },
@@ -141,7 +147,9 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : false,
+                        "modal" : {}
 
                     },
                     {
@@ -155,7 +163,9 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : false,
+                        "modal" : {}
                     }
                 ]
             }
@@ -209,7 +219,9 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : false,
+                        "modal" : { }
                     }
                 ]
             },
@@ -228,7 +240,9 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : false,
+                        "modal" : {}
 
                     },
                     {
@@ -242,7 +256,9 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "modalShow" : false,
+                        "modal" : {}
                     }
                 ]
             }

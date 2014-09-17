@@ -852,8 +852,6 @@ app.rescon = require('../components/rescon/rescon');
          }
 
 
-
-
          // MOBILE
          this.mobileInit = function(){
              console.trace();
@@ -1033,9 +1031,7 @@ app.rescon = require('../components/rescon/rescon');
                         m('.expose-actions', [
                             m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")])
                         ])
-
                     ])
-
                 ])
             ];
         } else {
@@ -1161,7 +1157,18 @@ app.rescon = require('../components/rescon/rescon');
                                                                                 })(),
 
                                                                                 m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
-                                                                                    (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
+                                                                                    (function(){
+                                                                                        if(widget.modalShow){
+                                                                                            return m('.ht-modal-wrapper', [
+                                                                                                m('.ht-modal-dismiss', { click : function(){ widget.modalShow = false; } }, [ m ('i.fa.fa-times')]),
+                                                                                                m('.ht-modal-header', widget.modal.header),
+                                                                                                m('.ht-modal-body', widget.modal.body),
+                                                                                                m('.ht-modal-footer', widget.modal.actions)
+                                                                                            ])
+                                                                                        } else {
+                                                                                            return app[widget.type].view(ctrl.controllers[widget.id]);}
+                                                                                    }
+                                                                                    )()
                                                                                 ) ])
                                                                             ]);
                                                                         }

@@ -1176,6 +1176,30 @@ body {
 .ht-panel-action {
   margin: 0px 5px;
 }
+.ht-modal-wrapper {
+  padding: 30px;
+}
+.ht-modal-dismiss {
+  width: 30px;
+  height: 30px;
+  background: #EEE;
+  padding: 5px 9px;
+  border-radius: 25px;
+  color: #999;
+  font-size: 16px;
+  float: right;
+  margin-top: -25px;
+}
+.ht-modal-header {
+  font-weight: 200;
+  font-family: Helvetica NEue;
+  font-size: 20px;
+  margin: 20px 0px;
+}
+.ht-margin-body {
+  font-size: 15px;
+  margin: 5px;
+}
 /* Scrollbars */
 ::-webkit-scrollbar {
   width: 10px;

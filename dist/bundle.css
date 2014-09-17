@@ -2937,6 +2937,9 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-panel-body{padding:8px 10px}
 .ht-panel-footer{padding:7px 10px;text-align:right}
 .ht-panel-action{margin:0 5px}
+.ht-modal-wrapper{padding:30px}
+.ht-modal-dismiss{width:30px;height:30px;background:#EEE;padding:5px 9px;border-radius:25px;color:#999;font-size:16px;float:right;margin-top:-25px}
+.ht-modal-header{font-weight:200;font-family:Helvetica NEue;font-size:20px;margin:20px 0}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background-color:rgba(195,195,195,.64);border-radius:5px}
 ::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2);border-radius:5px}
