@@ -2892,7 +2892,7 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 #ht-slider{width:50px;background-color:rgba(136,136,136,.13);height:35px;position:absolute;border-top:5px solid #414141;border-bottom:5px solid #414141;border-radius:7px}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:url(images/wavegrid.png);padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
-.ht-column .ht-widget{overflow:hidden;margin-bottom:10px;border-radius:5px}
+.ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
 .ht-column .ht-widget .ht-widget-header{padding:15px 20px;background:#A1D6E5;font-size:16px;font-weight:200;border-bottom:1px solid rgba(70,184,218,.57);border-top-left-radius:5px;border-top-right-radius:5px}
 .ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:15px 5px}
 .ht-column .ht-widget .ht-widget-body .widget-body-inner{height:100%;overflow-x:hidden;overflow-y:auto}

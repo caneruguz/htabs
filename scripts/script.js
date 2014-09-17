@@ -274,7 +274,6 @@ app.rescon = require('../components/rescon/rescon');
 
         };
         this.resizeWidgets = function() {
-            console.log("resize running");
             var args = arguments;
             var selector = $('.ht-column');
             if(args[0]){
@@ -294,14 +293,13 @@ app.rescon = require('../components/rescon/rescon');
                 $(this).children('.ht-widget').each(function(){
                     var childHeight = $(this).outerHeight();
                     var headerHeight = $(this).children('.ht-widget-header').outerHeight();
-                    console.log("headerHeight", headerHeight)
                     var newHeight;
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                     } else {
                         newHeight = (childHeight/(totalHeight))*setContentHeight;
                     }
-                    if(newHeight > 150){
+                    if(newHeight > 100){
                         $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : (newHeight-headerHeight)+"px"})//.find('.widget-body-inner').css({ height : newHeight-40});
                     }
                 });
@@ -417,11 +415,8 @@ app.rescon = require('../components/rescon/rescon');
             m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
         };
         this.addModule = function() {
-
-            
             var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
             var randomNumber = Math.floor(Math.random()*clrs.length);
- 
             // This will eventually be selected from lists
             var moduleId = Math.floor((Math.random() * 100000) + 1)+3;
             var col1Id = Math.floor((Math.random() * 100000) + 1)+6;
@@ -437,6 +432,7 @@ app.rescon = require('../components/rescon/rescon');
             );
             self.applyModules();
             self.temp.scrollTo = '.ht-tab[data-id="'+ moduleId + '"]';
+            console.log(self.temp.scrollTo);
 
         };
         this.removeModule = function(module_index){
@@ -581,15 +577,20 @@ app.rescon = require('../components/rescon/rescon');
             self.reformatHeight();
             self.reformatWidth();
         };
-        this.widgetInit = function() {
+        this.widgetInit = function(element) {
+            console.log("Element", element);
             if (self.temp.scrollTo && $(self.temp.scrollTo).get(0)) {
-//                var offset = self.temp.offset ? self.temp.offset : -50;
-//                console.log(offset);
                 $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
+            }
+            console.log("Scrollto here:", self.temp.scrollTo);
+            self.resizeWidgets();
+            var module = self.modules()[self.modules().length-1];
+            var column = module.columns[module.columns.length-1];
+            var widget = column.widgets[column.widgets.length-1];
+            var id = widget.id;
+            if($(element).attr('data-id') == id) {
                 self.temp.scrollTo = "";
             }
-            console.log("Scrollto here:", $(self.temp.scrollTo).get(0));
-            self.resizeWidgets();
 
         }
         self.saveColumnSize = function(){

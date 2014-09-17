@@ -894,7 +894,7 @@ body {
   border-right: 2px solid rgba(204, 204, 204, 0);
 }
 .ht-column .ht-widget {
-  overflow: hidden;
+  overflow-x: hidden;
   margin-bottom: 10px;
   border-radius: 5px;
 }
