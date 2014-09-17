@@ -1,0 +1,551 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 visible-xs-block">
+			            <div class="logs">
+			            <div id="logProgressBar" class="progress progress-striped active" style="display: none;">
+			    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			        <span class="sr-only">Loading</span>
+			    </div>
+			</div>
+
+			<div class="scripted" id="logScope" style="display: block;">
+			    <p class="help-block" data-bind="if: tzname">
+			        All times displayed at
+			        <span data-bind="text: tzname">-0400</span>
+			        <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" target="_blank">UTC</a> offset.
+			    </p>
+
+			    <dl class="dl-horizontal activity-log" data-bind="foreach: {data: logs, as: 'log'}">
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:41 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added
+			<span data-bind="html: displayContributors"><a class="contrib-link" href="/profile/z7mt6/">Anne Allison</a></span>
+			to <span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: $parent.nodeUrl}, text: $parent.nodeTitle" href="/p7ayb/">Replication Studies</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:41 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added
+			<span data-bind="html: displayContributors"><a class="contrib-link" href="/profile/z7mt6/">Anne Allison</a></span>
+			to <span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: $parent.nodeUrl}, text: $parent.nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:38 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated wiki page
+			<a data-bind="attr: {href: wikiUrl}, text: params.page" href="/e81xl/wiki/studies">studies</a>
+			to version <span data-bind="text: params.version">3</span>
+			of <a class="log-node-title-link overflow" data-bind="text:nodeTitle, attr: {href: nodeUrl}" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:36 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> to
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:36 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">Full_dataset_of_papers_formatted.xls</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:35 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> in
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:33 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated wiki page
+			<a data-bind="attr: {href: wikiUrl}, text: params.page" href="/e81xl/wiki/studies">studies</a>
+			to version <span data-bind="text: params.version">2</span>
+			of <a class="log-node-title-link overflow" data-bind="text:nodeTitle, attr: {href: nodeUrl}" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:28 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> to
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:26 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">Tim_Errington.jpg</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:26 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">William_Gunn.jpg</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    </dl><!-- end foreach logs -->
+			</div><!-- end #logScope -->
+			        </div>
+			        </div>
+        <div class="col-sm-12 hidden-xs">
+			<div class="logs">
+			            <div id="logProgressBar" class="progress progress-striped active" style="display: none;">
+			    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			        <span class="sr-only">Loading</span>
+			    </div>
+			</div>
+
+			<div class="scripted" id="logScope" style="display: block;">
+			    <p class="help-block" data-bind="if: tzname">
+			        All times displayed at
+			        <span data-bind="text: tzname">-0400</span>
+			        <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" target="_blank">UTC</a> offset.
+			    </p>
+
+			    <dl class="dl-horizontal activity-log" data-bind="foreach: {data: logs, as: 'log'}">
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:41 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added
+			<span data-bind="html: displayContributors"><a class="contrib-link" href="/profile/z7mt6/">Anne Allison</a></span>
+			to <span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: $parent.nodeUrl}, text: $parent.nodeTitle" href="/p7ayb/">Replication Studies</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:41 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added
+			<span data-bind="html: displayContributors"><a class="contrib-link" href="/profile/z7mt6/">Anne Allison</a></span>
+			to <span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: $parent.nodeUrl}, text: $parent.nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-09 04:38 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated wiki page
+			<a data-bind="attr: {href: wikiUrl}, text: params.page" href="/e81xl/wiki/studies">studies</a>
+			to version <span data-bind="text: params.version">3</span>
+			of <a class="log-node-title-link overflow" data-bind="text:nodeTitle, attr: {href: nodeUrl}" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:36 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> to
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:36 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">Full_dataset_of_papers_formatted.xls</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:35 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> in
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:33 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			updated wiki page
+			<a data-bind="attr: {href: wikiUrl}, text: params.page" href="/e81xl/wiki/studies">studies</a>
+			to version <span data-bind="text: params.version">2</span>
+			of <a class="log-node-title-link overflow" data-bind="text:nodeTitle, attr: {href: nodeUrl}" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:28 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			added file <a class="overflow log-file-link" data-bind="click: NodeActions.addonFileRedirect, text: params.path">Full_dataset_of_papers_formatted.xls</a> to
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:26 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">Tim_Errington.jpg</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    
+			        <dt><span class="date log-date" data-bind="text: log.date.local, tooltip: {title: log.date.utc}" data-original-title="" title="">2014-09-05 03:26 PM</span></dt>
+			        <dd class="log-content">
+
+			            <!-- ko if: log.hasTemplate() -->
+			            <span data-bind="if:log.anonymous"></span>
+			            <span data-bind="ifnot:log.anonymous">
+			                <span data-bind="if: log.userURL">
+			                    <a data-bind="text: log.userFullName || log.apiKey, attr: {href: log.userURL}" href="/alh38/">Tim Errington</a>
+			                </span>
+			                <span data-bind="ifnot: log.userURL"></span>
+			            </span>
+			            <!-- Log actions are the same as their template name -->
+			            <span data-bind="template: {name: log.action, data: log}">
+			removed file <span data-bind="text: params.path">William_Gunn.jpg</span> from
+			<span data-bind="text: nodeType">project</span>
+			<a class="log-node-title-link overflow" data-bind="attr: {href: nodeUrl}, text: nodeTitle" href="/e81xl/">Reproducibility Project: Cancer Biology</a>
+			</span>
+			            <!-- /ko -->
+
+			            <!-- For debugging purposes: If a log template for a the Log can't be found, show
+			                an error message with its log action. -->
+			            <!-- ko ifnot: log.hasTemplate() --><!-- /ko -->
+
+			        </dd>
+			    </dl><!-- end foreach logs -->
+			</div><!-- end #logScope -->
+			        </div>
+			        </div>
+        </div>
+    </div>
+</div>

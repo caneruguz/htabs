@@ -7,6 +7,12 @@ app.comments = require('../components/comments/comments');
 app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
+
+app.registrations = require('../components/registrations/registrations');
+app.forks = require('../components/forks/forks');
+app.activity = require('../components/activity/activity');
+app.statistics = require('../components/statistics/statistics');
+
 app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
@@ -515,7 +521,7 @@ app.rescon = require('../components/rescon/rescon');
                 var totalLength = self.calculateContentLength();
 
 
-                var ht_head_width = window_width -75; // allowing room for expose buttons, element width is 75px
+                var ht_head_width = window_width -88; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
             
@@ -923,6 +929,7 @@ app.rescon = require('../components/rescon/rescon');
                        })
                    ]),
                    m("div.appBtnDiv", [
+                       m("span.appBtn",  {onclick : function(){alert('these are not the droids you are looking for');} }, [m('.i.fa.fa-rebel')]),
                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] )
 
@@ -975,7 +982,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                 m('p', module.dateCreated ),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , link.title );
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), " " + link.title]);
                                                                     })
                                                                 ])
                                                             ]
