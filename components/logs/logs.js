@@ -26,32 +26,65 @@ logs.singleLog = function(logType, logContent){
 logs.controller = function(){
     // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
     // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
-
+    this.modalShow = false;
+    this.modal = m.prop({
+        "header" : "Modal Example",
+        "body" : " This is a modal, which requires an action before the user can continue working on other aspects of this widget. You can dismiss it or choose and action from below",
+        "actions" : "Footer"
+    });
+    this.alertShow = false;
+    this.alert = m.prop({
+        "content" : "This is an alert. Be mindful about something or another"
+    });
 }
 
 // Log layout, loads directly from the model, not through the controller.
-logs.view = function(controller){
-    return [
-        m("table.table.table-condensed", [
-            m("tbody", [
-                logs.List().map(function(log, index){
-                    return m("tr", [
-                        m("td", [
-                            m("span.text-muted", log.logDate)
-                        ]),
-                        m("td", [
-                            m("a[href='user/1']", log.logUser),
-                            " ",
-                            m("span.logText", log.logText),
-                            m("i", log.logContent),
-                            ".\n                        "
-                        ])
-                    ])
-                })
-
-            ])
+logs.view = function(ctrl){
+    if(ctrl.modalShow){
+        return m('.ht-modal-wrapper.animated.flipInX', [
+            m('.ht-dismiss', { onclick : function(){ ctrl.modalShow = false; } }, [ m ('i.fa.fa-times')]),
+            m('.ht-modal-header', ctrl.modal().header),
+            m('.ht-modal-body', ctrl.modal().body),
+            m('.ht-modal-footer', ctrl.modal().actions)
         ])
-    ]
+    } else {
+        return [
+            (function(){
+                if(ctrl.alertShow) {
+                    return m('.ht-alert-wrapper.animated.fadeInDown', [
+                        m('.ht-alert-dismiss.pull-right', { onclick: function () {
+                            ctrl.alertShow = false;
+                        } }, [ m('i.fa.fa-times')]),
+                        m('.ht-alert-content', ctrl.alert().content),
+                    ])
+                }
+            }()),
+            m('.p-md', [
+                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
+                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
+                m("table.table.table-condensed", [
+                    m("tbody", [
+                        logs.List().map(function (log, index) {
+                            return m("tr", [
+                                m("td", [
+                                    m("span.text-muted", log.logDate)
+                                ]),
+                                m("td", [
+                                    m("a[href='user/1']", log.logUser),
+                                    " ",
+                                    m("span.logText", log.logText),
+                                    m("i", log.logContent),
+                                    ".\n                        "
+                                ])
+                            ])
+                        })
+
+                    ])
+                ])
+            ])
+
+        ]
+    }
 }
 
 module.exports = logs;

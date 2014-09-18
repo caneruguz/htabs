@@ -153,7 +153,7 @@
                         "expandable" : true,
                         "height" : 300,
                         "display" : true,
-                        "hideHeader" : true,
+                        "hideHeader" : false,
                         "content" : "",
                         "css" : ""
                     }

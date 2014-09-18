@@ -506,3 +506,10 @@
 .text-xl {
   line-height: 20px;
 }
+/* text colors */
+.t-light {
+  color: #fff;
+}
+.t-dark {
+  color: #222;
+}

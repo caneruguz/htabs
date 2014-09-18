@@ -2807,6 +2807,8 @@ Copyright (c) 2014 Daniel Eden
 .text-md{line-height:16px}
 .text-lg{line-height:18px}
 .text-xl{line-height:20px}
+.t-light{color:#fff}
+.t-dark{color:#222}
 *,:after,:before{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 .skinnyFont{font-family:Helvetica Neue,Helvetica,sans-serif;font-weight:100;letter-spacing:1px}
 h1.skinnyFont{line-height:50px}
@@ -2873,7 +2875,7 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
 .ghost-element{height:300px;width:300px;background:grey;opacity:.4}
-.ht-module-menu{position:absolute;margin-top:-40px;margin-left:-30px;margin-bottom:20px;text-align:center}
+.ht-module-menu{position:absolute;margin-top:-25px;margin-left:-25px;margin-bottom:20px;text-align:center}
 .ht-module-menu .fa{padding:10px;font-size:20px;background:rgba(255,255,255,.16);width:38px}
 .ht-module-menu .fa:hover{background:rgba(255,255,255,.47)}
 .ht-module-menu .fa:last-of-type{border-bottom-right-radius:5px}
@@ -2895,7 +2897,8 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
 .ht-column .ht-widget .ht-widget-header{padding:15px 20px;background:#A1D6E5;font-size:16px;font-weight:200;border-bottom:1px solid rgba(70,184,218,.57);border-top-left-radius:5px;border-top-right-radius:5px}
-.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:15px 5px}
+.ht-column .ht-widget .ht-widget-header .fa{margin:0 3px}
+.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:0}
 .ht-column .ht-widget .ht-widget-body .widget-body-inner{height:100%;overflow-x:hidden;overflow-y:auto}
 .ht-column .ht-widget-placeholder{border:1px dotted #000;margin:0 1em 1em 0;height:50px}
 .ht-widget:not(.ht-inverted){background:#fff;box-shadow:0 0 10px -5px #333}
@@ -2931,12 +2934,18 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-bookmark{padding:20px;margin:10px;border:1px solid #666;cursor:pointer}
 .ht-widget-btn{margin:5px 1%;display:inline-block;width:48%;height:40px;padding:10px 16px;font-size:18px;line-height:1.33;color:#fff;background-color:#5bc0de;border-color:#46b8da;text-align:center;font-weight:400;opacity:.8}
 .ht-widget-btn:hover{background-color:#269abc;cursor:pointer}
-.ht-aside{position:absolute;width:400px;height:978px;background:#FFF;right:0;top:37px;z-index:999;box-shadow:0 10px 7px #999;border-left:1px solid #BBB;padding:15px}
-.ht-panel{background:#F8F8F8;margin:10px 0;box-shadow:0 0 2px 0 #CCC}
+.ht-aside{position:absolute;width:400px;height:978px;background:url(images/blur.jpg) top left;right:0;top:0;z-index:999;box-shadow:inset 0 0 7px #999;border-left:1px solid #BBB;padding:15px}
+.ht-panel{margin:10px 0;box-shadow:0 0 2px 0 #CCC}
 .ht-panel-head{font-weight:700;background:#E2E2E2;padding:10px;border-bottom:1px solid #CCC}
-.ht-panel-body{padding:8px 10px}
-.ht-panel-footer{padding:7px 10px;text-align:right}
+.ht-panel-body{padding:8px 0}
+.ht-panel-footer{padding:0;text-align:right}
 .ht-panel-action{margin:0 5px}
+.ht-modal-wrapper{padding:30px}
+.ht-dismiss{width:30px;height:30px;background:#EEE;padding:5px 9px;border-radius:25px;color:#999;font-size:16px;float:right;margin-top:-25px}
+.ht-modal-header{font-weight:200;font-family:Helvetica NEue;font-size:20px;margin:20px 0}
+.ht-modal-body{font-size:15px;margin:5px}
+.ht-alert-wrapper{background:#D1F5F1;padding:10px;border-bottom:1px solid #CCC;margin-bottom:10px}
+#ht-focus-wrap{padding:50px;margin:auto}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background-color:rgba(195,195,195,.64);border-radius:5px}
 ::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2);border-radius:5px}

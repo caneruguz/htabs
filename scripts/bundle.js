@@ -61,20 +61,20 @@ app.rescon = require('../components/rescon/rescon');
         this.height = 300;
         this.display = true;
         this.hideHeader = hideHeader;
-        this.type = "comments";
+        this.type = "comments";a
         this.css = "";
         this.data = "";
     };
 
     // Notifications
     var notify = {}
-    notify.model = function(controller, text, actions, type ){
+    notify.model = function(controller, text, actions, type  ){
         var self = this;
         this.id = Math.floor((Math.random() * 100000) + 1)+3,
         this.text = text;
         this.actions = actions || [];
         this.type = type || "default";
-        actions.push({
+            actions.push({
             title : "Dismiss",
             todo : { name : "dismissNotify", parameters : self.id },
             css : 'btn btn-default'
@@ -90,29 +90,29 @@ app.rescon = require('../components/rescon/rescon');
                 {
                     title : "Open Project",
                     todo : { name : "openProject", parameters : [2, 1] },
-                    css : 'btn btn-success'
+                    css : 'btn btn-success btn-sm'
                 },
                 {
                     title : "Dismiss",
                     todo : { name : "dismissNotify", parameters : 1 },
-                    css : 'btn btn-default'
+                    css : 'btn btn-default btn-sm'
                 }
             ]
         },
         {
             id : 2,
             text: "Go to an existing project and do something there",
-            type : "info",
+            type : "success",
             actions : [
                 {
                     title : "Go to Project",
                     todo : { name : "gotoProject", parameters : 1 },
-                    css : 'btn btn-primary'
+                    css : 'btn btn-primary btn-sm'
                 },
                 {
                     title : "Dismiss",
                     todo : { name : "dismissNotify", parameters : 2 },
-                    css : 'btn btn-default'
+                    css : 'btn btn-default btn-sm'
                 }
             ]
         }
@@ -122,7 +122,7 @@ app.rescon = require('../components/rescon/rescon');
         console.log("Notify List:", notify.list);
         return m('ul.no-bullets', [
             notify.list.map(function(item){
-                return m('li.ht-panel', [
+                return m('li.ht-panel', { "class" : "alert alert-"+item.type} , [
                     m('.ht-panel-body', item.text),
                     m('.ht-panel-footer', [
                          m('ul.no-bullets', [
@@ -592,18 +592,27 @@ app.rescon = require('../components/rescon/rescon');
 //                console.log("reformat ran")
 
                 var window_width = $(window).outerWidth();
-
+                if(self.asideOpen){
+                    window_width = window_width-400;
+                }
                 var totalLength = self.calculateContentLength();
 
+                if(self.focusMode){
+                    if(window_width > 1200) {
+                        $('#ht-focus-wrap').css('width',  '1200px');
+                    } else {
+                        $('#ht-focus-wrap').css('width',  window_width + 'px');
+
+                    }
+                }
 
                 var ht_head_width = window_width -105; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
 
                 var wrapper_width = window_width;
-                if(self.asideOpen){
-                    wrapper_width  = window_width-400;
-                }
+
+                $('.ht-head-wrapper').css({ width : window_width + 'px' } );
                 $('#ht-head').css({ width : ht_head_width + 'px' } );
                 $('#ht-wrapper').css({ width : wrapper_width + 'px' } );
                 $('#ht-content').css('width', ht_content_width + 'px'); 
@@ -652,7 +661,7 @@ app.rescon = require('../components/rescon/rescon');
                 $('.ht-column').css({height: ht_column_height});  // widget column heigh
                 $('.ht-add-column').css({height: ht_column_height}); // new col button height
                 $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
-                $('.ht-aside').css({ height : ht_wrapper_height + 'px' })
+                $('.ht-aside').css({ height : window_height + 'px' })
                 self.resizeWidgets();
                 self.eventsOn();
             }
@@ -852,7 +861,22 @@ app.rescon = require('../components/rescon/rescon');
              })
          }
 
+         // FOCUS MODE
+         this.focusMode = false;
+         this.focus = { }
+         this.focusOn = function(widget_type, widget_id, widget_title){
+             self.focus = {};
+             self.focus.type = widget_type;
+             self.focus.id = widget_id;
+             self.focus.title = widget_title;
+             console.log("Focus Ran with ", self.focus);
+             self.focusMode = true;
 
+
+         }
+         this.focusInit = function(){
+               self.reformatWidth();
+         }
 
 
          // MOBILE
@@ -1034,38 +1058,44 @@ app.rescon = require('../components/rescon/rescon');
                         m('.expose-actions', [
                             m('.expose-button', { onclick : ctrl.saveWorkspace},  [ m('i.fa.fa-save'), m("span", "Save Workspace")])
                         ])
-
                     ])
-
                 ])
             ];
         } else {
-            return [
-               m(".ht-head-wrapper", [
-                   m("[id='ht-head']", [
-                       ctrl.modules().map(function(module, module_index, module_array){
-                           if(module.show){
-                               return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
-                           }
-                       })
-                   ]),
-                   m("div.appBtnDiv", [
-                       m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                       m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] ),
-                       m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('.i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
+            if(ctrl.focusMode){
+                return m('#ht-focus-wrap', { config : ctrl.focusInit }, [
+                    m('.ht-dismiss', { onclick : function(){ ctrl.focusMode = false; } }, [ m ('i.fa.fa-times')]),
+                    m('h1.page-header', ctrl.focus.title),
+                    app[ctrl.focus.type].view(ctrl.controllers[ctrl.focus.id])
+               ])
+            } else {
+                return [
+                    m(".ht-head-wrapper", [
+                        m("[id='ht-head']", [
+                            ctrl.modules().map(function(module, module_index, module_array){
+                                if(module.show){
+                                    return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
+                                }
+                            })
+                        ]),
+                        m("div.appBtnDiv", [
+                            m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
+                            m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] ),
+                            m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('.i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
 
-                   ])
-               ]),
-                (function(){
-                    if(ctrl.asideOpen){
-                        return m('.ht-aside', {config : ctrl.asideInit }, [
-                                notify.view(ctrl)
                         ])
-                    }
-                }()),
-                m(".ht-slider-wrap", [m("[id='ht-slider']")]),
-                m("[id='ht-wrapper']", { config : ctrl.init }, [
-                    m("[id='ht-content']", {config : ctrl.reformat },    [
+                    ]),
+                    (function(){
+                        if(ctrl.asideOpen){
+                            return m('.ht-aside', {config : ctrl.asideInit }, [
+                                m('h2.skinnyFont.t-a-c.t-light', "Notifications"),
+                                notify.view(ctrl)
+                            ])
+                        }
+                    }()),
+                    m(".ht-slider-wrap", [m("[id='ht-slider']")]),
+                    m("[id='ht-wrapper']", { config : ctrl.init }, [
+                        m("[id='ht-content']", {config : ctrl.reformat },    [
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.show){
                                     if(module.minimize){
@@ -1151,6 +1181,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
                                                                                                 m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
+                                                                                                m("i.fa.fa-circle-o", { onclick : function(){ ctrl.focusOn(widget.type, widget.id, widget.title);} } ),
                                                                                                 (function(){
                                                                                                     if(widget.closable){
                                                                                                         return m("i.fa.fa-times.ht-widget-remove", { onclick : function(){ widget_array.splice(widget_index, 1); }});
@@ -1162,7 +1193,9 @@ app.rescon = require('../components/rescon/rescon');
                                                                                 })(),
 
                                                                                 m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
-                                                                                    (function(){ console.log(widget.id, " was drawn."); return app[widget.type].view(ctrl.controllers[widget.id]);})()
+                                                                                    (function(){
+                                                                                        return app[widget.type].view(ctrl.controllers[widget.id]);}
+                                                                                        )()
                                                                                 ) ])
                                                                             ]);
                                                                         }
@@ -1192,9 +1225,11 @@ app.rescon = require('../components/rescon/rescon');
 
 
                             })
+                        ])
                     ])
-                ])
-            ];
+                ];
+            }
+
 
         }
 
@@ -1427,32 +1462,65 @@ logs.singleLog = function(logType, logContent){
 logs.controller = function(){
     // This example is not using the m.prop getter and setter since direct javascript makes more sense for one time log writing.
     // Add log -- This gets fired in the controller when comment is being added. Will implement for wiki as well.
-
+    this.modalShow = false;
+    this.modal = m.prop({
+        "header" : "Modal Example",
+        "body" : " This is a modal, which requires an action before the user can continue working on other aspects of this widget. You can dismiss it or choose and action from below",
+        "actions" : "Footer"
+    });
+    this.alertShow = false;
+    this.alert = m.prop({
+        "content" : "This is an alert. Be mindful about something or another"
+    });
 }
 
 // Log layout, loads directly from the model, not through the controller.
-logs.view = function(controller){
-    return [
-        m("table.table.table-condensed", [
-            m("tbody", [
-                logs.List().map(function(log, index){
-                    return m("tr", [
-                        m("td", [
-                            m("span.text-muted", log.logDate)
-                        ]),
-                        m("td", [
-                            m("a[href='user/1']", log.logUser),
-                            " ",
-                            m("span.logText", log.logText),
-                            m("i", log.logContent),
-                            ".\n                        "
-                        ])
-                    ])
-                })
-
-            ])
+logs.view = function(ctrl){
+    if(ctrl.modalShow){
+        return m('.ht-modal-wrapper.animated.flipInX', [
+            m('.ht-dismiss', { onclick : function(){ ctrl.modalShow = false; } }, [ m ('i.fa.fa-times')]),
+            m('.ht-modal-header', ctrl.modal().header),
+            m('.ht-modal-body', ctrl.modal().body),
+            m('.ht-modal-footer', ctrl.modal().actions)
         ])
-    ]
+    } else {
+        return [
+            (function(){
+                if(ctrl.alertShow) {
+                    return m('.ht-alert-wrapper.animated.fadeInDown', [
+                        m('.ht-alert-dismiss.pull-right', { onclick: function () {
+                            ctrl.alertShow = false;
+                        } }, [ m('i.fa.fa-times')]),
+                        m('.ht-alert-content', ctrl.alert().content),
+                    ])
+                }
+            }()),
+            m('.p-md', [
+                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
+                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
+                m("table.table.table-condensed", [
+                    m("tbody", [
+                        logs.List().map(function (log, index) {
+                            return m("tr", [
+                                m("td", [
+                                    m("span.text-muted", log.logDate)
+                                ]),
+                                m("td", [
+                                    m("a[href='user/1']", log.logUser),
+                                    " ",
+                                    m("span.logText", log.logText),
+                                    m("i", log.logContent),
+                                    ".\n                        "
+                                ])
+                            ])
+                        })
+
+                    ])
+                ])
+            ])
+
+        ]
+    }
 }
 
 module.exports = logs;
