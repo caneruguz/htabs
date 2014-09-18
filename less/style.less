@@ -50,6 +50,7 @@ body {
 .bg-dark-turquaz{ background-color: @dark-turquaz;}
 .bg-dark-red{ background-color: @dark-red;}
 .bg-opaque-white {  background: rgba(255, 255, 255, 0.25); }
+.bg-babyblue {  background: #A1D6E5;       border-bottom: 1px solid rgba(70, 184, 218, 0.57);}
 
 @dark-navy : #112E40;
 @dark-blue : #034647;
@@ -266,10 +267,8 @@ body {
     border-radius: 5px;
     .ht-widget-header {
       padding: 15px 20px;
-      background: #A1D6E5;
       font-size: 16px;
       font-weight: 200;
-      border-bottom: 1px solid rgba(70, 184, 218, 0.57);
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       .fa {
@@ -280,6 +279,8 @@ body {
       overflow-y: hidden;
       overflow-x: hidden;
       padding: 0px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
       .widget-body-inner {
         height: 100%;
         overflow-x: hidden;
@@ -488,7 +489,10 @@ body {
   border: 1px solid #666;
   cursor: pointer;
 }
+.ht-widgetize {
+  border-radius: 5px;
 
+}
 .ht-widget-btn {
   margin-top: 5px;
   margin-bottom: 5px;

@@ -425,6 +425,10 @@
   -moz-border-radius: @xlg;
   -webkit-border-radius: @xlg;
 }
+.b-r-xs-bottom {
+  border-bottom-right-radius: @sm;
+  border-bottom-left-radius: @sm;
+}
 
 /*Font Weight*/
 .font-thin{
@@ -676,6 +680,22 @@
 
 .text-xl{
   .l-h-xl;
+}
+
+/* Overflow */
+.no-flow {
+  overflow : hidden;
+}
+.flow {
+  overflow: auto;
+}
+.flow-x {
+  overflow-x : auto;
+  overflow-y: hidden;
+}
+.flow-y {
+  overflow-y: auto;
+  pverflow-x : hidden;
 }
 
 /* text colors */

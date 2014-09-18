@@ -2760,6 +2760,7 @@ Copyright (c) 2014 Daniel Eden
 .b-r-md{border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px}
 .b-r-lg{border-radius:50px;-moz-border-radius:50px;-webkit-border-radius:50px}
 .b-r-xl{border-radius:100px;-moz-border-radius:100px;-webkit-border-radius:100px}
+.b-r-xs-bottom{border-bottom-right-radius:10px;border-bottom-left-radius:10px}
 .font-thin{font-weight:100}
 .font-medium{font-weight:200}
 .font-normal{font-weight:400}
@@ -2807,6 +2808,10 @@ Copyright (c) 2014 Daniel Eden
 .text-md{line-height:16px}
 .text-lg{line-height:18px}
 .text-xl{line-height:20px}
+.no-flow{overflow:hidden}
+.flow{overflow:auto}
+.flow-x{overflow-x:auto;overflow-y:hidden}
+.flow-y{overflow-y:auto;pverflow-x:hidden}
 .t-light{color:#fff}
 .t-dark{color:#222}
 *,:after,:before{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -2856,6 +2861,7 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .bg-dark-turquaz{background-color:#3d6c79}
 .bg-dark-red{background-color:#632419}
 .bg-opaque-white{background:rgba(255,255,255,.25)}
+.bg-babyblue{background:#A1D6E5;border-bottom:1px solid rgba(70,184,218,.57)}
 .dim-background{background:rgba(0,0,0,.7);height:100%}
 .ht-w-xs{width:160px}
 .ht-w-sm{width:320px}
@@ -2896,9 +2902,9 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:#EEE;padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
-.ht-column .ht-widget .ht-widget-header{padding:15px 20px;background:#A1D6E5;font-size:16px;font-weight:200;border-bottom:1px solid rgba(70,184,218,.57);border-top-left-radius:5px;border-top-right-radius:5px}
+.ht-column .ht-widget .ht-widget-header{padding:15px 20px;font-size:16px;font-weight:200;border-top-left-radius:5px;border-top-right-radius:5px}
 .ht-column .ht-widget .ht-widget-header .fa{margin:0 3px}
-.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:0}
+.ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px}
 .ht-column .ht-widget .ht-widget-body .widget-body-inner{height:100%;overflow-x:hidden;overflow-y:auto}
 .ht-column .ht-widget-placeholder{border:1px dotted #000;margin:0 1em 1em 0;height:50px}
 .ht-widget:not(.ht-inverted){background:#fff;box-shadow:0 0 10px -5px #333}
@@ -2932,9 +2938,10 @@ body{font-family:Helvetica;width:100%;overflow:hidden}
 .ht-wiki-edit{width:100%;border:1px dotted #ccc;padding:10px;min-height:200px}
 .ht-comment-box{width:100%;border:1px dotted #ccc;padding:10px;height:100px;resize:none}
 .ht-bookmark{padding:20px;margin:10px;border:1px solid #666;cursor:pointer}
+.ht-widgetize{border-radius:5px}
 .ht-widget-btn{margin:5px 1%;display:inline-block;width:48%;height:40px;padding:10px 16px;font-size:18px;line-height:1.33;color:#fff;background-color:#5bc0de;border-color:#46b8da;text-align:center;font-weight:400;opacity:.8}
 .ht-widget-btn:hover{background-color:#269abc;cursor:pointer}
-.ht-aside{position:absolute;width:400px;height:978px;background:url(images/blur.jpg) top left;right:0;top:0;z-index:999;box-shadow:inset 0 0 7px #999;border-left:1px solid #BBB;padding:15px}
+.ht-aside{position:absolute;width:400px;height:978px;background:url(images/blur.jpg) top left;right:0;top:0;z-index:999;box-shadow:inset 4px -3px 8px -1px #000;padding:15px}
 .ht-panel{margin:10px 0;box-shadow:0 0 2px 0 #CCC}
 .ht-panel-head{font-weight:700;background:#E2E2E2;padding:10px;border-bottom:1px solid #CCC}
 .ht-panel-body{padding:8px 0}

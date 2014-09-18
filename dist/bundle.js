@@ -1176,7 +1176,7 @@ app.rescon = require('../components/rescon/rescon');
         this.height = 300;
         this.display = true;
         this.hideHeader = hideHeader;
-        this.type = "comments";a
+        this.type = "comments";
         this.css = "";
         this.data = "";
     };
@@ -1306,13 +1306,12 @@ app.rescon = require('../components/rescon/rescon');
                     self.reformatWidth();
                 },
                 stop : function (){
-//                    self.saveColumnSize();
                     $(".widget-body-inner").rescon(
                         {
                             sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
                         }
                     );
-
+                    self.widgetize();
                 },
                 create : function(){
                     console.log("Resizable created");
@@ -1381,6 +1380,24 @@ app.rescon = require('../components/rescon/rescon');
                 cursorAt: {left:100, top:25}
             });
         };
+        this.widgetize = function(){
+            console.log("---")
+            $('.ht-widget').each(function(){
+                var width = $(this).outerWidth();
+                var height = $(this).height();
+                var color = $(this).find('.ht-widgetize').attr('data-color');
+                console.log(color);
+                if(width < 300 ){
+                    $(this).find('.ht-widget-body').addClass(color);
+                    $(this).find('.ht-widget-header').removeClass('bg-babyblue').addClass(color+' t-light');
+                    $(this).css({ height : (height-1)+'px'});
+                } else {
+                    $(this).find('.ht-widget-body').removeClass(color);
+                    $(this).find('.ht-widget-header').addClass('bg-babyblue').removeClass('t-light').removeClass(color);
+                    $(this).css({ height : (height+1)+'px'});
+                }
+            })
+        }
         this.init = function(element, isInitialized){
             if(isInitialized) return;
 
@@ -1488,8 +1505,8 @@ app.rescon = require('../components/rescon/rescon');
                 // for each children calculate their relative heights so that we fill the column proportionally to the existing heights of the widgets ;
                 $(this).children('.ht-widget').each(function(){
                     var childHeight = $(this).outerHeight();
-                    var headerHeight = $(this).children('.ht-widget-header').outerHeight();
                     var newHeight;
+                    var headerHeight = $(this).children('.ht-widget-header').outerHeight();
                     if(setContentHeight < contentHeight){
                         newHeight = (childHeight/contentHeight)*setContentHeight;
                     } else {
@@ -1498,10 +1515,14 @@ app.rescon = require('../components/rescon/rescon');
                     if(newHeight > 100){
                         $(this).css({ height : newHeight}).find('.ht-widget-body').css({ height : (newHeight-headerHeight)+"px"})//.find('.widget-body-inner').css({ height : newHeight-40});
                     }
+                    $(this).children('.ht-widget-header').show();
                 });
 
             });
-            $(".widget-body-inner").rescon();
+            $(".widget-body-inner").rescon({
+                sizes : { "xs" : 0, "sm" : 300, "md" : 600, "lg" : 1000 }
+            });
+            self.widgetize();
 
         };
         this.expandWidget = function(module, column, widget){
@@ -1800,6 +1821,7 @@ app.rescon = require('../components/rescon/rescon');
             if($(element).attr('data-id') == id) {
                 self.temp.scrollTo = "";
             }
+            self.widgetize();
 
         }
         self.saveColumnSize = function(){
@@ -2292,7 +2314,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
-                                                                                        return m(".ht-widget-header", [
+                                                                                        return m(".ht-widget-header.bg-babyblue", [
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
                                                                                                 m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
@@ -2610,26 +2632,34 @@ logs.view = function(ctrl){
                     ])
                 }
             }()),
-            m('.p-md', [
-                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
-                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
-                m("table.table.table-condensed", [
-                    m("tbody", [
-                        logs.List().map(function (log, index) {
-                            return m("tr", [
-                                m("td", [
-                                    m("span.text-muted", log.logDate)
-                                ]),
-                                m("td", [
-                                    m("a[href='user/1']", log.logUser),
-                                    " ",
-                                    m("span.logText", log.logText),
-                                    m("i", log.logContent),
-                                    ".\n                        "
+            m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-blue" }, [
+                m('.p-md.text-center.t-light.no-flow', [
+                    m('h2', logs.List().length),
+                    m('p.lead', "Comments")
+                ])
+            ]),
+            m('.hidden-xs', [
+                m('.p-md', [
+                    m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
+                    m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
+                    m("table.table.table-condensed", [
+                        m("tbody", [
+                            logs.List().map(function (log, index) {
+                                return m("tr", [
+                                    m("td", [
+                                        m("span.text-muted", log.logDate)
+                                    ]),
+                                    m("td", [
+                                        m("a[href='user/1']", log.logUser),
+                                        " ",
+                                        m("span.logText", log.logText),
+                                        m("i", log.logContent),
+                                        ".\n                        "
+                                    ])
                                 ])
-                            ])
-                        })
+                            })
 
+                        ])
                     ])
                 ])
             ])

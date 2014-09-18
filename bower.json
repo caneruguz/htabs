@@ -26,6 +26,6 @@
     "jquery-ui": "~1.11.0",
     "jquery-touchswipe": "~1.6.6",
     "jquery.scrollTo": "~1.4.12",
-    "jquery-rescon": "~0.6.0"
+    "jquery-rescon": "~0.8.0"
   }
 }

@@ -245,6 +245,25 @@
                         "css" : ""
                     }
                 ]
+            },
+            {
+                "width" : 400,
+                "new" : false,
+                "widgets" : [
+                    {
+                        "id" : 12,
+                        "title" : "Comments",
+                        "type" : "comments",
+                        "data" : "",
+                        "closable" : true,
+                        "expandable" : true,
+                        "height" : 300,
+                        "display" : true,
+                        "hideHeader" : false,
+                        "content" : "",
+                        "css" : ""
+                    }
+                ]
             }
         ]
     }

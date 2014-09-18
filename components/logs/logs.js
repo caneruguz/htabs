@@ -59,26 +59,34 @@ logs.view = function(ctrl){
                     ])
                 }
             }()),
-            m('.p-md', [
-                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
-                m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
-                m("table.table.table-condensed", [
-                    m("tbody", [
-                        logs.List().map(function (log, index) {
-                            return m("tr", [
-                                m("td", [
-                                    m("span.text-muted", log.logDate)
-                                ]),
-                                m("td", [
-                                    m("a[href='user/1']", log.logUser),
-                                    " ",
-                                    m("span.logText", log.logText),
-                                    m("i", log.logContent),
-                                    ".\n                        "
+            m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-blue" }, [
+                m('.p-md.text-center.t-light.no-flow', [
+                    m('h2', logs.List().length),
+                    m('p.lead', "Comments")
+                ])
+            ]),
+            m('.hidden-xs', [
+                m('.p-md', [
+                    m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
+                    m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),
+                    m("table.table.table-condensed", [
+                        m("tbody", [
+                            logs.List().map(function (log, index) {
+                                return m("tr", [
+                                    m("td", [
+                                        m("span.text-muted", log.logDate)
+                                    ]),
+                                    m("td", [
+                                        m("a[href='user/1']", log.logUser),
+                                        " ",
+                                        m("span.logText", log.logText),
+                                        m("i", log.logContent),
+                                        ".\n                        "
+                                    ])
                                 ])
-                            ])
-                        })
+                            })
 
+                        ])
                     ])
                 ])
             ])

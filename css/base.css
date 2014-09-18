@@ -306,6 +306,10 @@
   -moz-border-radius: 100px;
   -webkit-border-radius: 100px;
 }
+.b-r-xs-bottom {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 /*Font Weight*/
 .font-thin {
   font-weight: 100;
@@ -505,6 +509,21 @@
 }
 .text-xl {
   line-height: 20px;
+}
+/* Overflow */
+.no-flow {
+  overflow: hidden;
+}
+.flow {
+  overflow: auto;
+}
+.flow-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.flow-y {
+  overflow-y: auto;
+  pverflow-x: hidden;
 }
 /* text colors */
 .t-light {

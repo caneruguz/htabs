@@ -306,6 +306,10 @@
   -moz-border-radius: 100px;
   -webkit-border-radius: 100px;
 }
+.b-r-xs-bottom {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 /*Font Weight*/
 .font-thin {
   font-weight: 100;
@@ -505,6 +509,21 @@
 }
 .text-xl {
   line-height: 20px;
+}
+/* Overflow */
+.no-flow {
+  overflow: hidden;
+}
+.flow {
+  overflow: auto;
+}
+.flow-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.flow-y {
+  overflow-y: auto;
+  pverflow-x: hidden;
 }
 /* text colors */
 .t-light {
@@ -717,6 +736,10 @@ body {
 .bg-opaque-white {
   background: rgba(255, 255, 255, 0.25);
 }
+.bg-babyblue {
+  background: #A1D6E5;
+  border-bottom: 1px solid rgba(70, 184, 218, 0.57);
+}
 .dim-background {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
@@ -913,10 +936,8 @@ body {
 }
 .ht-column .ht-widget .ht-widget-header {
   padding: 15px 20px;
-  background: #A1D6E5;
   font-size: 16px;
   font-weight: 200;
-  border-bottom: 1px solid rgba(70, 184, 218, 0.57);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -927,6 +948,8 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
   padding: 0px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 .ht-column .ht-widget .ht-widget-body .widget-body-inner {
   height: 100%;
@@ -1130,6 +1153,9 @@ body {
   margin: 10px;
   border: 1px solid #666;
   cursor: pointer;
+}
+.ht-widgetize {
+  border-radius: 5px;
 }
 .ht-widget-btn {
   margin-top: 5px;
