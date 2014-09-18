@@ -1124,7 +1124,7 @@ app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
 
-app.registrations = require('../components/registrations/registrations');
+app.about = require('../components/about/about');
 app.forks = require('../components/forks/forks');
 app.activity = require('../components/activity/activity');
 app.statistics = require('../components/statistics/statistics');
@@ -1323,6 +1323,7 @@ app.rescon = require('../components/rescon/rescon');
                 handle: ".ht-widget-header",    // Grab from the header div only.
 //                containment: "#ht-content",
                 cursor : "move",
+                cancel : '.fa',
                 opacity : 0.7,
                 helper : 'clone',
 //                tolerance : 'pointer',
@@ -2265,19 +2266,15 @@ app.rescon = require('../components/rescon/rescon');
                                                                         return m('.ht-module-menu', [
                                                                             m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                                             m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
-                                                                            m('i.fa.fa-edit'),
                                                                             m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
                                                                         ])
                                                                     }
                                                                 }()),
 
-                                                                m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                                m('h3.skinnyFont.m-b-lg', module.about),
-                                                                m('p', module.lastUpdated ),
-                                                                m('p', module.dateCreated ),
+                                                                m('h2.m-t-xl.m-b-xl', module.title),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), " " + link.title]);
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
                                                                     })
                                                                 ])
                                                             ]
@@ -2295,8 +2292,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-bookmark", { "class" : status , "data-mid" : b.id, onclick : ctrl.moduleViewToggle}, [
                                                                                 m(".ht-bookmark-content", b.title)
                                                                             ])
-                                                                        }),
-                                                                        m(".ht-bookmark",{ style : "text-align: center;"}, m("i.fa.fa-plus"))
+                                                                        })
                                                                     ]
                                                                 ) ])
                                                             ])
@@ -2314,7 +2310,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
-                                                                                        return m(".ht-widget-header.bg-babyblue", [
+                                                                                        return m(".ht-widget-header", [
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
                                                                                                 m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
@@ -2376,7 +2372,22 @@ app.rescon = require('../components/rescon/rescon');
 };
 
 
-},{"../components/activity/activity":2,"../components/comments/comments":3,"../components/components/components":4,"../components/dashboard/dashboard":5,"../components/files/files":6,"../components/forks/forks":7,"../components/logs/logs":8,"../components/registrations/registrations":9,"../components/rescon/rescon":10,"../components/statistics/statistics":11,"../components/wiki/wiki":12}],2:[function(require,module,exports){
+},{"../components/about/about":2,"../components/activity/activity":3,"../components/comments/comments":4,"../components/components/components":5,"../components/dashboard/dashboard":6,"../components/files/files":7,"../components/forks/forks":8,"../components/logs/logs":9,"../components/rescon/rescon":10,"../components/statistics/statistics":11,"../components/wiki/wiki":12}],2:[function(require,module,exports){
+var about = {};
+
+about.html= m.prop("");
+m.request({method: "GET", url: "../components/about/about.html", deserialize: function(value){ return value;  }}).then(about.html);
+
+about.controller = function(){
+    this.html = about.html;
+}
+
+about.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = about;
+},{}],3:[function(require,module,exports){
 var activity = {};
 
 activity.html= m.prop("");
@@ -2391,7 +2402,7 @@ activity.view = function(ctrl){
 }
 
 module.exports = activity;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var logs = require('../logs/logs');
 
 var comments = {};
@@ -2510,7 +2521,7 @@ comments.view = function(ctrl){
 }
 
 module.exports = comments;
-},{"../logs/logs":8}],4:[function(require,module,exports){
+},{"../logs/logs":9}],5:[function(require,module,exports){
 var components = {};
 
 components.html= m.prop("");
@@ -2525,7 +2536,7 @@ components.view = function(ctrl){
 }
 
 module.exports = components;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var dashboard = {};
 
 dashboard.html= m.prop("");
@@ -2540,7 +2551,7 @@ dashboard.view = function(ctrl){
 }
 
 module.exports = dashboard;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var files = {};
 
 files.html= m.prop("");
@@ -2555,7 +2566,7 @@ files.view = function(ctrl){
 }
 
 module.exports = files;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var forks = {};
 
 forks.html= m.prop("");
@@ -2570,7 +2581,7 @@ forks.view = function(ctrl){
 }
 
 module.exports = forks;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 var logs = {};
 
@@ -2669,21 +2680,6 @@ logs.view = function(ctrl){
 }
 
 module.exports = logs;
-},{}],9:[function(require,module,exports){
-var registrations = {};
-
-registrations.html= m.prop("");
-m.request({method: "GET", url: "../components/registrations/registrations.html", deserialize: function(value){ return value;  }}).then(registrations.html);
-
-registrations.controller = function(){
-    this.html = registrations.html;
-}
-
-registrations.view = function(ctrl){
-    return m.trust(ctrl.html());
-}
-
-module.exports = registrations;
 },{}],10:[function(require,module,exports){
 var rescon = {};
 

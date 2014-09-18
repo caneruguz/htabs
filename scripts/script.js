@@ -207,6 +207,7 @@ app.rescon = require('../components/rescon/rescon');
                 handle: ".ht-widget-header",    // Grab from the header div only.
 //                containment: "#ht-content",
                 cursor : "move",
+                cancel : '.fa',
                 opacity : 0.7,
                 helper : 'clone',
 //                tolerance : 'pointer',
@@ -1149,19 +1150,15 @@ app.rescon = require('../components/rescon/rescon');
                                                                         return m('.ht-module-menu', [
                                                                             m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                                             m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
-                                                                            m('i.fa.fa-edit'),
                                                                             m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
                                                                         ])
                                                                     }
                                                                 }()),
 
-                                                                m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                                // m('h3.skinnyFont.m-b-lg', module.about),
-                                                                // m('p', module.lastUpdated ),
-                                                                // m('p', module.dateCreated ),
+                                                                m('h2.m-t-xl.m-b-xl', module.title),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
                                                                     })
                                                                 ])
                                                             ]
@@ -1179,8 +1176,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-bookmark", { "class" : status , "data-mid" : b.id, onclick : ctrl.moduleViewToggle}, [
                                                                                 m(".ht-bookmark-content", b.title)
                                                                             ])
-                                                                        }),
-                                                                        m(".ht-bookmark",{ style : "text-align: center;"}, m("i.fa.fa-plus"))
+                                                                        })
                                                                     ]
                                                                 ) ])
                                                             ])
@@ -1198,7 +1194,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
-                                                                                        return m(".ht-widget-header.bg-babyblue", [
+                                                                                        return m(".ht-widget-header", [
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
                                                                                                 m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),

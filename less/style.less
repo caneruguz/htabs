@@ -149,16 +149,18 @@ body {
   margin-bottom: 20px;
   text-align: center;
   .fa {
-  padding: 10px 10px;
-  font-size: 20px;
-  background: rgba(255, 255, 255, 0.16);
-  width: 38px;
+    padding: 10px;
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.16);
+    width: 40px;
+    margin: 5px;
+    border-radius: 19px;
   }
   .fa:hover {
     .opaque;
   }
   .fa:last-of-type {
-    border-bottom-right-radius: 5px;
+
   }
   .ht-opaque-active {
     .opaque;
@@ -271,6 +273,8 @@ body {
       font-weight: 200;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
+      background: rgba(255, 255, 255, 0.32);
+      color: #fff;
       .fa {
         margin: 0 3px;
       }
@@ -295,8 +299,10 @@ body {
   }
 }
 .ht-widget:not(.ht-inverted){
-  background: white;
   box-shadow: 0 0 10px -5px #333;
+  .ht-widget-body {
+    background: white;
+  }
 }
 .ht-column:hover
 {
@@ -484,41 +490,28 @@ body {
 }
 
 .ht-bookmark {
-  padding: 20px;
-  margin: 10px;
-  border: 1px solid #666;
+  padding: 26px;
+  margin: 20px 10px;
   cursor: pointer;
+  height: 110px;
+  text-align: center;
+  border-radius: 5px;
 }
 .ht-widgetize {
   border-radius: 5px;
 
 }
+.ht-widget-icon {
+  width: 50px;
+  color: rgba(255, 255, 255, 0.51);
+}
 .ht-widget-btn {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 1%;
-  margin-right: 1%;
-
-  // margin-bottom: 20px;
-  // margin-top: 20px;
-
-  display: inline-block;
-  width: 48%;
-  height: 40px;
-
-  padding: 10px 16px;
-  font-size: 18px;
+  padding: 19px 33px;
+  font-size: 20px;
   line-height: 1.33;
-  // border-radius: 6px;
-
-  color: #fff;
-  background-color: #5bc0de;
-  // background-color: green;
-  border-color: #46b8da;
-  text-align: center;
-
+  color: #FFF;
   font-weight: 400;
-  opacity:.8;
+  text-transform: uppercase;
 }
 
 .ht-widget-btn:hover{
