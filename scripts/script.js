@@ -8,7 +8,7 @@ app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
 
-app.registrations = require('../components/registrations/registrations');
+app.about = require('../components/about/about');
 app.forks = require('../components/forks/forks');
 app.activity = require('../components/activity/activity');
 app.statistics = require('../components/statistics/statistics');
