@@ -81,10 +81,10 @@
                 "icon" : "fa-bar-chart-o"
             },
             {
-                "title": "Registrations",
-                "action" : "registrations",
+                "title": "About",
+                "action" : "about",
                 "css" : "ht-widget-btn",
-                "icon" : "fa-clipboard"
+                "icon" : "fa-info"
             },
             {
                 "title": "Forks",

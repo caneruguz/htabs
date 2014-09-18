@@ -8,7 +8,7 @@ app.wiki = require('../components/wiki/wiki');
 app.components = require('../components/components/components');
 app.files = require('../components/files/files');
 
-app.registrations = require('../components/registrations/registrations');
+app.about = require('../components/about/about');
 app.forks = require('../components/forks/forks');
 app.activity = require('../components/activity/activity');
 app.statistics = require('../components/statistics/statistics');
@@ -1156,12 +1156,12 @@ app.rescon = require('../components/rescon/rescon');
                                                                 }()),
 
                                                                 m('h1.skinnyFont.m-t-lg.m-b-lg', module.title),
-                                                                m('h3.skinnyFont.m-b-lg', module.about),
-                                                                m('p', module.lastUpdated ),
-                                                                m('p', module.dateCreated ),
+                                                                // m('h3.skinnyFont.m-b-lg', module.about),
+                                                                // m('p', module.lastUpdated ),
+                                                                // m('p', module.dateCreated ),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), " " + link.title]);
+                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
                                                                     })
                                                                 ])
                                                             ]
