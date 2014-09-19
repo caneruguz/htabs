@@ -532,6 +532,25 @@
 .t-dark {
   color: #222;
 }
+/* Font weights */
+.f-1 {
+  font-weight: 100;
+}
+.f-2 {
+  font-weight: 200;
+}
+.f-3 {
+  font-weight: 300;
+}
+.f-4 {
+  font-weight: 400;
+}
+.f-5 {
+  font-weight: 500;
+}
+.f-6 {
+  font-weight: 600;
+}
 *,
 *:before,
 *:after {
@@ -540,6 +559,7 @@
   box-sizing: border-box;
 }
 /* Color Palette */
+/* http://flatuicolors.com/ */
 /* Fonts */
 .skinnyFont {
   font-family: Helvetica Neue, Helvetica, sans-serif;

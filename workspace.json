@@ -1,8 +1,8 @@
 [
     {
         "id" : 0,
-        "title" : "Open Science FrameWork",
-        "color" : "navy",
+        "title" : "My Dashboard",
+        "color" : "asphalt-d",
         "minimize" : false,
         "exposeWidth" : 300,
         "exposeHeight" : 300,
@@ -17,25 +17,43 @@
                 "id" :  1,
                 "title" : "Reproducibility Project : Cancer Biology ",
                 "open": true,
-                "color" : "dark-turquaz"
+                "color" : "river-d"
             },
             {
                 "id" :  2,
                 "title" : "Example Project ",
                 "open": false,
-                "color" : "maroon"
+                "color" : "emerald-d"
             }
         ],
         "links" : [
             {
                 "title": "Learn More About OSF ",
                 "action" : "",
-                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
+                "css" : "",
+                "icon" : "fa-flask"
+
+            },
+            {
+                "title": "Explore Projects",
+                "action" : "",
+                "css" : "",
+                "icon" : "fa-globe"
+
             },
             {
                 "title": "Documentation",
                 "action" : "",
-                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+                "css" : "",
+                "icon" : "fa-file-o"
+
+            },
+            {
+                "title": "Help / Support",
+                "action" : "",
+                "css" : "",
+                "icon" : "fa-question"
+
             }
         ],
         "columns" :[]
@@ -43,7 +61,7 @@
     {
         "id" : 1,
         "title" : "Reproducibility Project: Cancer Biology",
-        "color" : "dark-turquaz",
+        "color" : "river-d",
         "minimize" : false,
         "exposeWidth" : 300,
         "exposeHeight" : 300,
@@ -59,50 +77,50 @@
                         {
                 "title": "Components",
                 "action" : "components",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-puzzle-piece"
             },
             {
                 "title": "Wiki",
                 "action" : "wiki",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-pencil"
             },
             {
                 "title": "Files",
                 "action" : "files",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-files-o"
             },
             {
                 "title": "Statistics",
                 "action" : "statistics",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-bar-chart-o"
             },
             {
                 "title": "About",
                 "action" : "about",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-info"
             },
             {
                 "title": "Forks",
                 "action" : "forks",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-code-fork"
             },
             {
                 "title": "Activity",
                 "action" : "activity",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-rss"
             }
             ,
             {
                 "title": "Responsive",
                 "action" : "rescon",
-                "css" : "ht-widget-btn",
+                "css" : "",
                 "icon" : "fa-smile-o"
             }
         ],
@@ -164,7 +182,7 @@
     {
         "id" : 2,
         "title" : "Example Project ",
-        "color" : "maroon",
+        "color" : "emerald-d",
         "minimize" : false,
         "exposeWidth" : 300,
         "exposeHeight" : 300,
@@ -178,19 +196,22 @@
         "bookmarked" : true,
         "links" : [
             {
-                "title": "Components ",
+                "title": "Components",
                 "action" : "components",
-                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-info"
+                "css" : "",
+                "icon" : "fa-puzzle-piece"
             },
             {
-                "title": "Wiki ",
+                "title": "Wiki",
                 "action" : "wiki",
-                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-primary"
+                "css" : "",
+                "icon" : "fa-pencil"
             },
             {
                 "title": "Files",
                 "action" : "files",
-                "css" : "btn btn-block btn-lg m-t-md m-b-md btn-warning"
+                "css" : "",
+                "icon" : "fa-files-o"
             }
         ],
         "columns" :[

@@ -2,10 +2,10 @@
         {
             "id" : 1,
             "userid" : 23,
-            "username" : "Jeff",
-            "content" : "This is a comment",
+            "username" : "Alicia",
+            "content" : "Vivamus sit amet neque malesuada, laoreet arcu quis, pulvinar nisl. In at lectus ut ante faucibus varius",
             "replySource" : 0,
-            "date" : "2014-06-26 10:00:00",
+            "date" : "2014-06-26 10:00",
             "show" : true
         },
         {
@@ -14,7 +14,7 @@
             "username" : "Josh",
             "content" : "Another comment to text",
             "replySource" : 0,
-            "date" : "2014-06-26 10:20:00",
+            "date" : "2014-06-26 10:20",
             "show" : true
         },
         {
@@ -30,7 +30,7 @@
             "id" : 4,
             "userid" : 26,
             "username" : "Caner",
-            "content" : "Vivamus sit amet neque malesuada, laoreet arcu quis, pulvinar nisl. In at lectus ut ante faucibus varius",
+            "content" : "This is a comment",
             "replySource" : 3,
             "date" : "2014-06-26 11:20:00",
             "show" : true

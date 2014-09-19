@@ -62,10 +62,17 @@ logs.view = function(ctrl){
             m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-blue" }, [
                 m('.p-md.text-center.t-light.no-flow', [
                     m('h2', logs.List().length),
-                    m('p.lead', "Comments")
+                    m('p.lead', "Recent Activities"),
+                    m('',[
+                        m('div.b-b-xs.m-b-xs', "Latest: "),
+                        m("a[href='user/1']", logs.List()[0].logUser),
+                        " ",
+                        m("span.logText", logs.List()[0].logText),
+                        m("i", logs.List()[0].logContent)
+                    ])
                 ])
             ]),
-            m('.hidden-xs', [
+            m('.hidden-xs.ht-page', [
                 m('.p-md', [
                     m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
                     m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),

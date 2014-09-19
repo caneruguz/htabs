@@ -86,16 +86,17 @@ app.rescon = require('../components/rescon/rescon');
             id : 1,
             text: "This notification is here to tell you that you should be opening a new module.",
             type : "info",
+            css : "bg-turquaz-l t-light",
             actions : [
                 {
                     title : "Open Project",
                     todo : { name : "openProject", parameters : [2, 1] },
-                    css : 'btn btn-success btn-sm'
+                    css : 'btn bg-emerald-d btn-sm'
                 },
                 {
                     title : "Dismiss",
                     todo : { name : "dismissNotify", parameters : 1 },
-                    css : 'btn btn-default btn-sm'
+                    css : 'btn bg-clouds-d btn-sm'
                 }
             ]
         },
@@ -103,26 +104,27 @@ app.rescon = require('../components/rescon/rescon');
             id : 2,
             text: "Go to an existing project and do something there",
             type : "success",
+            css : "bg-river-l t-light",
             actions : [
                 {
                     title : "Go to Project",
                     todo : { name : "gotoProject", parameters : 1 },
-                    css : 'btn btn-primary btn-sm'
+                    css : 'btn bg-turquaz-d btn-sm'
                 },
                 {
                     title : "Dismiss",
                     todo : { name : "dismissNotify", parameters : 2 },
-                    css : 'btn btn-default btn-sm'
+                    css : 'btn bg-clouds-d btn-sm'
                 }
             ]
         }
     ];
 
     notify.view = function(ctrl){
-        console.log("Notify List:", notify.list);
+//        console.log("Notify List:", notify.list);
         return m('ul.no-bullets', [
             notify.list.map(function(item){
-                return m('li.ht-panel', { "class" : "alert alert-"+item.type} , [
+                return m('li.ht-panel', { "class" : item.css} , [
                     m('.ht-panel-body', item.text),
                     m('.ht-panel-footer', [
                          m('ul.no-bullets', [
@@ -199,7 +201,7 @@ app.rescon = require('../components/rescon/rescon');
                     self.widgetize();
                 },
                 create : function(){
-                    console.log("Resizable created");
+//                    console.log("Resizable created");
                 }
             } );
 
@@ -222,7 +224,7 @@ app.rescon = require('../components/rescon/rescon');
                         height: 200,
                         overflow : 'hidden'
                     });
-                    console.log(ui.offset)
+//                    console.log(ui.offset)
                     self.temp.fromObj = {};     // empty temp objects so we don't use any of these values accidentally
                     self.temp.toObj = {};
                     var from = {
@@ -231,7 +233,7 @@ app.rescon = require('../components/rescon/rescon');
                         widget : ui.item.index()
                     };
                     self.temp.fromObj = from; // assign the from object
-                    console.log(ui.item);
+//                    console.log(ui.item);
                 },
                 stop : function(event, ui){     // get the widget placement that we want the original widget to drop to
                     var to = {
@@ -242,15 +244,13 @@ app.rescon = require('../components/rescon/rescon');
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
                     $('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
-                    console.log("-----");
-                    console.log(self.modules());
-                    console.log("-----");
+
                     self.localExpose = false;
                     m.redraw();
                     self.cleanDOM();
                 },
                 over : function(event, ui){
-                        console.log(event, ui);
+//                        console.log(event, ui);
                         var widgets = $(event.target).children('.ht-widget');
                         var totalWidgets  = widgets.length;
                         $(event.target).children('.ht-widget').each(function(){
@@ -267,19 +267,18 @@ app.rescon = require('../components/rescon/rescon');
             });
         };
         this.widgetize = function(){
-            console.log("---")
             $('.ht-widget').each(function(){
                 var width = $(this).outerWidth();
                 var height = $(this).height();
                 var color = $(this).find('.ht-widgetize').attr('data-color');
-                console.log(color);
+//                console.log(color);
                 if(width < 300 ){
                     $(this).find('.ht-widget-body').addClass(color);
-                    $(this).find('.ht-widget-header').removeClass('bg-babyblue').addClass(color+' t-light');
+                    $(this).find('.ht-widget-header').removeClass('bg-opaque-white-md').addClass(color+' t-light').removeClass('bg-white');
                     $(this).css({ height : (height-1)+'px'});
                 } else {
                     $(this).find('.ht-widget-body').removeClass(color);
-                    $(this).find('.ht-widget-header').addClass('bg-babyblue').removeClass('t-light').removeClass(color);
+                    $(this).find('.ht-widget-header').addClass('bg-opaque-white-md').removeClass('t-light').removeClass(color).addClass('bg-white');
                     $(this).css({ height : (height+1)+'px'});
                 }
             })
@@ -484,7 +483,7 @@ app.rescon = require('../components/rescon/rescon');
             });
         }
         this.calculateContentLength = function(){
-            var totalLength = 20; // This is not a good number, why does this work right?
+            var totalLength = 4; // ht-content padding
             self.modules().map(function(module){
                 if(module.show){
                     var thisWidth = 60+20+20+410; //  60 : width of the add column bar; 22: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
@@ -518,15 +517,28 @@ app.rescon = require('../components/rescon/rescon');
             m.redraw(); // We shouldn't need to redraw but apparently we do. Need to check that.
         };
         this.addModule = function() {
-            var clrs = ["maroon", "purple", "fuchsia",  "red",  "orange",   "yellow",   "aqua", "olive",    "teal", "green",    "lime", "blue", "navy"];
-            var randomNumber = Math.floor(Math.random()*clrs.length);
+            var clrs = ["emerald-d", "river-d", "turquaz-d",  "wisteria-d",  "asphalt-l",   "sunflower-d",   "carrot-d", "alizarin-d"];
+            var lastModuleColor = self.modules()[self.modules().length-1].color;
+            var getNonIdenticalColor = function redo (){
+                var randomNumber = Math.floor(Math.random()*clrs.length);
+                var oldColor = lastModuleColor;
+                var newColor = clrs[randomNumber];
+                console.log('random number', randomNumber, "newcolor", newColor, "oldColor", oldColor);
+                if(newColor === oldColor){
+                    redo();
+                } else {
+                    return newColor;
+                }
+            }
+            var color = getNonIdenticalColor();
+
             // This will eventually be selected from lists
             var moduleId = Math.floor((Math.random() * 100000) + 1)+3;
             var col1Id = Math.floor((Math.random() * 100000) + 1)+6;
             var col2Id = Math.floor((Math.random() * 100000) + 1)+6;
 
             self.modules().push(
-                new build.module("Added Module " + moduleId, moduleId, clrs[randomNumber], [
+                new build.module("Added Module " + moduleId, moduleId, color, [
                     new build.column(620, [
                         new build.widget(col1Id, "Widget " + col1Id),
                         new build.widget(col2Id, "Widget " + col2Id)
@@ -628,7 +640,7 @@ app.rescon = require('../components/rescon/rescon');
                     }
                 }
 
-                var ht_head_width = window_width -105; // allowing room for expose buttons, element width is px
+                var ht_head_width = window_width; // allowing room for expose buttons, element width is px
                 // var ht_head_width = window_width -500; // allowing room for expose buttons, element width is 75px
                 var ht_content_width = totalLength;
 
@@ -652,7 +664,7 @@ app.rescon = require('../components/rescon/rescon');
 
                         var use_width = (window_width > ht_content_width) ? window_width : ht_content_width;
                         // use width is width of the whole page 
-                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()+20))/(use_width-20)*ht_head_width + remainder;
+                        var width = (($('.ht-tab[data-id="'+o.id+'"]').outerWidth()+20))/(use_width-4)*ht_head_width + remainder;
                         var adjWidth = Math.floor(width);
                         actual_ht_head += adjWidth;
                         remainder = width - adjWidth;
@@ -674,16 +686,18 @@ app.rescon = require('../components/rescon/rescon');
             var window_height = $(window).height() + 15;
 
                 // heights :
-                var ht_wrapper_height = window_height-45; // Remaining elements height is 45px, ht-head and ht-slider-wrap
-                var ht_tab_height = ht_wrapper_height-35; // wrapping parent ht-content has a total of 20px padding on top and bottom;
+                var ht_wrapper_height = window_height-65; // Remaining elements height is 65px, ht-head and ht-slider-wrap + navbar
+                var ht_tab_height = ht_wrapper_height-23; // wrapping parent ht-content has a total of 20px padding on top and bottom;
                 var ht_tab_content_height = ht_tab_height-1;
                 var ht_column_height =  ht_tab_content_height-10;
                 $('.ht-tab').css({ height: ht_tab_height + 'px'}); // tab h
                 $('.ht-tab-content').css({ height: ht_tab_content_height+'px'}); // content h
                 $('.ht-column').css({height: ht_column_height});  // widget column heigh
-                $('.ht-add-column').css({height: ht_column_height}); // new col button height
+                $('.ht-add-column').css({height: (ht_column_height-7)+'px'}); // new col button height
                 $('#ht-wrapper').css({ height: ht_wrapper_height + "px" } ); // content h
                 $('.ht-aside').css({ height : window_height + 'px' })
+                $('.dashboardList').css({ height : (ht_column_height-300) + 'px' })
+
                 self.resizeWidgets();
                 self.eventsOn();
             }
@@ -694,11 +708,11 @@ app.rescon = require('../components/rescon/rescon');
             self.reformatWidth();
         };
         this.widgetInit = function(element) {
-            console.log("Element", element);
+//            console.log("Element", element);
             if (self.temp.scrollTo && $(self.temp.scrollTo).get(0)) {
                 $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
             }
-            console.log("Scrollto here:", self.temp.scrollTo);
+//            console.log("Scrollto here:", self.temp.scrollTo);
             self.resizeWidgets();
             var module = self.modules()[self.modules().length-1];
             var column = module.columns[module.columns.length-1];
@@ -759,7 +773,7 @@ app.rescon = require('../components/rescon/rescon');
                          }
                      }
                  })
-                 console.log(open);
+//                 console.log(open);
 
              })
          }
@@ -797,7 +811,7 @@ app.rescon = require('../components/rescon/rescon');
                               if ( w_index > -1 ) {
                                   if(!self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build){
                                       self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build = true;
-                                      console.log("self.virtualModel["+m_index+"].columns["+c_index+"].widgets["+w_index+"].checks.build ",self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build                                      )
+//                                      console.log("self.virtualModel["+m_index+"].columns["+c_index+"].widgets["+w_index+"].checks.build ",self.virtualModel[m_index].columns[c_index].widgets[w_index].checks.build                                      )
                                   } else {
                                       // remove this node
                                       $(this).remove();
@@ -817,7 +831,7 @@ app.rescon = require('../components/rescon/rescon');
              console.log("ModulID", moduleID);
              // Toggle view
              self.modules().map(function(mod){
-                 console.log(mod.id)
+//                 console.log(mod.id)
                  if(mod.id == moduleID ){
                      mod.show = !mod.show;
                  }
@@ -847,7 +861,7 @@ app.rescon = require('../components/rescon/rescon');
 
          // ASIDE TAB
          this.asideInit = function(){
-             console.log("Init ran");
+             console.log("Aside Init ran");
              self.reformatWidth();
          }
          this.asideClick = function(){
@@ -1093,6 +1107,38 @@ app.rescon = require('../components/rescon/rescon');
                ])
             } else {
                 return [
+                    m('.navbar.navbar-fixed-top.ht-navbar', [
+                        m('.container-fluid', [
+                            m('.row', [
+                                m('.col-xs-4', [
+                                    m('.navbar-brand', "Open Science FrameWork")
+
+                                ]),
+                                m('.col-xs-4', [
+                                    m('.navbar-form.navbar-left[role="search"]', [
+                                        m(".form-group", [
+                                            m(".input-group", [
+                                                m("input.form-control.ht-input-search.input-sm.b-r-md.p-sm[placeholder='Search all things...'][type='text']", { style : "width:300px;"}),
+                                                m("span.input-group-btn", [
+                                                    m("button.ht-btn-search.btn.btn-sm.b-r-md[type='submit']", [m("i.fa.fa-search")])
+                                                ])
+                                            ])
+                                        ])
+                                    ])
+                                ]),
+                                m('.col-xs-4', [
+                                    m("div.appBtnDiv", [
+                                        m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('i.fa.fa-th-large')]),
+                                        m("span.appBtn",  {onclick : ctrl.addModule }, [m('i.fa.fa-plus')] ),
+                                        m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
+                                        m("span.appBtn",  [m('i.fa.fa-sign-out')])
+                                    ])
+                                ])
+                            ])
+
+
+                        ])
+                    ]),
                     m(".ht-head-wrapper", [
                         m("[id='ht-head']", [
                             ctrl.modules().map(function(module, module_index, module_array){
@@ -1100,17 +1146,11 @@ app.rescon = require('../components/rescon/rescon');
                                     return m(".ht-hdiv.bg-"+module.color, { "data-hid" : module.id}, [m("span.ht-hdiv-content", module.title)] );
                                 }
                             })
-                        ]),
-                        m("div.appBtnDiv", [
-                            m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('.i.fa.fa-th-large')]),
-                            m("span.appBtn",  {onclick : ctrl.addModule }, [m('.i.fa.fa-plus')] ),
-                            m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('.i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
-
                         ])
                     ]),
                     (function(){
                         if(ctrl.asideOpen){
-                            return m('.ht-aside', {config : ctrl.asideInit }, [
+                            return m('.ht-aside.bg-asphalt-l', {config : ctrl.asideInit }, [
                                 m('h2.skinnyFont.t-a-c.t-light', "Notifications"),
                                 notify.view(ctrl)
                             ])
@@ -1122,28 +1162,21 @@ app.rescon = require('../components/rescon/rescon');
                             ctrl.modules().map(function(module, module_index, module_array){
                                 if(module.show){
                                     if(module.minimize){
-                                        return [m(".ht-tab.ht-tab-minimized.ht-light-shadow", {'data-index' : module_index, 'data-id' : module.id}, [
+                                        return [m(".ht-tab.ht-tab-minimized.b-r-xs", {'data-index' : module_index, 'data-id' : module.id}, [
                                             m(".ht-tab-header", {  "data-bg" : module.color, "class" : 'bg-'+module.color }, [
                                                 m(".ht-windowBtn", [
                                                     m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }}),
                                                     m("i.fa.fa-plus", { onclick : function(){ ctrl.toggleModule(module_index, false );} } )
                                                 ])
                                             ]),
-                                            m(".ht-tab-content", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
+                                            m(".ht-tab-content.b-r-xs", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                         ])];
                                     }else {
-                                        return [m(".ht-tab.ht-light-shadow", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
-//                                        m(".ht-tab-header", {  "data-bg" : module.color }, [
-//                                            m("h3", module.title),
-//                                            m(".ht-windowBtn", [
-//                                                m("i.fa.fa-minus", { onclick : function(){ ctrl.toggleModule(module_index, true );}}),
-//                                                m("i.fa.fa-times", { onclick : function(){ ctrl.removeModule(module_index); }})
-//                                            ])
-//                                        ]),
-                                            m(".ht-tab-content", { 'class' :' bg-'+module.color }, [
+                                        return [m(".ht-tab.b-r-xs", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
+                                            m(".ht-tab-content.b-r-xs", { 'class' :' bg-'+module.color }, [
                                                 m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
                                                     m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
-                                                        m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                        m(".ht-widget-body", [ m("div.widget-body-inner.ht-title-widget",{ id : "dashboardwidget"+module.id }, [
                                                                 (function(){
                                                                     var marked = "";
                                                                     if(module.bookmarked){ marked = "ht-opaque-active"; }
@@ -1156,10 +1189,11 @@ app.rescon = require('../components/rescon/rescon');
                                                                     }
                                                                 }()),
 
-                                                                m('h2.m-t-xl.m-b-xl', module.title),
+                                                                m('h2.m-t-xl.m-b-md', module.title),
+                                                                m('p.m-t-md.m-b-xl', module.about),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
+                                                                        return m('li', { "class" : link.css+" ht-widget-btn", 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
                                                                     })
                                                                 ])
                                                             ]
@@ -1171,6 +1205,7 @@ app.rescon = require('../components/rescon/rescon');
                                                         return m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:260px"},  [
                                                             m(".ht-widget.no-border", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
                                                                 m(".ht-widget-body", [ m("div.widget-body-inner",{ id : "dashboardwidget"+module.id }, [
+                                                                        m('h3.f-3.text-center', "Bookmarks"),
                                                                         module.bookmarks.map(function(b){
                                                                             var status = "bg-opaque-white";
                                                                             if (b.open){ var status = "bg-"+b.color }
@@ -1195,7 +1230,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                             return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
-                                                                                        return m(".ht-widget-header", [
+                                                                                        return m(".ht-widget-header.bg-opaque-white-md", [
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
                                                                                                 m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
@@ -1210,7 +1245,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                                     }
                                                                                 })(),
 
-                                                                                m(".ht-widget-body", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
+                                                                                m(".ht-widget-body.bg-white", [m("div.widget-body-inner",{ id : "widget"+widget.id, config : ctrl.reformat },
                                                                                     (function(){
                                                                                         return app[widget.type].view(ctrl.controllers[widget.id]);}
                                                                                         )()
@@ -1358,51 +1393,65 @@ comments.controller = function (){
 
 // Loads commenting form and list of comments
 comments.view = function(ctrl){
-    return m(".container-fluid", [m(".row", [
-        m(".col-sm-12", [
-            m(".col-xs-12[id='cm-comment']", [
-                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
-                 ]),
-                m("hr"),
-                m("[id='cm-boxWrapper']", [
-                    m(".row", [
-                        m(".col-xs-9", [
-                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
-                        ]),
-                        m(".col-xs-3", [
-                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
-                        ])
+    return [ m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-navy" }, [
+        m('.p-md.text-center.t-light.no-flow', [
+            m('h2', ctrl.comments().length),
+            m('p.lead', "Comments "),
+            m('.f-3',[
+                m('div.b-b-xs.m-b-xs', "Latest: "),
+                m("span.f-6", ctrl.comments()[0].username),
+                m('span', " said '"),
+                m("span", ctrl.comments()[0].content),
+                m('span', "' on "),
+                m("i", ctrl.comments()[0].date)
+            ])
+        ])
+    ]),
+        m('.hidden-xs.ht-page.p-lg', [
+            m(".container-fluid", [m(".row", [
+                m(".col-sm-12", [
+                    m(".col-xs-12[id='cm-comment']", [
+                        m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
                     ]),
-                    m(".row", [
-                        m(".col-xs-12[id='cm-commentList']", [
-                            m("table.table.table-condensed", [
-                                m("tbody", [
-                                    ctrl.comments().map(function(comment, index){
-                                        if(comment.show){
-                                            return m("tr", [
-                                                m("td", [
-                                                    m("b", comment.username)
-                                                ]),
-                                                m("td", comment.content),
-                                                m("td", [
-                                                    m("span.text-muted", comment.date)
+                    m("hr"),
+                    m("[id='cm-boxWrapper']", [
+                        m(".row", [
+                            m(".col-xs-9", [
+                                m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
+                            ]),
+                            m(".col-xs-3", [
+                                m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
+                            ])
+                        ]),
+                        m(".row", [
+                            m(".col-xs-12[id='cm-commentList']", [
+                                m("table.table.table-condensed", [
+                                    m("tbody", [
+                                        ctrl.comments().map(function(comment, index){
+                                            if(comment.show){
+                                                return m("tr", [
+                                                    m("td", [
+                                                        m("b", comment.username)
+                                                    ]),
+                                                    m("td", comment.content),
+                                                    m("td", [
+                                                        m("span.text-muted", comment.date)
+                                                    ])
                                                 ])
-                                            ])
-                                        }
-                                    })
+                                            }
+                                        })
+                                    ])
                                 ])
                             ])
                         ])
                     ])
                 ])
             ])
-        ]),
-        m(".col-sm-4.col-xs-12", [
-            m("[id='cm-logs']", [
 
             ])
         ])
-    ])
+
+    ]
 }
 
 module.exports = comments;
@@ -1531,10 +1580,17 @@ logs.view = function(ctrl){
             m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-blue" }, [
                 m('.p-md.text-center.t-light.no-flow', [
                     m('h2', logs.List().length),
-                    m('p.lead', "Comments")
+                    m('p.lead', "Recent Activities"),
+                    m('',[
+                        m('div.b-b-xs.m-b-xs', "Latest: "),
+                        m("a[href='user/1']", logs.List()[0].logUser),
+                        " ",
+                        m("span.logText", logs.List()[0].logText),
+                        m("i", logs.List()[0].logContent)
+                    ])
                 ])
             ]),
-            m('.hidden-xs', [
+            m('.hidden-xs.ht-page', [
                 m('.p-md', [
                     m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.modalShow = true; }}, "Show Modal"),
                     m('.btn.btn-default.m-b-md', { onclick : function(){ ctrl.alertShow = true; }}, "Show Alert"),

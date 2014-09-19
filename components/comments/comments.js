@@ -68,51 +68,65 @@ comments.controller = function (){
 
 // Loads commenting form and list of comments
 comments.view = function(ctrl){
-    return m(".container-fluid", [m(".row", [
-        m(".col-sm-12", [
-            m(".col-xs-12[id='cm-comment']", [
-                m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
-                 ]),
-                m("hr"),
-                m("[id='cm-boxWrapper']", [
-                    m(".row", [
-                        m(".col-xs-9", [
-                            m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
-                        ]),
-                        m(".col-xs-3", [
-                            m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
-                        ])
+    return [ m('.visible-xs.ht-widgetize', { "data-color" : "bg-flat-navy" }, [
+        m('.p-md.text-center.t-light.no-flow', [
+            m('h2', ctrl.comments().length),
+            m('p.lead', "Comments "),
+            m('.f-3',[
+                m('div.b-b-xs.m-b-xs', "Latest: "),
+                m("span.f-6", ctrl.comments()[0].username),
+                m('span', " said '"),
+                m("span", ctrl.comments()[0].content),
+                m('span', "' on "),
+                m("i", ctrl.comments()[0].date)
+            ])
+        ])
+    ]),
+        m('.hidden-xs.ht-page.p-lg', [
+            m(".container-fluid", [m(".row", [
+                m(".col-sm-12", [
+                    m(".col-xs-12[id='cm-comment']", [
+                        m("input.form-control.input-sm[placeholder='filter'][type='text']", { onkeyup: ctrl.runFilter, value : ctrl.filterText()} )
                     ]),
-                    m(".row", [
-                        m(".col-xs-12[id='cm-commentList']", [
-                            m("table.table.table-condensed", [
-                                m("tbody", [
-                                    ctrl.comments().map(function(comment, index){
-                                        if(comment.show){
-                                            return m("tr", [
-                                                m("td", [
-                                                    m("b", comment.username)
-                                                ]),
-                                                m("td", comment.content),
-                                                m("td", [
-                                                    m("span.text-muted", comment.date)
+                    m("hr"),
+                    m("[id='cm-boxWrapper']", [
+                        m(".row", [
+                            m(".col-xs-9", [
+                                m("textarea.ht-comment-box", {onchange: m.withAttr("value", ctrl.content), value: ctrl.content()})
+                            ]),
+                            m(".col-xs-3", [
+                                m("button.btn.btn-default.btn-block.btn-lg", {onclick: ctrl.add}, " Add ")
+                            ])
+                        ]),
+                        m(".row", [
+                            m(".col-xs-12[id='cm-commentList']", [
+                                m("table.table.table-condensed", [
+                                    m("tbody", [
+                                        ctrl.comments().map(function(comment, index){
+                                            if(comment.show){
+                                                return m("tr", [
+                                                    m("td", [
+                                                        m("b", comment.username)
+                                                    ]),
+                                                    m("td", comment.content),
+                                                    m("td", [
+                                                        m("span.text-muted", comment.date)
+                                                    ])
                                                 ])
-                                            ])
-                                        }
-                                    })
+                                            }
+                                        })
+                                    ])
                                 ])
                             ])
                         ])
                     ])
                 ])
             ])
-        ]),
-        m(".col-sm-4.col-xs-12", [
-            m("[id='cm-logs']", [
 
             ])
         ])
-    ])
+
+    ]
 }
 
 module.exports = comments;
