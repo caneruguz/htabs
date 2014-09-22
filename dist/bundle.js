@@ -1129,6 +1129,12 @@ app.forks = require('../components/forks/forks');
 app.activity = require('../components/activity/activity');
 app.statistics = require('../components/statistics/statistics');
 
+
+app.first = require('../components/first/first');
+app.second= require('../components/second/second');
+app.third= require('../components/third/third');
+
+
 app.rescon = require('../components/rescon/rescon');
 
    // Initialize the mithril application module. -- this will be broken down in larger implementation
@@ -1167,7 +1173,7 @@ app.rescon = require('../components/rescon/rescon');
         this.new = false;
     };
     // Widget Model
-    build.widget = function(id, title, content, iframeLink, hideHeader ){
+    build.widget = function(id, title, type, content, iframeLink, hideHeader ){
         this.id = id;
         this.title = title || "Widget Title";
         this.content = content || "Lorem ipsum dolor sit amet";
@@ -1176,7 +1182,7 @@ app.rescon = require('../components/rescon/rescon');
         this.height = 300;
         this.display = true;
         this.hideHeader = hideHeader;
-        this.type = "comments";
+        this.type = type || "comments";
         this.css = "";
         this.data = "";
     };
@@ -1273,6 +1279,7 @@ app.rescon = require('../components/rescon/rescon');
              self.modules().map(function(module) {
                  module.columns.map(function(column) {
                      column.widgets.map(function(widget){
+//                         console.log(widget);
                          controllers[widget.id] = new app[widget.type].controller
                      });
                  });
@@ -1386,16 +1393,17 @@ app.rescon = require('../components/rescon/rescon');
                 var width = $(this).outerWidth();
                 var height = $(this).height();
                 var color = $(this).find('.ht-widgetize').attr('data-color');
-//                console.log(color);
+//                console.log("Color ", color);
                 if(width < 300 ){
-                    $(this).find('.ht-widget-body').addClass(color);
-                    $(this).find('.ht-widget-header').removeClass('bg-opaque-white-md').addClass(color+' t-light').removeClass('bg-white');
+                    $(this).children('.ht-widget-body').addClass(color);
+                    $(this).children('.ht-widget-header').removeClass('bg-opaque-white-md').addClass(color+' t-light').removeClass('bg-white');
                     $(this).css({ height : (height-1)+'px'});
                 } else {
-                    $(this).find('.ht-widget-body').removeClass(color);
-                    $(this).find('.ht-widget-header').addClass('bg-opaque-white-md').removeClass('t-light').removeClass(color).addClass('bg-white');
+                    $(this).children('.ht-widget-body').removeClass(color);
+                    $(this).children('.ht-widget-header').addClass('bg-opaque-white-md').removeClass('t-light').removeClass(color).addClass('bg-white');
                     $(this).css({ height : (height+1)+'px'});
                 }
+//                console.log($(this).children('.ht-widget-body').attr('class'))
             })
         }
         this.init = function(element, isInitialized){
@@ -1441,7 +1449,7 @@ app.rescon = require('../components/rescon/rescon');
                 }
                 // numbers 1 - 9 take you through these module indexes
                 if(e.keyCode >  48 && e.keyCode < 58){
-                    console.log(e.keyCode);
+//                    console.log(e.keyCode);
                     var index = e.keyCode - 49;
                     $('#ht-wrapper').scrollTo($('.ht-tab[data-index="'+index+'"]'), 150,  {offset:-50});
                 }
@@ -1478,7 +1486,7 @@ app.rescon = require('../components/rescon/rescon');
                     self.modules()[from.module].columns[from.column].widgets.splice(from.widget+1, 1);
                 }
             }
-            console.log(self.modules())
+//            console.log(self.modules())
             // console.log("widget moved", from, to);
             // console.log(self.modules());
             self.reformatWidth();   // We need to redo sizes. Maybe we should push this to resize Widgets.
@@ -1540,10 +1548,10 @@ app.rescon = require('../components/rescon/rescon');
                 cursor : "move",
                 helper : "clone",
                 beforeStop : function(event, ui){
-                    console.log(ui.item.index());
+//                    console.log(ui.item.index());
                     self.temp.stopIndex = ui.item.index();
                     $( ".expose-modules").sortable( "cancel" );
-                    console.log("Start", self.temp.startIndex, "Stop", self.temp.stopIndex );
+//                    console.log("Start", self.temp.startIndex, "Stop", self.temp.stopIndex );
                     self.moveModule(self.temp.startIndex, self.temp.stopIndex);
                 },
                 start : function(event, ui){
@@ -1566,7 +1574,7 @@ app.rescon = require('../components/rescon/rescon');
 //
             self.localExpose = true; // We can run expose in mithril view
 //            self.canReformat = false; // Deactivate reformatting -- is this still necessary? yes but because we are using the same tab classes. Keep it for now.
-            console.log(self.canReformat);
+//            console.log(self.canReformat);
         };
         this.endExpose = function(){
             // Return view to normal
@@ -1593,8 +1601,8 @@ app.rescon = require('../components/rescon/rescon');
                 var width = (baseWidth)/(modlens);   // The ratio of this module over all modules
                 var adjwidth = width*(windowWidth-(40*self.modules().length)-adjpadding/2); // calculate width, taking into account proper padding
                 module.exposeWidth = adjwidth; // assign the new widths to the model object
-                console.log(baseWidth, modlens, adjwidth);
-                console.log("Expose width", module.exposeWidth);
+//                console.log(baseWidth, modlens, adjwidth);
+//                console.log("Expose width", module.exposeWidth);
             });
         }
         this.calculateContentLength = function(){
@@ -1638,7 +1646,7 @@ app.rescon = require('../components/rescon/rescon');
                 var randomNumber = Math.floor(Math.random()*clrs.length);
                 var oldColor = lastModuleColor;
                 var newColor = clrs[randomNumber];
-                console.log('random number', randomNumber, "newcolor", newColor, "oldColor", oldColor);
+//                console.log('random number', randomNumber, "newcolor", newColor, "oldColor", oldColor);
                 if(newColor === oldColor){
                     redo();
                 } else {
@@ -1655,14 +1663,14 @@ app.rescon = require('../components/rescon/rescon');
             self.modules().push(
                 new build.module("Added Module " + moduleId, moduleId, color, [
                     new build.column(620, [
-                        new build.widget(col1Id, "Widget " + col1Id),
-                        new build.widget(col2Id, "Widget " + col2Id)
+                        new build.widget(col1Id, "Widget " + col1Id, "comments"),
+                        new build.widget(col2Id, "Widget " + col2Id, "activity")
                     ])
                 ])
             );
             self.applyModules();
             self.temp.scrollTo = '.ht-tab[data-id="'+ moduleId + '"]';
-            console.log(self.temp.scrollTo);
+//            console.log(self.temp.scrollTo);
 
         };
         this.removeModule = function(module_index){
@@ -1687,7 +1695,7 @@ app.rescon = require('../components/rescon/rescon');
 //           self.reformat();
             //m.redraw();
             self.calculateExposeWidths();
-            console.log(self.modules()[index].exposeWidth)
+//            console.log(self.modules()[index].exposeWidth)
 
         };
 
@@ -1748,7 +1756,7 @@ app.rescon = require('../components/rescon/rescon');
 
                 if(self.focusMode){
                     if(window_width > 1200) {
-                        $('#ht-focus-wrap').css('width',  '1200px');
+                    $('#ht-focus-wrap').css('width',  '1200px');
                     } else {
                         $('#ht-focus-wrap').css('width',  window_width + 'px');
 
@@ -1837,7 +1845,6 @@ app.rescon = require('../components/rescon/rescon');
                 self.temp.scrollTo = "";
             }
             self.widgetize();
-
         }
         self.saveColumnSize = function(){
             for(var i = 0; i < self.modules().length; i++){
@@ -1850,16 +1857,19 @@ app.rescon = require('../components/rescon/rescon');
          this.loadLink = function(e){
              var event = e || window.event;
              var link = $(event.target);
-             var type = link.attr('data-type');
+             var type = link.closest('li').attr('data-type');
              var title = link.text();
              var index = link.closest('.ht-tab').attr('data-index');
-             console.log("type : " , type);
+//             console.log("event : " , event);
+//             console.log("type : " , type);
              // is this module type already open?
              var open = false;
              self.modules()[index].columns.map(function(col, c_index, c_array){
                  col.widgets.map(function(w, w_index, w_array){
                      if(w.type == type){
-                         open = true;
+                         w_array.splice(w_index, 1);
+                         link.parent().removeClass('ht-open');
+                        open = true;
                      }
                      // if this is the last widget of the last column
                      if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
@@ -1881,16 +1891,20 @@ app.rescon = require('../components/rescon/rescon');
                              }
                              c_array.push( new build.column(620, [ widget ]));
                              self.applyModules();
-                             var selector = $('.ht-widget[data-id='+randomNumber+']');
+                             var selector = '.ht-widget[data-id='+randomNumber+']';
                              console.log("Selector", selector)
                              self.temp.scrollTo = selector;
-                             console.log(c_array);
+//                             console.log(c_array);
+                             link.closest('li').addClass('ht-open');
                          }
+
+
                      }
                  })
 //                 console.log(open);
 
              })
+             self.reformatWidth();
          }
          this.createVirtual = function(){
              // Repopulate the virtual model array
@@ -1911,7 +1925,7 @@ app.rescon = require('../components/rescon/rescon');
                  }
                 self.virtualModel.push(module);
              })
-             console.log("Virtual Model", self.virtualModel);
+//             console.log("Virtual Model", self.virtualModel);
          }
          this.cleanDOM = function(){
              // Clean up the DOM so that widgets that are viewed correspond to the view. If widget not shown throw error, if extra widget is shown remove it.
@@ -1943,7 +1957,7 @@ app.rescon = require('../components/rescon/rescon');
              var event = event || window.event;
              var module = $(event.target).parent();
              var moduleID = module.attr('data-mid');
-             console.log("ModulID", moduleID);
+//             console.log("ModulID", moduleID);
              // Toggle view
              self.modules().map(function(mod){
 //                 console.log(mod.id)
@@ -1976,7 +1990,7 @@ app.rescon = require('../components/rescon/rescon');
 
          // ASIDE TAB
          this.asideInit = function(){
-             console.log("Aside Init ran");
+//             console.log("Aside Init ran");
              self.reformatWidth();
          }
          this.asideClick = function(){
@@ -2043,28 +2057,28 @@ app.rescon = require('../components/rescon/rescon');
                      var element;
                      switch(direction){
                         case "up" :
-                            console.log(target_module);
+//                            console.log(target_module);
                             element = $(".ht-mobile-module[data-index="+(parseInt(target_module)+1)+"]")
                             if(element.length > 0){
                                 $('#ht-mobile-content').scrollTo(element, dist,  {offset:0});
                             }
                             break;
                         case "down":
-                            console.log(target_module);
+//                            console.log(target_module);
                             element = $(".ht-mobile-module[data-index="+(parseInt(target_module)-1)+"]")
                             if(element.length > 0){
                                  $('#ht-mobile-content').scrollTo(element, dist,  {offset:0});
                             }
                             break;
                         case "left" :
-                            console.log(target_module);
+//                            console.log(target_module);
                             var element = $(this).next();
                             if(element.length > 0){
                                 $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, dist,  {offset:0});
                             }
                             break;
                         case "right" :
-                            console.log(target_module);
+//                            console.log(target_module);
                             var element = $(this).prev();
                             if(element.length > 0){
                                  $('.ht-mobile-module[data-index='+target_module+']').scrollTo(element, dist,  {offset:0});
@@ -2072,7 +2086,7 @@ app.rescon = require('../components/rescon/rescon');
                             break;
                     
                     }
-                        console.log("direction", direction, "fingerCount", fingerCount);
+//                        console.log("direction", direction, "fingerCount", fingerCount);
 
                  }
              });
@@ -2081,7 +2095,7 @@ app.rescon = require('../components/rescon/rescon');
          this.mobileModuleInit = function (){
              var mobileContentHeight = $(window).height()-50;
              var mobileContentWidth = $(window).width();
-             console.log(mobileContentHeight);
+//             console.log(mobileContentHeight);
              $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
              $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width' : mobileContentWidth+'px'})
          }
@@ -2215,7 +2229,7 @@ app.rescon = require('../components/rescon/rescon');
             ];
         } else {
             if(ctrl.focusMode){
-                return m('#ht-focus-wrap', { config : ctrl.focusInit }, [
+                return m('#ht-focus-wrap.animated.fadeIn', { config : ctrl.focusInit }, [
                     m('.ht-dismiss', { onclick : function(){ ctrl.focusMode = false; } }, [ m ('i.fa.fa-times')]),
                     m('h1.page-header', ctrl.focus.title),
                     app[ctrl.focus.type].view(ctrl.controllers[ctrl.focus.id])
@@ -2245,7 +2259,14 @@ app.rescon = require('../components/rescon/rescon');
                                     m("div.appBtnDiv", [
                                         m("span.exposeOpen.appBtn",  {onclick : ctrl.beginExpose }, [m('i.fa.fa-th-large')]),
                                         m("span.appBtn",  {onclick : ctrl.addModule }, [m('i.fa.fa-plus')] ),
-                                        m("span.appBtn",  { onclick : ctrl.asideClick  }, [m('i.fa.fa-bell.animated.tada', { style : "color:orange;"})]),
+                                        m("span.appBtn",  { onclick : ctrl.asideClick  }, [
+                                            m('i.fa.fa-bell.animated.tada', { style : "color:orange;"}),
+                                            (function(){
+                                                if(notify.list.length > 0 ){
+                                                    return m('span.ht-badge', notify.list.length);
+                                                }
+                                            }())
+                                        ]),
                                         m("span.appBtn",  [m('i.fa.fa-sign-out')])
                                     ])
                                 ])
@@ -2266,6 +2287,7 @@ app.rescon = require('../components/rescon/rescon');
                     (function(){
                         if(ctrl.asideOpen){
                             return m('.ht-aside.bg-asphalt-l', {config : ctrl.asideInit }, [
+                                m('.ht-dismiss', { onclick : function(){ ctrl.asideOpen = false; } }, [ m ('i.fa.fa-times')]),
                                 m('h2.skinnyFont.t-a-c.t-light', "Notifications"),
                                 notify.view(ctrl)
                             ])
@@ -2308,7 +2330,7 @@ app.rescon = require('../components/rescon/rescon');
                                                                 m('p.m-t-md.m-b-xl', module.about),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
                                                                     module.links.map(function(link){
-                                                                        return m('li', { "class" : link.css+" ht-widget-btn", 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
+                                                                        return m('li', { "class" : "ht-widget-btn " + link.css+" " + link.state, 'data-type' : link.action , onclick : ctrl.loadLink } , [m('i', {'class' : "ht-widget-icon uppercase pull-left fa " + link.icon}), m('span', {'class' : "ht-widget-btn-txt"}, link.title)]);
                                                                     })
                                                                 ])
                                                             ]
@@ -2407,7 +2429,7 @@ app.rescon = require('../components/rescon/rescon');
 };
 
 
-},{"../components/about/about":2,"../components/activity/activity":3,"../components/comments/comments":4,"../components/components/components":5,"../components/dashboard/dashboard":6,"../components/files/files":7,"../components/forks/forks":8,"../components/logs/logs":9,"../components/rescon/rescon":10,"../components/statistics/statistics":11,"../components/wiki/wiki":12}],2:[function(require,module,exports){
+},{"../components/about/about":2,"../components/activity/activity":3,"../components/comments/comments":4,"../components/components/components":5,"../components/dashboard/dashboard":6,"../components/files/files":7,"../components/first/first":8,"../components/forks/forks":9,"../components/logs/logs":10,"../components/rescon/rescon":11,"../components/second/second":12,"../components/statistics/statistics":13,"../components/third/third":14,"../components/wiki/wiki":15}],2:[function(require,module,exports){
 var about = {};
 
 about.html= m.prop("");
@@ -2570,7 +2592,7 @@ comments.view = function(ctrl){
 }
 
 module.exports = comments;
-},{"../logs/logs":9}],5:[function(require,module,exports){
+},{"../logs/logs":10}],5:[function(require,module,exports){
 var components = {};
 
 components.html= m.prop("");
@@ -2616,6 +2638,21 @@ files.view = function(ctrl){
 
 module.exports = files;
 },{}],8:[function(require,module,exports){
+var first = {};
+
+first.html= m.prop("");
+m.request({method: "GET", url: "../components/first/first.html", deserialize: function(value){ return value;  }}).then(first.html);
+
+first.controller = function(){
+    this.html = first.html;
+}
+
+first.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = first;
+},{}],9:[function(require,module,exports){
 var forks = {};
 
 forks.html= m.prop("");
@@ -2630,7 +2667,7 @@ forks.view = function(ctrl){
 }
 
 module.exports = forks;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 var logs = {};
 
@@ -2736,7 +2773,7 @@ logs.view = function(ctrl){
 }
 
 module.exports = logs;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var rescon = {};
 
 rescon.html= m.prop("");
@@ -2751,7 +2788,22 @@ rescon.view = function(ctrl){
 }
 
 module.exports = rescon;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+var second = {};
+
+second.html= m.prop("");
+m.request({method: "GET", url: "../components/second/second.html", deserialize: function(value){ return value;  }}).then(second.html);
+
+second.controller = function(){
+    this.html = second.html;
+}
+
+second.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = second;
+},{}],13:[function(require,module,exports){
 var statistics = {};
 
 statistics.html= m.prop("");
@@ -2766,7 +2818,22 @@ statistics.view = function(ctrl){
 }
 
 module.exports = statistics;
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+var third = {};
+
+third.html= m.prop("");
+m.request({method: "GET", url: "../components/third/third.html", deserialize: function(value){ return value;  }}).then(third.html);
+
+third.controller = function(){
+    this.html = third.html;
+}
+
+third.view = function(ctrl){
+    return m.trust(ctrl.html());
+}
+
+module.exports = third;
+},{}],15:[function(require,module,exports){
 var wiki = {};
 
 wiki.html= m.prop("");

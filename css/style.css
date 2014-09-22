@@ -1264,12 +1264,13 @@ p,
   color: rgba(255, 255, 255, 0.51);
 }
 .ht-widget-btn {
-  padding: 9px 7px;
+  padding: 9px 14px;
   font-size: 20px;
   line-height: 1.33;
   color: rgba(255, 255, 255, 0.67);
   text-transform: uppercase;
   font-weight: 200;
+  border-left: 4px solid rgba(255, 255, 255, 0.15);
 }
 .ht-widget-btn:hover {
   color: white;
@@ -1283,7 +1284,7 @@ p,
   top: 40px;
   z-index: 999;
   box-shadow: 2px 0px 9px 0px #000;
-  padding: 15px;
+  padding: 40px 15px;
 }
 .ht-panel {
   margin: 10px 0;
@@ -1369,6 +1370,26 @@ p,
 /* Scrollbars */
 ::-webkit-scrollbar {
   width: 10px;
+}
+.ht-open {
+  font-weight: 500;
+  color: #FFF;
+  border-left: 4px solid rgba(255, 255, 255, 0.69);
+  background: rgba(255, 255, 255, 0.07);
+}
+.ht-badge {
+  font-size: 10px;
+  background: #FF4C4C;
+  padding: 2px 0;
+  border-radius: 8px;
+  color: #FFF;
+  height: 16px;
+  width: 16px;
+  margin-left: -9px;
+  position: absolute;
+  top: 4px;
+  text-align: center;
+  box-shadow: 0 0 4px -1px #333333;
 }
 ::-webkit-scrollbar-track {
   background-color: rgba(195, 195, 195, 0.64);

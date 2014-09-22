@@ -17,13 +17,15 @@
                 "id" :  1,
                 "title" : "Reproducibility Project : Cancer Biology ",
                 "open": true,
-                "color" : "river-d"
+                "color" : "river-d",
+                "state" : "ht-closed"
             },
             {
                 "id" :  2,
                 "title" : "Example Project ",
                 "open": false,
-                "color" : "emerald-d"
+                "color" : "emerald-d",
+                "state" : "ht-closed"
             }
         ],
         "links" : [
@@ -31,28 +33,32 @@
                 "title": "Learn More About OSF ",
                 "action" : "",
                 "css" : "",
-                "icon" : "fa-flask"
+                "icon" : "fa-flask",
+                "state" : "ht-closed"
 
             },
             {
                 "title": "Explore Projects",
                 "action" : "",
                 "css" : "",
-                "icon" : "fa-globe"
+                "icon" : "fa-globe",
+                "state" : "ht-closed"
 
             },
             {
                 "title": "Documentation",
                 "action" : "",
                 "css" : "",
-                "icon" : "fa-file-o"
+                "icon" : "fa-file-o",
+                "state" : "ht-closed"
 
             },
             {
                 "title": "Help / Support",
                 "action" : "",
                 "css" : "",
-                "icon" : "fa-question"
+                "icon" : "fa-question",
+                "state" : "ht-closed"
 
             }
         ],
@@ -78,50 +84,51 @@
                 "title": "Components",
                 "action" : "components",
                 "css" : "",
-                "icon" : "fa-puzzle-piece"
+                "icon" : "fa-puzzle-piece",
+                "state" : "ht-closed"
             },
             {
                 "title": "Wiki",
                 "action" : "wiki",
                 "css" : "",
-                "icon" : "fa-pencil"
+                "icon" : "fa-pencil",
+                "state" : "ht-open"
             },
             {
                 "title": "Files",
                 "action" : "files",
                 "css" : "",
-                "icon" : "fa-files-o"
-            },
-            {
-                "title": "Statistics",
-                "action" : "statistics",
-                "css" : "",
-                "icon" : "fa-bar-chart-o"
+                "icon" : "fa-files-o",
+                "state" : "ht-closed"
             },
             {
                 "title": "About",
                 "action" : "about",
                 "css" : "",
-                "icon" : "fa-info"
+                "icon" : "fa-info",
+                "state" : "ht-closed"
             },
             {
                 "title": "Forks",
                 "action" : "forks",
                 "css" : "",
-                "icon" : "fa-code-fork"
+                "icon" : "fa-code-fork",
+                "state" : "ht-closed"
             },
             {
                 "title": "Activity",
                 "action" : "activity",
                 "css" : "",
-                "icon" : "fa-rss"
+                "icon" : "fa-rss",
+                "state" : "ht-closed"
             }
             ,
             {
                 "title": "Responsive",
                 "action" : "rescon",
                 "css" : "",
-                "icon" : "fa-smile-o"
+                "icon" : "fa-smile-o",
+                "state" : "ht-closed"
             }
         ],
         "columns" :[
@@ -196,22 +203,25 @@
         "bookmarked" : true,
         "links" : [
             {
-                "title": "Components",
-                "action" : "components",
+                "title": "Example Page",
+                "action" : "first",
                 "css" : "",
-                "icon" : "fa-puzzle-piece"
+                "icon" : "fa-puzzle-piece",
+                "state" : "ht-closed"
             },
             {
-                "title": "Wiki",
-                "action" : "wiki",
+                "title": "Second Test Page",
+                "action" : "second",
                 "css" : "",
-                "icon" : "fa-pencil"
+                "icon" : "fa-flask",
+                "state" : "ht-closed"
             },
             {
-                "title": "Files",
-                "action" : "files",
+                "title": "Responsive ",
+                "action" : "third",
                 "css" : "",
-                "icon" : "fa-files-o"
+                "icon" : "fa-files-o",
+                "state" : "ht-closed"
             }
         ],
         "columns" :[
