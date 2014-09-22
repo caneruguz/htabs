@@ -1,6 +1,4 @@
 bower_components/
 node_modules/
 .idea
-dist/bundle.css
-dist/bundle.js
 scripts/bundle.js
