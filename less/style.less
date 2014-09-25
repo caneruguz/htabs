@@ -142,18 +142,37 @@ h1, h2, h3, h4, h5, h6, p, .ui-widget {
     vertical-align: top;
 }
 .ht-expose-tab {
+  .ht-expose-tab-content {
+    color: white;
+  }
   .ht-tab;
-  background : white;
+  border: 1px solid rgba(102, 102, 102, 0.76);
+  .ht-expose-inner {
+    padding: 30px;
+    color: white;
+  }
+}
+.ht-expose-btn > div{
+  padding: 6px 20px;
+  font-size: 16px;
+  margin: 27px 5px;
 }
 .ht-tab-minimized {
   width: 60px;
   min-width: 60px;
+  color: white;
   .ht-tab-header {
     .ht-windowBtn {
       float : none;
       margin: 0;
     }
   }
+}
+.ht-tab-minimized .rotatedText {
+  width: 400px;
+  margin-left: -182px;
+  margin-top: 200px;
+  color: #FFF;
 }
 #ht-slider-bar{
   width:10px;
@@ -297,9 +316,15 @@ h1, h2, h3, h4, h5, h6, p, .ui-widget {
       font-size: 16px;
       font-weight: 200;
       color: #fff;
+      border-bottom: 1px solid rgba(204, 204, 204, 0);
+
       .fa {
         margin: 0 3px;
       }
+    }
+    .ht-widget-header:hover {
+      border-bottom: 1px solid #ccc;
+      cursor: move;
     }
     .ht-widget-body {
       overflow-y: hidden;
@@ -451,7 +476,7 @@ h1, h2, h3, h4, h5, h6, p, .ui-widget {
   left: 0;
   top: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: #858585;
   height:100%;
 }
 .exposeClose {
@@ -588,7 +613,7 @@ h1, h2, h3, h4, h5, h6, p, .ui-widget {
   width: 30px;
   height: 30px;
   background: #EEE;
-  padding: 5px 9px;
+  padding: 3px 9px;
   border-radius: 25px;
   color: #999;
   font-size: 16px;
@@ -668,6 +693,12 @@ h1, h2, h3, h4, h5, h6, p, .ui-widget {
   top: 4px;
   text-align: center;
   box-shadow: 0 0 4px -1px #333;
+}
+.ht-resize-zone {
+  height: 5px;
+  width: 100%;
+  background: #A9A9A9;
+  cursor: row-resize;
 }
 ::-webkit-scrollbar-track {
   background-color: rgba(195, 195, 195, 0.64);

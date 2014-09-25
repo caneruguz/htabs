@@ -2905,9 +2905,13 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .grande{width:600px}
 .venti{width:800px}
 .ht-tab{margin:0 2px;padding:0;display:inline-block;vertical-align:top}
-.ht-expose-tab{margin:0 2px;padding:0;display:inline-block;vertical-align:top;background:#fff}
-.ht-tab-minimized{width:60px;min-width:60px}
+.ht-expose-tab{margin:0 2px;padding:0;display:inline-block;vertical-align:top;border:1px solid rgba(102,102,102,.76)}
+.ht-expose-tab .ht-expose-tab-content{color:#fff}
+.ht-expose-tab .ht-expose-inner{padding:30px;color:#fff}
+.ht-expose-btn>div{padding:6px 20px;font-size:16px;margin:27px 5px}
+.ht-tab-minimized{width:60px;min-width:60px;color:#fff}
 .ht-tab-minimized .ht-tab-header .ht-windowBtn{float:none;margin:0}
+.ht-tab-minimized .rotatedText{width:400px;margin-left:-182px;margin-top:200px;color:#FFF}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
 .ghost-element{height:300px;width:300px;background:grey;opacity:.4}
 .ht-module-menu{position:absolute;margin-top:-25px;margin-left:-25px;margin-bottom:20px;text-align:center}
@@ -2931,8 +2935,9 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:#EEE;padding:0;margin:0;display:inline-block}
 .ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
-.ht-column .ht-widget .ht-widget-header{padding:15px 20px;font-size:16px;font-weight:200;color:#fff}
+.ht-column .ht-widget .ht-widget-header{padding:15px 20px;font-size:16px;font-weight:200;color:#fff;border-bottom:1px solid transparent}
 .ht-column .ht-widget .ht-widget-header .fa{margin:0 3px}
+.ht-column .ht-widget .ht-widget-header:hover{border-bottom:1px solid #ccc;cursor:move}
 .ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:0}
 .ht-column .ht-widget .ht-widget-body .widget-body-inner{height:100%;overflow-x:hidden;overflow-y:auto}
 .ht-column .ht-widget .ht-widget-body .ht-title-widget{overflow:hidden}
@@ -2955,7 +2960,7 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .rotatedText{font-weight:200;display:inline-block;width:215px;position:relative;margin-left:-88px;margin-top:200px}
 .rotatedText-expose{font-weight:200;display:inline-block;width:215px;position:relative;margin-left:6px;margin-top:44px;font-size:17px;height:182px;text-overflow:ellipsis}
 .ui-resizable-e{cursor:col-resize!important}
-#exposeDiv{position:absolute;left:0;top:0;width:100%;background:rgba(0,0,0,.7);height:100%}
+#exposeDiv{position:absolute;left:0;top:0;width:100%;background:#858585;height:100%}
 .exposeClose{color:#fff;position:absolute;top:20px;right:20px;font-size:30px}
 .expose-content{margin-top:200px;text-align:center}
 .expose-actions{margin-top:100px;color:#fff;font-size:31px;font-weight:100;font-family:'Trebuchet MS',sans-serif}
@@ -2981,7 +2986,7 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ht-panel-footer{padding:0;text-align:right}
 .ht-panel-action{margin:0 5px}
 .ht-modal-wrapper{padding:30px;background:#fff}
-.ht-dismiss{width:30px;height:30px;background:#EEE;padding:5px 9px;border-radius:25px;color:#999;font-size:16px;float:right;margin-top:-25px}
+.ht-dismiss{width:30px;height:30px;background:#EEE;padding:3px 9px;border-radius:25px;color:#999;font-size:16px;float:right;margin-top:-25px}
 .ht-modal-header{font-weight:200;font-family:Helvetica NEue;font-size:20px;margin:20px 0}
 .ht-modal-body{font-size:15px;margin:5px}
 .ht-alert-wrapper{background:#D1F5F1;padding:20px;border-bottom:1px solid #CCC}
@@ -2995,6 +3000,7 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 ::-webkit-scrollbar{width:10px}
 .ht-open{font-weight:500;color:#FFF;border-left:4px solid rgba(255,255,255,.69);background:rgba(255,255,255,.07)}
 .ht-badge{font-size:10px;background:#FF4C4C;padding:2px 0;border-radius:8px;color:#FFF;height:16px;width:16px;margin-left:-9px;position:absolute;top:4px;text-align:center;box-shadow:0 0 4px -1px #333}
+.ht-resize-zone{height:5px;width:100%;background:#A9A9A9;cursor:row-resize}
 ::-webkit-scrollbar-track{background-color:rgba(195,195,195,.64)}
 ::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2)}
 ::-webkit-scrollbar-button{background-color:#595959}
