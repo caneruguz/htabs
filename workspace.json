@@ -147,7 +147,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "compress"
                     }
                 ]
             },
@@ -166,7 +167,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "expand"
 
                     },
                     {
@@ -180,7 +182,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "expand"
                     }
                 ]
             }
@@ -259,7 +262,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "expand"
 
                     },
                     {
@@ -273,7 +277,8 @@
                         "display" : true,
                         "hideHeader" : true,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "expand"
                     }
                 ]
             },
@@ -292,7 +297,8 @@
                         "display" : true,
                         "hideHeader" : false,
                         "content" : "",
-                        "css" : ""
+                        "css" : "",
+                        "expandCss" : "compress"
                     }
                 ]
             }
