@@ -688,6 +688,9 @@ p,
 .opaque {
   background: rgba(255, 255, 255, 0.47);
 }
+.opaque-green {
+  background: rgba(173, 255, 166, 0.47);
+}
 .bg-white {
   background: white;
 }
@@ -933,11 +936,10 @@ p,
   opacity: 0.4;
 }
 .ht-module-menu {
-  position: absolute;
-  margin-top: -25px;
-  margin-left: -25px;
-  margin-bottom: 20px;
-  text-align: center;
+  position: relative;
+  margin-top: -10px;
+  margin-left: -10px;
+  color: #FFF;
 }
 .ht-module-menu .fa {
   padding: 10px 14px;
@@ -952,6 +954,9 @@ p,
 }
 .ht-module-menu .ht-opaque-active {
   background: rgba(255, 255, 255, 0.47);
+}
+.ht-module-menu .ht-opaque-green {
+  background: rgba(173, 255, 166, 0.47);
 }
 .ht-tab-header {
   color: white;

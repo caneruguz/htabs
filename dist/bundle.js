@@ -1487,7 +1487,7 @@ if (typeof define == "function" && define.amd) define(function() {return m})
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
 
                     self.localExpose = false;
-                    m.redraw();
+                    m.redraw(true);
                     self.cleanDOM();
                 },
                 over : function(event, ui){
@@ -1911,8 +1911,6 @@ if (typeof define == "function" && define.amd) define(function() {return m})
                 $('#ht-content').css('width', ht_content_width + 'px'); 
 
                 // Adjust s lider on changes
-
-
                 // $('.ht-slider-wrap').css('width', ht_head_width + 'px');
                 var remainder = 0;
                 var actual_ht_head = 0;
@@ -2481,20 +2479,19 @@ if (typeof define == "function" && define.amd) define(function() {return m})
                                         return [m(".ht-tab.b-r-xs", { 'class' : module.css +' bg-'+module.color , 'data-index' : module_index,  'data-id' : module.id} , [
                                             m(".ht-tab-content.b-r-xs", { 'class' :' bg-'+module.color }, [
                                                 m(".ht-column.no-resize.no-border", {'data-index' : -1, 'style' : "width:400px"},  [
+                                                    (function(){
+                                                        var marked = "";
+                                                        if(module.bookmarked){ marked = "ht-opaque-green"; }
+                                                        if(module.id > 0) {
+                                                            return m('.ht-module-menu', [
+                                                                m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
+                                                                m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
+                                                                m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
+                                                            ])
+                                                        }
+                                                    }()),
                                                     m(".ht-widget.no-border.no-resize", { config : ctrl.widgetInit, 'data-index' : -1, "style" : "height : 100%; padding: 15px;", "class" : "ui-widget ui-widget-content ui-helper-clearfix ht-inverted"}, [
                                                         m(".ht-widget-body", [ m("div.widget-body-inner.ht-title-widget",{ id : "dashboardwidget"+module.id }, [
-                                                                (function(){
-                                                                    var marked = "";
-                                                                    if(module.bookmarked){ marked = "ht-opaque-active"; }
-                                                                    if(module.id > 0) {
-                                                                        return m('.ht-module-menu', [
-                                                                            m('i.fa.fa-times', { onclick : function(){ ctrl.removeModule(module_index); }}),
-                                                                            m('i.fa.fa-minus', { onclick : function(){ ctrl.toggleModule(module_index, true );}} ),
-                                                                            m('i.fa.fa-bookmark', { "class" : marked, "data-mindex" : module_index, onclick : ctrl.bookmarkToggle })
-                                                                        ])
-                                                                    }
-                                                                }()),
-
                                                                 m('h2.m-t-xl.m-b-md', module.title),
                                                                 m('p.m-t-md.m-b-xl', module.about),
                                                                 m('ul.dashboardList.list-unstyled.m-t-lg', [
@@ -2537,7 +2534,7 @@ if (typeof define == "function" && define.amd) define(function() {return m})
                                                                             noResize = "no-resize";
                                                                         }
                                                                         if(widget.display){
-                                                                            return m(".ht-widget", { config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css + " " + noResize}, [
+                                                                            return m(".ht-widget", { key : widget.id, config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css + " " + noResize}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
                                                                                         return m(".ht-widget-header.bg-opaque-white-md", [
@@ -2578,27 +2575,17 @@ if (typeof define == "function" && define.amd) define(function() {return m})
                                                             return m(".add-column", { onclick : function(){ ctrl.addCol(module_index); } }, [m("i.fa.fa-plus")], m("[id='ht-content']", {config : ctrl.reformat }));
                                                         }
                                                     })()
-
-
                                                 ])
-
                                             ])
                                         ])];
                                     }
                                 }
-
-
                             })
                         ])
                     ])
                 ];
             }
-
-
         }
-
-
-
     };
 };
 

@@ -2842,6 +2842,7 @@ h1.skinnyFont{line-height:50px}
 body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ui-widget,h1,h2,h3,h4,h5,h6,p{font-family:'Source Sans Pro',sans-serif}
 .opaque{background:rgba(255,255,255,.47)}
+.opaque-green{background:rgba(173,255,166,.47)}
 .bg-white{background:#fff}
 .bg-maroon{background-color:#85144b}
 .bg-gray{background-color:#aaa}
@@ -2914,11 +2915,12 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ht-tab-minimized .rotatedText{width:400px;margin-left:-182px;margin-top:200px;color:#FFF}
 #ht-slider-bar{width:10px;content:"";min-height:100%;background-color:#D1C094;height:100%}
 .ghost-element{height:300px;width:300px;background:grey;opacity:.4}
-.ht-module-menu{position:absolute;margin-top:-25px;margin-left:-25px;margin-bottom:20px;text-align:center}
+.ht-module-menu{position:relative;margin-top:-10px;margin-left:-10px;color:#FFF}
 .ht-module-menu .fa{padding:10px 14px;font-size:21px;background:rgba(255,255,255,.16)}
 .ht-module-menu .fa:hover{background:rgba(255,255,255,.47)}
 .ht-module-menu .fa:last-of-type{border-bottom-right-radius:4px}
 .ht-module-menu .ht-opaque-active{background:rgba(255,255,255,.47)}
+.ht-module-menu .ht-opaque-green{background:rgba(173,255,166,.47)}
 .ht-tab-header{color:#fff;padding:1px 10px}
 .ht-tab-header h3{font-family:Helvetica Neue,Helvetica,sans-serif;font-weight:100;letter-spacing:1px;margin:10px 0;font-size:25px}
 .ht-tab-header .fa{font-size:20px;font-weight:200;margin:0 5px}
