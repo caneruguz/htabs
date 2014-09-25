@@ -229,6 +229,8 @@
                 resize : function (){
                     self.saveColumnSize();
                     self.reformatWidth();
+                    self.checkExpandState();
+
                 },
                 stop : function (){
                     $(".widget-body-inner").rescon(
@@ -463,13 +465,39 @@
             self.widgetize();
 
         };
+         this.checkExpandState = function(){
+            self.modules().map(function(modules, modules_index){
+                modules.columns.map(function(column, column_index){
+                   column.widgets.map(function(widget, widget_index){
+                    if(column.width<=300){
+                        widget.expandCss = "expand";
+                    }else{
+                        widget.expandCss = "compress";
+                    }
+                   });
+                });
+            });
+        };
+
         this.expandWidget = function(module, column, widget){
             // create a column after this column
-            self.modules()[module].columns.splice(column+1,0, new build.column(620, []));
-            // move widget to this column
-            var from = { module : module, column : column, widget : widget};
-            var to = { module : module, column : column+1, widget : 0};
-            self.moveWidget(from, to);
+            // self.saveColumnSize();
+
+            if(self.modules()[module].columns[column].width <= 300){
+                self.modules()[module].columns.splice(column+1,0, new build.column(620, []));
+                // move widget to this column
+                var from = { module : module, column : column, widget : widget};
+                var to = { module : module, column : column+1, widget : 0};
+                self.moveWidget(from, to);
+                self.checkExpandState();
+
+                // m.redraw()
+            }else{
+                self.modules()[module].columns[column].width = 300;
+                self.checkExpandState();
+
+                m.redraw();
+            }
         };
         // EXPOSE
         this.exposeInit = function(){
@@ -1336,7 +1364,7 @@
                                                                                         return m(".ht-widget-header.bg-opaque-white-md", [
                                                                                             widget.title,
                                                                                             m(".ht-widget-actions", [
-                                                                                                m("i.fa.fa-expand.ht-widget-expand", { onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
+                                                                                                m("i.fa.ht-widget-expand", { "class": 'fa-'+widget.expandCss, onclick : function(){ ctrl.expandWidget(module_index, column_index, widget_index );} } ),
                                                                                                 m("i.fa.fa-circle-o", { onclick : function(){ ctrl.focusOn(widget.type, widget.id, widget.title);} } ),
                                                                                                 (function(){
                                                                                                     if(widget.closable){
