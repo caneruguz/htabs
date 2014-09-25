@@ -281,12 +281,12 @@
                         widget : ui.item.index()
                     };
                     self.temp.toObj = to; // Assign the to object, this is not strictly necessary since we use it right away below
-                    $('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
+                    //$('.ht-column').not('.ht-column[data-index=-1]').sortable( "cancel" );       // Stop sortable from actually sorting, leave this to mithril because we changed the observable model
                     self.moveWidget(self.temp.fromObj, self.temp.toObj); // Move the widget
 
-                    self.localExpose = false;
-                    m.redraw(true);
-                    self.cleanDOM();
+                    //self.localExpose = false;
+                   // m.redraw(true);
+                    //self.cleanDOM();
                 },
                 over : function(event, ui){
 //                        console.log(event, ui);
@@ -814,6 +814,9 @@
                     if(w.type == type){
                         w_array.splice(w_index, 1);
                         link.removeClass('ht-open');
+                        if(w_array.length == 0){
+                            c_array.splice(c_index, 1);
+                        }
                     }
                     // if this is the last widget of the last column
                     if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
@@ -1328,7 +1331,7 @@
                                                                             noResize = "no-resize";
                                                                         }
                                                                         if(widget.display){
-                                                                            return m(".ht-widget", { key : widget.id, config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css + " " + noResize}, [
+                                                                            return m(".ht-widget", { id : widget.id, config : ctrl.widgetInit, 'data-index' : widget_index, 'data-id' : widget.id, "style" : "height : "+widget.height+"px", "class" : "ui-widget ui-helper-clearfix " +widget.css + " " + noResize}, [
                                                                                 (function(){
                                                                                     if(!widget.hideHeader){
                                                                                         return m(".ht-widget-header.bg-opaque-white-md", [
