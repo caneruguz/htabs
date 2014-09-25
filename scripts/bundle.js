@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var app = {}; // Create a namespace for the entire app
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var app = {}; // Create a namespace for the entire app
 
     // Load components and add them to the app namespace
     app.logs = require('../components/logs/logs');
@@ -219,7 +219,7 @@ var app = {}; // Create a namespace for the entire app
             })
             $(document).on('mouseup',  function(){
                 if(self.temp.drag.state){
-                    self.resizeWidgets();
+                     self.resizeWidgets();
                 }
                 self.temp.drag.state = false;
             })
@@ -900,7 +900,17 @@ var app = {}; // Create a namespace for the entire app
          }
          this.moduleViewToggle = function(event){
              var event = event || window.event;
-             var module = $(event.target).parent();
+
+            //Checks to see if the click is on the text in the bookmark, if so grab parent
+             if (event.toElement.className == "ht-bookmark-content"){
+                var module = $(event.target).parent();
+             }
+
+            //Otherwise just use the module
+             else{
+                var module = $(event.target);
+             }
+
              var moduleID = module.attr('data-mid');
 //             console.log("ModulID", moduleID);
              // Toggle view
@@ -923,14 +933,27 @@ var app = {}; // Create a namespace for the entire app
              var el = $(event.target);
              var mindex = el.attr('data-mindex');
              var module = self.modules()[mindex];
-             var bookmark =             {
-                 "id" :  module.id,
-                 "title" : module.title,
-                 "open": true,
-                 "color" : module.color
-             }
-             self.modules()[0].bookmarks.push(bookmark);
-             module.bookmarked = true;
+
+             if (module.bookmarked == true){
+                for (var bookmarksNum in self.modules()[0].bookmarks){
+                    if(self.modules()[0].bookmarks[bookmarksNum].id == module.id){
+                        self.modules()[0].bookmarks.splice(bookmarksNum, 1);
+                    }
+                }
+                
+                module.bookmarked = false;
+            }
+
+            else{
+                var bookmark = {
+                    "id" :  module.id,
+                    "title" : module.title,
+                    "open": true,
+                    "color" : module.color
+                }
+                self.modules()[0].bookmarks.push(bookmark);
+                module.bookmarked = true;
+            }
          }
 
          // ASIDE TAB
