@@ -2898,7 +2898,7 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ht-w-lg{width:640px}
 .ht-w-xl{width:800px}
 .ht-inverted{color:#fff;background:0 0;border:none;border-bottom:2px dotted rgba(153,153,153,.19)}
-.ht-module-inverted .ht-column{border-right:2px solid transparent}
+.ht-module-inverted .ht-column{border-right:2px solid rgba(204,204,204,0)}
 .ht-module-inverted .ht-add-column{background:rgba(153,153,153,.19)}
 .ht-module-inverted .ht-add-column .add-column{color:#fff}
 .tall{width:300px}
@@ -2933,9 +2933,9 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ht-hdiv:hover{cursor:pointer;cursor:hand}
 #ht-slider{width:50px;background-color:rgba(255,255,255,.33);height:20px;position:absolute;border-radius:18px;border-right-width:1px;border-left-width:1px}
 #ht-wrapper{overflow-x:auto;overflow-y:hidden;background:#EEE;padding:0;margin:0;display:inline-block}
-.ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid transparent}
+.ht-column{display:inline-block;margin-right:10px;float:left;padding-right:5px;border-right:2px solid rgba(204,204,204,0)}
 .ht-column .ht-widget{margin-bottom:10px;border-radius:5px}
-.ht-column .ht-widget .ht-widget-header{padding:15px 20px;font-size:16px;font-weight:200;color:#fff;border-bottom:1px solid transparent}
+.ht-column .ht-widget .ht-widget-header{padding:15px 20px;font-size:16px;font-weight:200;color:#fff;border-bottom:1px solid rgba(204,204,204,0)}
 .ht-column .ht-widget .ht-widget-header .fa{margin:0 3px}
 .ht-column .ht-widget .ht-widget-header:hover{border-bottom:1px solid #ccc;cursor:move}
 .ht-column .ht-widget .ht-widget-body{overflow-y:hidden;overflow-x:hidden;padding:0}

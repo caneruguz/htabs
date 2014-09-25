@@ -798,58 +798,54 @@
                 });
             }
         };
-         this.loadLink = function(e){
-             var event = e || window.event;
-             var link = $(event.target);
-             var type = link.closest('li').attr('data-type');
-             var title = link.text();
-             var index = link.closest('.ht-tab').attr('data-index');
-//             console.log("event : " , event);
-//             console.log("type : " , type);
-             // is this module type already open?
-             var open = false;
-             self.modules()[index].columns.map(function(col, c_index, c_array){
-                 col.widgets.map(function(w, w_index, w_array){
-                     if(w.type == type){
-                         w_array.splice(w_index, 1);
-                         link.parent().removeClass('ht-open');
-                        open = true;
-                     }
-                     // if this is the last widget of the last column
-                     if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
+        this.loadLink = function(e){
+            var event = e || window.event;
+            var link = $(event.target);
+            var type = link.closest('li').attr('data-type');
+            var title = link.text();
+            var index = link.closest('.ht-tab').attr('data-index');
+//          console.log("event : " , event);
+//          console.log("type : " , type);
+            //checks to see if the link text is clicked, if so set link to link's parent
+            if(link.hasClass('ht-widget-btn-txt')){
+                link = link.parent();
+            }
+            var open = false;
+            self.modules()[index].columns.map(function(col, c_index, c_array){
+                col.widgets.map(function(w, w_index, w_array){
+                    if(w.type == type){
+                        w_array.splice(w_index, 1);
+                        link.removeClass('ht-open');
+                    }
+                    // if this is the last widget of the last column
+                    if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
                          // and widget is still not found
                          if(!open){
-                             var randomNumber = Math.floor(Math.random()*10000);
-                             var widget = {
-                                 "id" : randomNumber,
-                                 "title" : title,
-                                 "type" : type,
-                                 "data" : "",
-                                 "closable" : true,
-                                 "expandable" : true,
-                                 "height" : 300,
-                                 "display" : true,
-                                 "hideHeader" : false,
-                                 "content" : "",
-                                 "css" : ""
-                             }
-                             c_array.push( new build.column(620, [ widget ]));
-                             self.applyModules();
-                             var selector = '.ht-widget[data-id='+randomNumber+']';
-//                             console.log("Selector", selector)
-                             self.temp.scrollTo = selector;
-//                             console.log(c_array);
-                             link.closest('li').addClass('ht-open');
-                         }
-
-
-                     }
-                 })
-//                 console.log(open);
-
-             })
-             self.reformatWidth();
-         }
+                            var randomNumber = Math.floor(Math.random()*10000);
+                            var widget = {
+                                "id" : randomNumber,
+                                "title" : title,
+                                "type" : type,
+                                "data" : "",
+                                "closable" : true,
+                                "expandable" : true,
+                                "height" : 300,
+                                "display" : true,
+                                "hideHeader" : false,
+                                "content" : "",
+                                "css" : ""
+                            }
+                            c_array.push( new build.column(620, [ widget ]));
+                            var selector = '.ht-widget[data-id='+randomNumber+']';
+                            self.temp.scrollTo = selector;
+                            link.closest('li').addClass('ht-open');
+                        }
+                    }
+                })
+            })
+            self.applyModules();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+            self.reformatWidth();
+        }
 
          this.createVirtual = function(){
              // Repopulate the virtual model array
