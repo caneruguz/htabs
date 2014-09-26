@@ -1128,6 +1128,7 @@ app.first = require('../components/first/first');
 app.second = require('../components/second/second');
 app.third = require('../components/third/third');
 app.rescon = require('../components/rescon/rescon');
+var notify = require('./notify');
 
 // Initialize the mithril application module. -- this will be broken down in larger implementation
 var build = {};
@@ -1176,83 +1177,6 @@ build.widget = function (id, title, type, content, iframeLink, hideHeader) {
     this.css = "";
     this.data = "";
 };
-
-
-/*******  NOTIFICATIONS  *******/
-var notify = {};
-notify.model = function (controller, text, actions, type) {
-    var self = this;
-    this.id = Math.floor((Math.random() * 100000) + 1) + 3;
-    this.text = text;
-    this.actions = actions || [];
-    this.type = type || "default";
-    actions.push({
-        title: "Dismiss",
-        todo: { name: "dismissNotify", parameters: self.id },
-        css: 'btn btn-default'
-    });
-};
-
-notify.list = [
-    {
-        id: 1,
-        text: "This notification is here to tell you that you should be opening a new module.",
-        type: "info",
-        css: "bg-turquaz-l t-light",
-        actions: [
-            {
-                title: "Open Project",
-                todo: { name: "openProject", parameters: [2, 1] },
-                css: 'btn bg-emerald-d btn-sm'
-            },
-            {
-                title: "Dismiss",
-                todo: { name: "dismissNotify", parameters: 1 },
-                css: 'btn bg-clouds-d btn-sm'
-            }
-        ]
-    },
-    {
-        id: 2,
-        text: "Go to an existing project and do something there",
-        type: "success",
-        css: "bg-river-l t-light",
-        actions: [
-            {
-                title: "Go to Project",
-                todo: { name: "gotoProject", parameters: 1 },
-                css: 'btn bg-turquaz-d btn-sm'
-            },
-            {
-                title: "Dismiss",
-                todo: { name: "dismissNotify", parameters: 2 },
-                css: 'btn bg-clouds-d btn-sm'
-            }
-        ]
-    }
-];
-
-notify.view = function (ctrl) {
-    return m('ul.no-bullets', [
-        notify.list.map(function (item) {
-            return m('li.ht-panel', { "class": item.css}, [
-                m('.ht-panel-body', item.text),
-                m('.ht-panel-footer', [
-                    m('ul.no-bullets', [
-                        item.actions.map(function (action) {
-
-                            return m('li.ht-panel-action', { "class": action.css, onclick: function () {
-                                ctrl.notifyDo(action.todo);
-                            } }, action.title)
-                        })
-                    ])
-                ])
-            ])
-        })
-
-    ])
-};
-
 
 /*******  CONTROLLER  *******/
 build.controller = function () {
@@ -1509,17 +1433,54 @@ build.controller = function () {
         $(".widget-body-inner").rescon({
             sizes: { "xs": 0, "sm": 300, "md": 600, "lg": 1000 }
         });
-        //self.widgetize();
     };
-    this.expandWidget = function (module, column, widget) {
-        // create a column after this column
-        self.modules()[module].columns.splice(column + 1, 0, new build.column(620, []));
-        // move widget to this column
-        var from = { module: module, column: column, widget: widget};
-        var to = { module: module, column: column + 1, widget: 0};
-        self.moveWidget(from, to);
+    this.widgetInit = function (element, isInit) {
+        if (isInit) return;
+        self.resizeWidgets();
+        var module = self.modules()[self.modules().length - 1];
+        var column = module.columns[module.columns.length - 1];
+        if(column.widgets.length === 0){
+            column = module.columns[module.columns.length - 2];
+        }
+        var widget = column.widgets[column.widgets.length - 1];
+        var id = widget.id;
+        if ($(element).attr('data-id') == id) {
+            if (self.temp.scrollTo && $(self.temp.scrollTo).get(0)) {
+                console.log("Scroll to:", $(self.temp.scrollTo));
+                $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
+            }
+            self.temp.scrollTo = "";
+        }
+        self.widgetize();
+        console.log("Widget initialized");
+    }
+    this.checkExpandState = function(){
+        self.modules().map(function(modules, modules_index){
+            modules.columns.map(function(column, column_index){
+                column.widgets.map(function(widget, widget_index){
+                    if(column.width<=300){
+                        widget.expandCss = "expand";
+                    }else{
+                        widget.expandCss = "compress";
+                    }
+                });
+            });
+        });
     };
-
+    this.expandWidget = function(module, column, widget){
+        if(self.modules()[module].columns[column].width <= 300){
+            self.modules()[module].columns.splice(column+1,0, new build.column(620, []));
+            // move widget to this column
+            var from = { module : module, column : column, widget : widget};
+            var to = { module : module, column : column+1, widget : 0};
+            self.moveWidget(from, to);
+            self.checkExpandState();
+        }else{
+            self.modules()[module].columns[column].width = 300;
+            self.checkExpandState();
+            m.redraw();
+        }
+    };
 
     /*******  EXPOSE  *******/
     this.exposeInit = function () {
@@ -1574,25 +1535,9 @@ build.controller = function () {
             module.exposeWidth = adjwidth; // assign the new widths to the model object
         });
     }
-    this.calculateContentLength = function () {
-        var totalLength = 4; // ht-content padding
-        self.modules().map(function (module) {
-            if (module.show) {
-                var thisWidth = 60 + 4 + 20 + 410; //  60 : width of the add column bar; 4: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
-                if (module.bookmarks.length > 0) {
-                    thisWidth += 270;
-                }
-                module.columns.map(function (column) {
-                    var columnW = column.width + 10; // right padding + right margin + right border
-                    thisWidth += columnW;
-                });
-                totalLength += thisWidth;
-            }
-        });
-        return totalLength;
-    }
 
-    // MODULES
+
+    /*******  MODULES  *******/
     this.moveModule = function (from, to) {       // Move module within the expose window. Gets triggered suring sortable in expose.
         // get module object with From module index
         var module = self.modules()[from];
@@ -1657,8 +1602,33 @@ build.controller = function () {
         self.modules()[index].minimize = state;
         self.calculateExposeWidths();
     };
+    this.moduleViewToggle = function (event) {
+        var event = event || window.event;
+        var module;
+        if (event.toElement.className == "ht-bookmark-content") {
+            module = $(event.target).parent();
+        }
+        else {
+            module = $(event.target);
+        }
+        var moduleID = module.attr('data-mid');
+        self.modules().map(function (mod) {
+            if (mod.id == moduleID) {
+                mod.show = !mod.show;
+            }
+        })
+        // toggle bookmark view
+        self.modules()[0].bookmarks.map(function (b) {
+            if (b.id == moduleID) {
+                b.open = !b.open;
+            }
+        })
+    }
+    this.moduleInit = function(){
 
-    // COLUMNS
+    }
+
+    /*******  COLUMNS  *******/
     this.addCol = function (module_index) {
         // is there an empty column?
         var empty = false;
@@ -1669,7 +1639,7 @@ build.controller = function () {
         });
         if (!empty) {
             self.modules()[module_index].columns.push({ width: 300, widgets: [], new: true});
-            self.reformatWidth();
+            console.log(self.modules()[module_index]);
             var offset = $('.ht-tab[data-index="' + module_index + '"] > .ht-tab-content > .ht-add-column').offset().left;
             var windowW = $(window).width();
             var selector = '.ht-tab[data-index="' + module_index + '"] > .ht-tab-content > .ht-column:last';
@@ -1684,22 +1654,27 @@ build.controller = function () {
                 self.temp.scrollTo = "";
             }
         }
+        self.reformat();
     };
-    this.removeExtraCols = function () {
-        self.modules().map(function (modules, modules_index) {
-            modules.columns.map(function (column, column_index, array) {
-                if (column.widgets < 1) {
-                    array.splice(column_index, 1);
-                }
+    self.saveColumnSize = function () {
+        for (var i = 0; i < self.modules().length; i++) {
+            var o = self.modules()[i];
+            o.columns.map(function (item, index, array) {
+                item.width = ($('.ht-tab[data-id="' + o.id + '"]').find('.ht-column[data-index=' + index + ']')).outerWidth();
             });
-        });
+        }
     };
 
+    /*******  WORKSPACE *******/
     this.saveWorkspace = function () {
         console.log(self.modules());
     };
 
-    // Creating separate function for each action that can occur
+    /*******  LAYOUT  *******/
+    this.reformat = function () {
+        self.reformatHeight();
+        self.reformatWidth();
+    };
     this.reformatWidth = function () {
         if (self.canReformat) {
             var window_width = $(window).outerWidth();
@@ -1741,15 +1716,6 @@ build.controller = function () {
             self.fill();
         }
     };
-
-    this.fill = function () {
-        $(".ht-fill").each(function () {
-            var parent_w = $(this).parent().width();
-            $(this).width(parent_w)
-                .find('.input-group, .form-group').css('width', '100%')
-                .find('.input-group-btn').css('text-align', 'left')
-        })
-    }
     this.reformatHeight = function () {
         if (self.canReformat) {
             var window_height = $(window).height() + 15;
@@ -1769,75 +1735,75 @@ build.controller = function () {
 
             self.resizeWidgets();
             self.eventsOn();
-//                console.log("reformat height ran");
         }
+    };
+    this.calculateContentLength = function () {
+        var totalLength = 4; // ht-content padding
+        self.modules().map(function (module) {
+            if (module.show) {
+                var thisWidth = 60 + 4 + 20 + 410; //  60 : width of the add column bar; 4: htab margin+border; 20 : ht-tab-content padding 410 for dashboard width;
+                if (module.bookmarks.length > 0) {
+                    thisWidth += 270;
+                }
+                module.columns.map(function (column) {
+                    thisWidth +=  column.width + 10; // right padding + right margin + right border
+                });
+                totalLength += thisWidth;
+            }
+        });
+        return totalLength;
     };
 
-    this.reformat = function () {
-        self.reformatHeight();
-        self.reformatWidth();
+    this.fill = function () {
+        $(".ht-fill").each(function () {
+            var parent_w = $(this).parent().width();
+            $(this).width(parent_w)
+                .find('.input-group, .form-group').css('width', '100%')
+                .find('.input-group-btn').css('text-align', 'left')
+        });
     };
-    this.widgetInit = function (element, isInit) {
-        if (self.temp.scrollTo && $(self.temp.scrollTo).get(0)) {
-            $('#ht-wrapper').scrollTo($(self.temp.scrollTo), 150, {offset: -50 });
-        }
-        self.resizeWidgets();
-        var module = self.modules()[self.modules().length - 1];
-        var column = module.columns[module.columns.length - 1];
-        var widget = column.widgets[column.widgets.length - 1];
-        var id = widget.id;
-        if ($(element).attr('data-id') == id) {
-            self.temp.scrollTo = "";
-        }
-        self.widgetize();
-    }
-    self.saveColumnSize = function () {
-        for (var i = 0; i < self.modules().length; i++) {
-            var o = self.modules()[i];
-            o.columns.map(function (item, index, array) {
-                item.width = ($('.ht-tab[data-id="' + o.id + '"]').find('.ht-column[data-index=' + index + ']')).outerWidth();
-            });
-        }
-    };
+
+
+    /*******  LINKS  *******/
     this.loadLink = function (e) {
         var event = e || window.event;
         var link = $(event.target);
         var type = link.closest('li').attr('data-type');
         var title = link.text();
         var index = link.closest('.ht-tab').attr('data-index');
-//          console.log("event : " , event);
-//          console.log("type : " , type);
-        //checks to see if the link text is clicked, if so set link to link's parent
-        if (link.hasClass('ht-widget-btn-txt')) {
+        if(link.hasClass('ht-widget-btn-txt')){
             link = link.parent();
         }
         var open = false;
-        self.modules()[index].columns.map(function (col, c_index, c_array) {
-            col.widgets.map(function (w, w_index, w_array) {
-                if (w.type == type) {
+        self.modules()[index].columns.map(function(col, c_index, c_array){
+            col.widgets.map(function(w, w_index, w_array){
+                if(w.type == type){
                     w_array.splice(w_index, 1);
                     link.removeClass('ht-open');
+                    if(w_array.length == 0){
+                        c_array.splice(c_index, 1);
+                    }
                 }
                 // if this is the last widget of the last column
-                if (c_index == c_array.length - 1 && w_index == w_array.length - 1) {
-                    // and widget is still not found
-                    if (!open) {
-                        var randomNumber = Math.floor(Math.random() * 10000);
+                if(c_index == c_array.length-1 && w_index == w_array.length-1 ){
+                     // and widget is still not found
+                     if(!open){
+                        var randomNumber = Math.floor(Math.random()*10000);
                         var widget = {
-                            "id": randomNumber,
-                            "title": title,
-                            "type": type,
-                            "data": "",
-                            "closable": true,
-                            "expandable": true,
-                            "height": 300,
-                            "display": true,
-                            "hideHeader": false,
-                            "content": "",
-                            "css": ""
-                        }
-                        c_array.push(new build.column(620, [ widget ]));
-                        var selector = '.ht-widget[data-id=' + randomNumber + ']';
+                            "id" : randomNumber,
+                            "title" : title,
+                            "type" : type,
+                            "data" : "",
+                            "closable" : true,
+                            "expandable" : true,
+                            "height" : 300,
+                            "display" : true,
+                            "hideHeader" : false,
+                            "content" : "",
+                            "css" : ""
+                        };
+                        c_array.push( new build.column(620, [ widget ]));
+                        var selector = '.ht-widget[data-id='+randomNumber+']';
                         self.temp.scrollTo = selector;
                         link.closest('li').addClass('ht-open');
                     }
@@ -1846,53 +1812,23 @@ build.controller = function () {
         })
         self.applyModules();
         self.reformatWidth();
-    }
-    this.moduleViewToggle = function (event) {
-        var event = event || window.event;
+    };
 
-        //Checks to see if the click is on the text in the bookmark, if so grab parent
-        if (event.toElement.className == "ht-bookmark-content") {
-            var module = $(event.target).parent();
-        }
 
-        //Otherwise just use the module
-        else {
-            var module = $(event.target);
-        }
-
-        var moduleID = module.attr('data-mid');
-//             console.log("ModulID", moduleID);
-        // Toggle view
-        self.modules().map(function (mod) {
-//                 console.log(mod.id)
-            if (mod.id == moduleID) {
-                mod.show = !mod.show;
-            }
-        })
-        // toggle bookmark view
-        self.modules()[0].bookmarks.map(function (b) {
-            if (b.id == moduleID) {
-                b.open = !b.open;
-            }
-        })
-    }
-
+    /*******  BOOKMARKS  *******/
     this.bookmarkToggle = function (event) {
         var event = event || window.event;
         var el = $(event.target);
         var mindex = el.attr('data-mindex');
         var module = self.modules()[mindex];
-
         if (module.bookmarked == true) {
             for (var bookmarksNum in self.modules()[0].bookmarks) {
                 if (self.modules()[0].bookmarks[bookmarksNum].id == module.id) {
                     self.modules()[0].bookmarks.splice(bookmarksNum, 1);
                 }
             }
-
             module.bookmarked = false;
         }
-
         else {
             var bookmark = {
                 "id": module.id,
@@ -1903,29 +1839,28 @@ build.controller = function () {
             self.modules()[0].bookmarks.push(bookmark);
             module.bookmarked = true;
         }
-    }
+    };
 
-    // ASIDE TAB
+    /*******  ASIDE TAB  *******/
     this.asideInit = function () {
-//             console.log("Aside Init ran");
         self.reformatWidth();
-    }
+    };
     this.asideClick = function () {
         self.asideOpen = !self.asideOpen;
-    }
+    };
 
 
-    // NOTIFICATIONS
+    /*******  NOTIFICATIONS  *******/
     this.notifyDo = function (todo) {
         self[todo.name](todo.parameters);
-    }
+    };
     this.dismissNotify = function (id) {
         notify.list.map(function (item, index, array) {
             if (item.id === id) {
                 array.splice(index, 1);
             }
-        })
-    }
+        });
+    };
     this.openProject = function (args) {
         self.modules().map(function (module) {
             if (module.id === args[0]) {
@@ -1934,109 +1869,98 @@ build.controller = function () {
             }
             self.dismissNotify(args[1]);
             self.asideOpen = false;
-        })
-    }
+        });
+    };
     this.gotoProject = function (id) {
         self.modules().map(function (module) {
             if (module.id === id) {
                 self.temp.scrollTo = '.ht-tab[data-id="' + module.id + '"]';
             }
-        })
-    }
+        });
+    };
 
-    // FOCUS MODE
+    /*******  FOCUS MODE   *******/
     this.focusMode = false;
-    this.focus = { }
+    this.focus = {};
     this.focusOn = function (widget_type, widget_id, widget_title) {
         self.focus = {};
         self.focus.type = widget_type;
         self.focus.id = widget_id;
         self.focus.title = widget_title;
-        console.log("Focus Ran with ", self.focus);
         self.focusMode = true;
-
-
-    }
+    };
     this.focusInit = function () {
         self.reformatWidth();
-    }
+    };
 
 
-    // MOBILE
+    /*******  MOBILE  *******/
     this.mobileInit = function () {
-        console.trace();
         var dist = 150;
-
         $(".ht-mobile-widget").swipe({
-            //Generic swipe handler for all directions
             swipe: function (event, direction, distance, duration, fingerCount) {
                 var target_module = $(this).closest(".ht-mobile-module").attr("data-index");
                 var element;
                 switch (direction) {
                     case "up" :
-//                            console.log(target_module);
-                        element = $(".ht-mobile-module[data-index=" + (parseInt(target_module) + 1) + "]")
+                        element = $(".ht-mobile-module[data-index=" + (parseInt(target_module) + 1) + "]");
                         if (element.length > 0) {
                             $('#ht-mobile-content').scrollTo(element, dist, {offset: 0});
                         }
                         break;
                     case "down":
-//                            console.log(target_module);
-                        element = $(".ht-mobile-module[data-index=" + (parseInt(target_module) - 1) + "]")
+                        element = $(".ht-mobile-module[data-index=" + (parseInt(target_module) - 1) + "]");
                         if (element.length > 0) {
                             $('#ht-mobile-content').scrollTo(element, dist, {offset: 0});
                         }
                         break;
                     case "left" :
-//                            console.log(target_module);
-                        var element = $(this).next();
+                        element = $(this).next();
                         if (element.length > 0) {
                             $('.ht-mobile-module[data-index=' + target_module + ']').scrollTo(element, dist, {offset: 0});
                         }
                         break;
                     case "right" :
-//                            console.log(target_module);
-                        var element = $(this).prev();
+                        element = $(this).prev();
                         if (element.length > 0) {
                             $('.ht-mobile-module[data-index=' + target_module + ']').scrollTo(element, dist, {offset: 0});
                         }
                         break;
-
                 }
-//                        console.log("direction", direction, "fingerCount", fingerCount);
-
             }
         });
         self.canReformat = false;
-    }
+    };
     this.mobileModuleInit = function () {
         var mobileContentHeight = $(window).height() - 50;
         var mobileContentWidth = $(window).width();
-//             console.log(mobileContentHeight);
-        $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width': mobileContentWidth + 'px'})
-        $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width': mobileContentWidth + 'px'})
-    }
+        $('.ht-mobile-module').css({'height': mobileContentHeight + 'px', 'width': mobileContentWidth + 'px'});
+        $('#ht-mobile-content').css({'height': mobileContentHeight + 'px', 'width': mobileContentWidth + 'px'});
+    };
     this.mobileExposeInit = function () {
         var mobileContentHeight = $(window).height();
         $('#ht-mobile-expose').css({'height': mobileContentHeight + 'px'});
-    }
+    };
     this.mobileWidgetInit = function (module_index) {
         var mobileContentHeight = $(window).height() - 40;
         var mobileContentWidth = $(window).width();
-        $('.ht-mobile-widget').css({ 'height': mobileContentHeight + 'px', width: mobileContentWidth + 'px'})
-        // calculate module width based on total widgets, this needs to refresh every time a widget is loaded.
-        var totalWidgets = 1; // title page is one widget;
+        $('.ht-mobile-widget').css({ 'height': mobileContentHeight + 'px', width: mobileContentWidth + 'px'});
+        var totalWidgets = 1;
         self.modules()[module_index].columns.map(function (column) {
             totalWidgets += column.widgets.length;
-        })
+        });
         $('.ht-mobile-module[data-index=' + module_index + ']').children('.ht-mobile-module-inner').css('width', mobileContentWidth * totalWidgets);
-    }
+    };
     this.mobileExposeToggle = function () {
         self.mobileExpose = !self.mobileExpose;
-    }
+    };
+};
 
-}
+
+/*******  VIEW   *******/
 build.view = function (ctrl) {
+
+    /*******  MOBILE LAYOUT  *******/
     if (ctrl.layout() < 481) {
         if (ctrl.mobileExpose) {
             return m("#ht-mobile-expose", { config: ctrl.mobileExposeInit}, [
@@ -2044,7 +1968,7 @@ build.view = function (ctrl) {
                     m('.fa.fa-times.text-white', { onclick: ctrl.mobileExposeToggle })
                 ]),
                 m(".ht-mobile-expose-wrap", [
-                    ctrl.modules().map(function (module, module_index, module_array) {
+                    ctrl.modules().map(function (module, module_index) {
                         return m('.ht-mobile-expose-module.clearfix', {"class": 'bg-' + module.color }, [
                             m("i.fa.fa-times.pull-right", { onclick: function () {
                                 ctrl.removeModule(module_index);
@@ -2063,7 +1987,7 @@ build.view = function (ctrl) {
                     ])
                 ]),
                 m("#ht-mobile-content", [
-                    ctrl.modules().map(function (module, module_index, module_array) {
+                    ctrl.modules().map(function (module, module_index) {
                         var clrs = ["maroon", "purple", "fuchsia", "red", "orange", "yellow", "aqua", "olive", "teal", "green", "lime", "blue", "navy"];
 
 
@@ -2073,11 +1997,10 @@ build.view = function (ctrl) {
                                     m('div', {'class': 'ht-mobile-module-title'}, module.title),
                                     m('div', {'class': 'ht-mobile-module-content'}, "Lorem fake content goes here ipsum"),
                                     module.columns.map(function (column) {
-                                        return column.widgets.map(function (widget, widget_index, widget_array) {
+                                        return column.widgets.map(function (widget) {
                                             var randomNumber = Math.floor(Math.random() * clrs.length);
                                             return m('.ht-mobile-widget-list.clearfix', {"class": 'bg-' + clrs[randomNumber],
                                                 onclick: function () {
-                                                    // console.log(widget_index);
                                                     var element = $('.ht-mobile-widget[data-id=' + widget.id + ']');
                                                     $('.ht-mobile-module[data-index=' + module_index + ']').scrollTo(element, 150, {offset: 0});
                                                 }
@@ -2091,7 +2014,7 @@ build.view = function (ctrl) {
                                     })
                                 ]),
                                 module.columns.map(function (column) {
-                                    return column.widgets.map(function (widget, widget_index, widget_array) {
+                                    return column.widgets.map(function (widget) {
                                         return m('.ht-mobile-widget', { config: function () {
                                             ctrl.mobileWidgetInit(module_index)
                                         }, 'style': 'background:white', "data-id": widget.id }, [
@@ -2112,13 +2035,14 @@ build.view = function (ctrl) {
         }
     } else {
 
+        /*******  FULL EXPOSE   *******/
         if (ctrl.localExpose) {
             return [
                 m("#exposeDiv.animated.fadeIn", [
                     m(".exposeClose", [m("i.fa.fa-times", { onclick: ctrl.endExpose })]),
                     m(".expose-content", { config: ctrl.exposeInit }, [
                         m(".expose-modules", [
-                            ctrl.modules().map(function (module, module_index, module_array) {
+                            ctrl.modules().map(function (module, module_index) {
                                 if (module.show) {
                                     if (module.minimize) {
                                         return [" ", m(".ht-expose-tab.ht-tab-minimized", {'data-index': module_index, 'data-id': module.id, style: "height : " + module.exposeHeight}, [
@@ -2159,6 +2083,7 @@ build.view = function (ctrl) {
                 ])
             ];
         } else {
+            /*******  FOCUS VIEW *******/
             if (ctrl.focusMode) {
                 return m('#ht-focus-wrap.animated.fadeIn', { config: ctrl.focusInit }, [
                     m('.ht-dismiss', { onclick: function () {
@@ -2168,6 +2093,7 @@ build.view = function (ctrl) {
                     app[ctrl.focus.type].view(ctrl.controllers[ctrl.focus.id])
                 ])
             } else {
+                /*******  FULL VIEW *******/
                 return [
                     m('.navbar.navbar-fixed-top.ht-navbar', [
                         m('.container-fluid', [
@@ -2211,7 +2137,7 @@ build.view = function (ctrl) {
                     ]),
                     m(".ht-head-wrapper", [
                         m("[id='ht-head']", [
-                            ctrl.modules().map(function (module, module_index, module_array) {
+                            ctrl.modules().map(function (module) {
                                 if (module.show) {
                                     return m(".ht-hdiv.bg-" + module.color, { "data-hid": module.id}, [m("span.ht-hdiv-content", module.title)]);
                                 }
@@ -2232,7 +2158,7 @@ build.view = function (ctrl) {
                     m(".ht-slider-wrap", [m("[id='ht-slider']")]),
                     m("[id='ht-wrapper']", { config: ctrl.init }, [
                         m("[id='ht-content']", {config: ctrl.reformat }, [
-                            ctrl.modules().map(function (module, module_index, module_array) {
+                            ctrl.modules().map(function (module, module_index) {
                                 if (module.show) {
                                     if (module.minimize) {
                                         return [m(".ht-tab.ht-tab-minimized.b-r-xs", {'data-index': module_index, 'data-id': module.id, "class": 'bg-' + module.color }, [
@@ -2249,7 +2175,7 @@ build.view = function (ctrl) {
                                             m(".ht-tab-content.b-r-xs", {style: " max-height : 100px"  }, [m("h3.rotate.rotatedText", module.title)])
                                         ])];
                                     } else {
-                                        return [m(".ht-tab.b-r-xs", { 'class': module.css + ' bg-' + module.color, 'data-index': module_index, 'data-id': module.id}, [
+                                        return [m(".ht-tab.b-r-xs", { config: ctrl.moduleInit, 'class': module.css + ' bg-' + module.color, 'data-index': module_index, 'data-id': module.id}, [
                                             m(".ht-tab-content.b-r-xs", { 'class': ' bg-' + module.color }, [
                                                 m(".ht-column.no-resize.no-border", {'data-index': -1, 'style': "width:400px"}, [
                                                     (function () {
@@ -2291,7 +2217,7 @@ build.view = function (ctrl) {
                                                                         module.bookmarks.map(function (b) {
                                                                             var status = "bg-opaque-white";
                                                                             if (b.open) {
-                                                                                var status = "bg-" + b.color
+                                                                                status = "bg-" + b.color
                                                                             }
                                                                             return m(".ht-bookmark", { "class": status, "data-mid": b.id, onclick: ctrl.moduleViewToggle}, [
                                                                                 m(".ht-bookmark-content", b.title)
@@ -2303,13 +2229,13 @@ build.view = function (ctrl) {
                                                         ])
                                                     }
                                                 }()),
-                                                module.columns.map(function (column, column_index, column_array) {
+                                                module.columns.map(function (column, column_index) {
                                                     if (column.widgets.length > 0 || column.new) {
                                                         // If the view is not narrow in height show full.
                                                         return m(".ht-column", {'data-index': column_index, 'style': "width:" + column.width + "px"}, [
                                                             (function () {
                                                                 if (column.widgets.length > 0) {
-                                                                    return column.widgets.map(function (widget, widget_index, widget_array) {
+                                                                    return column.widgets.map(function (widget, widget_index) {
                                                                         var noResize = "";
                                                                         if (widget_index === column.widgets.length - 1) {
                                                                             noResize = "no-resize";
@@ -2332,15 +2258,16 @@ build.view = function (ctrl) {
                                                                                                         return m("i.fa.fa-times.ht-widget-remove", { onclick: function () {
                                                                                                             ctrl.removeWidget(module_index, column_index, widget_index, widget.type)
                                                                                                         }});
+
                                                                                                     }
                                                                                                 })()
                                                                                             ])
                                                                                         ]);
                                                                                     }
                                                                                 })(),
-
                                                                                 m(".ht-widget-body.bg-white", [m("div.widget-body-inner", { id: "widget" + widget.id, config: ctrl.reformat },
                                                                                     (function () {
+                                                                                        console.log("Widget " + widget.id  + " redrawn.")
                                                                                         return app[widget.type].view(ctrl.controllers[widget.id]);
                                                                                     })()
                                                                                 ) ]),
@@ -2352,7 +2279,6 @@ build.view = function (ctrl) {
                                                             })()
                                                         ]);
                                                     }
-                                                    // module_array[0].columns[0].widgets.splice(0,1);
                                                 }),
                                                 m(".ht-add-column", [
                                                     (function () {
@@ -2378,11 +2304,8 @@ build.view = function (ctrl) {
             }
         }
     }
-    ;
 };
-
-
-},{"../components/about/about":2,"../components/activity/activity":3,"../components/comments/comments":4,"../components/components/components":5,"../components/dashboard/dashboard":6,"../components/files/files":7,"../components/first/first":8,"../components/forks/forks":9,"../components/logs/logs":10,"../components/rescon/rescon":11,"../components/second/second":12,"../components/statistics/statistics":13,"../components/third/third":14,"../components/wiki/wiki":15}],2:[function(require,module,exports){
+},{"../components/about/about":2,"../components/activity/activity":3,"../components/comments/comments":4,"../components/components/components":5,"../components/dashboard/dashboard":6,"../components/files/files":7,"../components/first/first":8,"../components/forks/forks":9,"../components/logs/logs":10,"../components/rescon/rescon":11,"../components/second/second":12,"../components/statistics/statistics":13,"../components/third/third":14,"../components/wiki/wiki":15,"./notify":16}],2:[function(require,module,exports){
 var about = {};
 
 about.html= m.prop("");
@@ -2429,10 +2352,13 @@ comments.comment = function(content){
     this.show = true;
 }
 
+comments.list = m.prop("");
+m.request({method: "GET", url: "../components/comments/comments.json"}).then(comments.list);
+
 comments.controller = function (){
     var self = this;
-    this.comments = m.prop("");
-    m.request({method: "GET", url: "../components/comments/comments.json"}).then(this.comments);
+    this.comments = comments.list;
+
     // Filter search term to use for filtering later.
     this.filterText = m.prop("");
     // Declare and empty setter for content of the comment to bind it to the form.
@@ -2801,4 +2727,79 @@ wiki.view = function(ctrl){
 }
 
 module.exports = wiki;
+},{}],16:[function(require,module,exports){
+/*******  NOTIFICATIONS  *******/
+var notify = {};
+notify.model = function (controller, text, actions, type) {
+    var self = this;
+    this.id = Math.floor((Math.random() * 100000) + 1) + 3;
+    this.text = text;
+    this.actions = actions || [];
+    this.type = type || "default";
+    actions.push({
+        title: "Dismiss",
+        todo: { name: "dismissNotify", parameters: self.id },
+        css: 'btn btn-default'
+    });
+};
+notify.list = [
+    {
+        id: 1,
+        text: "This notification is here to tell you that you should be opening a new module.",
+        type: "info",
+        css: "bg-turquaz-l t-light",
+        actions: [
+            {
+                title: "Open Project",
+                todo: { name: "openProject", parameters: [2, 1] },
+                css: 'btn bg-emerald-d btn-sm'
+            },
+            {
+                title: "Dismiss",
+                todo: { name: "dismissNotify", parameters: 1 },
+                css: 'btn bg-clouds-d btn-sm'
+            }
+        ]
+    },
+    {
+        id: 2,
+        text: "Go to an existing project and do something there",
+        type: "success",
+        css: "bg-river-l t-light",
+        actions: [
+            {
+                title: "Go to Project",
+                todo: { name: "gotoProject", parameters: 1 },
+                css: 'btn bg-turquaz-d btn-sm'
+            },
+            {
+                title: "Dismiss",
+                todo: { name: "dismissNotify", parameters: 2 },
+                css: 'btn bg-clouds-d btn-sm'
+            }
+        ]
+    }
+];
+notify.view = function (ctrl) {
+    return m('ul.no-bullets', [
+        notify.list.map(function (item) {
+            return m('li.ht-panel', { "class": item.css}, [
+                m('.ht-panel-body', item.text),
+                m('.ht-panel-footer', [
+                    m('ul.no-bullets', [
+                        item.actions.map(function (action) {
+
+                            return m('li.ht-panel-action', { "class": action.css, onclick: function () {
+                                ctrl.notifyDo(action.todo);
+                            } }, action.title)
+                        })
+                    ])
+                ])
+            ])
+        })
+
+    ])
+};
+
+module.exports = notify;
 },{}]},{},[1]);

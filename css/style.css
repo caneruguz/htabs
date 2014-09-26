@@ -1009,6 +1009,7 @@ p,
 }
 #ht-content {
   padding: 4px 2px;
+  overflow-y: hidden;
 }
 .ht-hdiv {
   display: inline-block;

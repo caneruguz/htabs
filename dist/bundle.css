@@ -2930,7 +2930,7 @@ body{font-family:'Source Sans Pro',sans-serif;width:100%;overflow:hidden}
 .ht-tab-footer{background-color:#ccc;padding:10px;color:#999}
 #ht-main{position:fixed;top:0;left:0;background-color:#789}
 #ht-head{height:26px;color:#fff;display:inline-block;margin-top:0}
-#ht-content{padding:4px 2px}
+#ht-content{padding:4px 2px;overflow-y:hidden}
 .ht-hdiv{display:inline-block;padding:3px;text-align:center;height:25px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 .ht-hdiv:hover{cursor:pointer;cursor:hand}
 #ht-slider{width:50px;background-color:rgba(255,255,255,.33);height:20px;position:absolute;border-radius:18px;border-right-width:1px;border-left-width:1px}
