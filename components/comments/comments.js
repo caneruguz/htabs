@@ -14,10 +14,13 @@ comments.comment = function(content){
     this.show = true;
 }
 
+comments.list = m.prop("");
+m.request({method: "GET", url: "../components/comments/comments.json"}).then(comments.list);
+
 comments.controller = function (){
     var self = this;
-    this.comments = m.prop("");
-    m.request({method: "GET", url: "../components/comments/comments.json"}).then(this.comments);
+    this.comments = comments.list;
+
     // Filter search term to use for filtering later.
     this.filterText = m.prop("");
     // Declare and empty setter for content of the comment to bind it to the form.
